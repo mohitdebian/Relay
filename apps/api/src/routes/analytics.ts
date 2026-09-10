@@ -40,8 +40,8 @@ router.get('/overview', async (req: AuthRequest, res: Response): Promise<void> =
   }
 
   try {
-    // 1. Fetch Aggregated Metrics across all APIs
-    const overviewResult = await pool.query(
+    // 1. Fetch Aggregated Metrics across all APIs (Current 24h)
+    const currentOverviewResult = await pool.query(
       `
       SELECT 
         COUNT(*) as total_requests,
@@ -49,12 +49,26 @@ router.get('/overview', async (req: AuthRequest, res: Response): Promise<void> =
         COUNT(CASE WHEN status_code >= 400 THEN 1 END) as total_errors
       FROM api_request_logs l
       JOIN apis a ON l.api_id = a.id
-      WHERE a.workspace_id = $1
+      WHERE a.workspace_id = $1 AND l.created_at >= NOW() - INTERVAL '24 HOURS'
     `,
       [workspaceId]
     );
 
-    // 2. Fetch by Endpoint (mocked via upstream_url for now)
+    // 1.5 Fetch Aggregated Metrics (Previous 24h)
+    const previousOverviewResult = await pool.query(
+      `
+      SELECT 
+        COUNT(*) as total_requests,
+        COALESCE(AVG(latency_ms), 0) as average_latency,
+        COUNT(CASE WHEN status_code >= 400 THEN 1 END) as total_errors
+      FROM api_request_logs l
+      JOIN apis a ON l.api_id = a.id
+      WHERE a.workspace_id = $1 AND l.created_at >= NOW() - INTERVAL '48 HOURS' AND l.created_at < NOW() - INTERVAL '24 HOURS'
+    `,
+      [workspaceId]
+    );
+
+    // 2. Fetch by Endpoint (mocked via upstream_url for now, or just path if available)
     const byEndpointResult = await pool.query(
       `
       SELECT 
@@ -88,11 +102,28 @@ router.get('/overview', async (req: AuthRequest, res: Response): Promise<void> =
       [workspaceId]
     );
 
+    const currentReq = parseInt(currentOverviewResult.rows[0].total_requests) || 0;
+    const prevReq = parseInt(previousOverviewResult.rows[0].total_requests) || 0;
+    const reqDelta = prevReq === 0 ? (currentReq > 0 ? 100 : 0) : ((currentReq - prevReq) / prevReq) * 100;
+
+    const currentErrors = parseInt(currentOverviewResult.rows[0].total_errors) || 0;
+    const prevErrors = parseInt(previousOverviewResult.rows[0].total_errors) || 0;
+    const currentSuccess = currentReq > 0 ? ((currentReq - currentErrors) / currentReq) * 100 : 0;
+    const prevSuccess = prevReq > 0 ? ((prevReq - prevErrors) / prevReq) * 100 : 0;
+    const successDelta = currentSuccess - prevSuccess;
+
+    const currentLat = parseFloat(currentOverviewResult.rows[0].average_latency) || 0;
+    const prevLat = parseFloat(previousOverviewResult.rows[0].average_latency) || 0;
+    const latDelta = prevLat === 0 ? (currentLat > 0 ? 100 : 0) : ((currentLat - prevLat) / prevLat) * 100;
+
     res.json({
       overview: {
-        totalRequests: parseInt(overviewResult.rows[0].total_requests) || 0,
-        averageLatencyMs: Math.round(parseFloat(overviewResult.rows[0].average_latency)) || 0,
-        totalErrors: parseInt(overviewResult.rows[0].total_errors) || 0,
+        totalRequests: currentReq,
+        averageLatencyMs: Math.round(currentLat),
+        totalErrors: currentErrors,
+        totalRequestsDelta: Math.round(reqDelta),
+        successRateDelta: Math.round(successDelta),
+        averageLatencyDelta: Math.round(latDelta),
       },
       byEndpoint: byEndpointResult.rows.map((row) => ({
         path: row.path,
@@ -181,6 +212,20 @@ router.get('/:workspaceId/apis/:apiId', async (req: AuthRequest, res: Response):
       [apiId]
     );
 
+    // 5. Fetch endpoints
+    const endpointsResult = await pool.query(
+      `
+      SELECT method, path, COUNT(*) as requests,
+             COUNT(CASE WHEN status_code >= 400 THEN 1 END) as errors,
+             COALESCE(AVG(latency_ms), 0) as latency_ms
+      FROM api_request_logs
+      WHERE api_id = $1
+      GROUP BY method, path
+      ORDER BY requests DESC
+      `,
+      [apiId]
+    );
+
     res.json({
       overview: {
         totalRequests: parseInt(overviewResult.rows[0].total_requests) || 0,
@@ -194,6 +239,13 @@ router.get('/:workspaceId/apis/:apiId', async (req: AuthRequest, res: Response):
       timeseries: timeseriesResult.rows.map((row) => ({
         timestamp: row.timestamp,
         requests: parseInt(row.requests),
+      })),
+      endpoints: endpointsResult.rows.map((row) => ({
+        method: row.method,
+        path: row.path,
+        requests: parseInt(row.requests),
+        errors: parseInt(row.errors),
+        latency: `${Math.round(parseFloat(row.latency_ms))}ms`,
       })),
     });
   } catch (error) {

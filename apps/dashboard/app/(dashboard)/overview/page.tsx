@@ -59,7 +59,16 @@ export default async function OverviewPage() {
           <div className="stat-value">
             {analyticsOverview ? analyticsOverview.totalRequests : '---'}
           </div>
-          <div className="stat-delta">N/A</div>
+          <div className="stat-delta">
+            {analyticsOverview && analyticsOverview.totalRequestsDelta !== undefined ? (
+              <span className={analyticsOverview.totalRequestsDelta >= 0 ? 'green' : 'red'}>
+                {analyticsOverview.totalRequestsDelta > 0 ? '+' : ''}
+                {analyticsOverview.totalRequestsDelta}%
+              </span>
+            ) : (
+              'N/A'
+            )}
+          </div>
         </div>
         <div className="stat">
           <div className="stat-label">Success rate</div>
@@ -72,14 +81,32 @@ export default async function OverviewPage() {
                 ) + '%'
               : '---'}
           </div>
-          <div className="stat-delta">N/A</div>
+          <div className="stat-delta">
+            {analyticsOverview && analyticsOverview.successRateDelta !== undefined ? (
+              <span className={analyticsOverview.successRateDelta >= 0 ? 'green' : 'red'}>
+                {analyticsOverview.successRateDelta > 0 ? '+' : ''}
+                {analyticsOverview.successRateDelta}%
+              </span>
+            ) : (
+              'N/A'
+            )}
+          </div>
         </div>
         <div className="stat">
           <div className="stat-label">p95 latency</div>
           <div className="stat-value">
             {analyticsOverview ? analyticsOverview.averageLatencyMs + 'ms' : '---'}
           </div>
-          <div className="stat-delta">N/A</div>
+          <div className="stat-delta">
+            {analyticsOverview && analyticsOverview.averageLatencyDelta !== undefined ? (
+              <span className={analyticsOverview.averageLatencyDelta <= 0 ? 'green' : 'red'}>
+                {analyticsOverview.averageLatencyDelta > 0 ? '+' : ''}
+                {analyticsOverview.averageLatencyDelta}%
+              </span>
+            ) : (
+              'N/A'
+            )}
+          </div>
         </div>
         <div className="stat">
           <div className="stat-label">Active API keys</div>

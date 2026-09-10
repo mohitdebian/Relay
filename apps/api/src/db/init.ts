@@ -61,10 +61,14 @@ export async function initDb() {
         id SERIAL PRIMARY KEY,
         api_id INTEGER REFERENCES apis(id) ON DELETE CASCADE,
         api_key_id INTEGER REFERENCES api_keys(id) ON DELETE SET NULL,
+        method VARCHAR(10) NOT NULL DEFAULT 'GET',
+        path VARCHAR(255) NOT NULL DEFAULT '/',
         status_code INTEGER NOT NULL,
         latency_ms INTEGER NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
+      ALTER TABLE api_request_logs ADD COLUMN IF NOT EXISTS method VARCHAR(10) NOT NULL DEFAULT 'GET';
+      ALTER TABLE api_request_logs ADD COLUMN IF NOT EXISTS path VARCHAR(255) NOT NULL DEFAULT '/';
       CREATE INDEX IF NOT EXISTS idx_api_request_logs_api_id ON api_request_logs(api_id);
       CREATE INDEX IF NOT EXISTS idx_api_request_logs_created_at ON api_request_logs(created_at);
 

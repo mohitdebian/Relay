@@ -76,12 +76,15 @@ func updateApiKeyLastUsed(id int) {
 	}
 }
 
-func logRequest(apiId int, apiKeyId int, statusCode int, latencyMs int64) {
+func logRequest(apiId int, apiKeyId int, method string, path string, statusCode int, latencyMs int64) {
+	if path == "" {
+		path = "/"
+	}
 	query := `
-		INSERT INTO api_request_logs (api_id, api_key_id, status_code, latency_ms)
-		VALUES ($1, $2, $3, $4)
+		INSERT INTO api_request_logs (api_id, api_key_id, method, path, status_code, latency_ms)
+		VALUES ($1, $2, $3, $4, $5, $6)
 	`
-	_, err := db.Exec(query, apiId, apiKeyId, statusCode, latencyMs)
+	_, err := db.Exec(query, apiId, apiKeyId, method, path, statusCode, latencyMs)
 	if err != nil {
 		log.Printf("Failed to log request for API %d: %v", apiId, err)
 	}

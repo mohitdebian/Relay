@@ -191,24 +191,81 @@ export default function ApiDetailClient({
                 View all
               </div>
             </div>
-            <div className="panel">
-              <div className="row">
-                <span className="c-secondary">
-                  Endpoints are automatically discovered from traffic.
-                </span>
-              </div>
+            <div className="panel" style={{ padding: '14px 16px' }}>
+              {(!analytics?.endpoints || analytics.endpoints.length === 0) && (
+                <div className="row" style={{ padding: 0 }}>
+                  <span className="c-secondary">
+                    No endpoints discovered from traffic yet.<span className="cursor-blink"></span>
+                  </span>
+                </div>
+              )}
+              {analytics?.endpoints?.slice(0, 3).map((ep: any, i: number) => {
+                const isLast = i === Math.min(analytics.endpoints.length, 3) - 1;
+                return (
+                  <div
+                    key={i}
+                    className="row log-row"
+                    style={{
+                      gridTemplateColumns: '80px 1fr 100px',
+                      padding: '10px 0',
+                      borderBottom: isLast ? 'none' : '1px solid var(--border)',
+                    }}
+                  >
+                    <span className={`method ${ep.method.toLowerCase()}`}>{ep.method}</span>
+                    <span
+                      className="mono"
+                      style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+                    >
+                      {ep.path}
+                    </span>
+                    <span className="c-secondary c-right mono">{ep.requests} reqs</span>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </>
       )}
 
       {activeTab === 'endpoints' && (
-        <div className="panel">
-          <div className="row">
-            <span className="c-secondary">
-              Endpoints are automatically discovered from traffic.
-            </span>
-          </div>
+        <div className="panel" style={{ padding: '14px 16px' }}>
+          {(!analytics?.endpoints || analytics.endpoints.length === 0) && (
+            <div className="row" style={{ padding: 0 }}>
+              <span className="c-secondary">
+                No endpoints discovered from traffic yet.<span className="cursor-blink"></span>
+              </span>
+            </div>
+          )}
+          {analytics?.endpoints?.map((ep: any, i: number) => {
+            const isLast = i === analytics.endpoints.length - 1;
+            return (
+              <div
+                key={i}
+                className="row log-row"
+                style={{
+                  gridTemplateColumns: '80px 1fr 100px 100px 100px',
+                  padding: '10px 0',
+                  borderBottom: isLast ? 'none' : '1px solid var(--border)',
+                }}
+              >
+                <span className={`method ${ep.method.toLowerCase()}`}>{ep.method}</span>
+                <span
+                  className="mono"
+                  style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+                >
+                  {ep.path}
+                </span>
+                <span className="c-secondary c-right mono">{ep.requests} reqs</span>
+                <span
+                  className={`c-right mono`}
+                  style={{ color: ep.errors > 0 ? 'var(--red)' : 'var(--text-secondary)' }}
+                >
+                  {ep.errors} errs
+                </span>
+                <span className="c-secondary c-right mono">{ep.latency}</span>
+              </div>
+            );
+          })}
         </div>
       )}
 

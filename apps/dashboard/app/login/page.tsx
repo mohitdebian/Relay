@@ -121,8 +121,8 @@ function LoginContent() {
                 <path d="M8 4.5v4M8 11v.5" />
               </svg>
               <span>
-                An account with this email already exists. Please sign in with
-                your email and password instead.
+                An account with this email already exists. Please sign in with your email and
+                password instead.
               </span>
             </div>
           )}

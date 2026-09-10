@@ -39,7 +39,7 @@ export default async function ApisPage() {
             key={api.id}
             href={`/apis/${api.id}`}
             className="row clickable"
-            style={{ gridTemplateColumns: '1.6fr .8fr .8fr .8fr .7fr' }}
+            style={{ gridTemplateColumns: '1fr auto' }}
           >
             <div>
               <div className="c-strong">{api.name}</div>
@@ -49,18 +49,6 @@ export default async function ApisPage() {
                   {api.environment}
                 </span>
               </div>
-            </div>
-            <div>
-              <div className="c-label">REQUESTS</div>
-              <div className="c-mono">---</div>
-            </div>
-            <div>
-              <div className="c-label">LATENCY</div>
-              <div className="c-mono">---</div>
-            </div>
-            <div>
-              <div className="c-label">UPTIME</div>
-              <div className="c-mono">---</div>
             </div>
             <div className={`status ${api.status || 'active'} c-right`}>
               <span

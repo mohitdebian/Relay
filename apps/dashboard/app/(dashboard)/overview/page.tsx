@@ -9,16 +9,21 @@ import { NewApiButton } from '@/app/components/modals/NewApiModal';
 export default async function OverviewPage() {
   const data_apis = await fetchAPI('/apis').catch((e) => {
     if (isRedirectError(e)) throw e;
-    return { apis: [], debugError: e.message };
+    return { apis: [] };
   });
   const apis = data_apis?.apis || [];
-  const debugError = (data_apis as any)?.debugError;
 
   const data_logs = await getLogsAction().catch((e) => {
     if (isRedirectError(e)) throw e;
     return { logs: [] };
   });
   const logs = data_logs?.logs || [];
+
+  const data_analytics = await fetchAPI('/analytics/overview').catch((e) => {
+    if (isRedirectError(e)) throw e;
+    return { overview: null };
+  });
+  const analyticsOverview = data_analytics?.overview;
 
   let allKeys: any[] = [];
   if (apis.length > 0) {
@@ -44,16 +49,6 @@ export default async function OverviewPage() {
             <Typewriter text="OVERVIEW" />
           </div>
           <div className="page-sub">{apis.length} APIs · last updated just now</div>
-          {debugError && (
-            <div style={{ color: 'red', marginTop: '10px' }}>
-              DEBUG ERROR: {debugError}
-            </div>
-          )}
-          {(data_apis as any)?.debug && (
-            <pre style={{ fontSize: '10px', color: '#999', marginTop: '10px' }}>
-              {JSON.stringify((data_apis as any).debug, null, 2)}
-            </pre>
-          )}
         </div>
         <NewApiButton />
       </div>
@@ -61,17 +56,29 @@ export default async function OverviewPage() {
       <div className="stat-row">
         <div className="stat">
           <div className="stat-label">Requests (24h)</div>
-          <div className="stat-value">---</div>
+          <div className="stat-value">
+            {analyticsOverview ? analyticsOverview.totalRequests : '---'}
+          </div>
           <div className="stat-delta">N/A</div>
         </div>
         <div className="stat">
           <div className="stat-label">Success rate</div>
-          <div className="stat-value green">---</div>
+          <div className="stat-value green">
+            {analyticsOverview && analyticsOverview.totalRequests > 0
+              ? Math.round(
+                  ((analyticsOverview.totalRequests - analyticsOverview.totalErrors) /
+                    analyticsOverview.totalRequests) *
+                    100
+                ) + '%'
+              : '---'}
+          </div>
           <div className="stat-delta">N/A</div>
         </div>
         <div className="stat">
           <div className="stat-label">p95 latency</div>
-          <div className="stat-value">---</div>
+          <div className="stat-value">
+            {analyticsOverview ? analyticsOverview.averageLatencyMs + 'ms' : '---'}
+          </div>
           <div className="stat-delta">N/A</div>
         </div>
         <div className="stat">
@@ -99,7 +106,7 @@ export default async function OverviewPage() {
               key={api.id}
               href={`/apis/${api.id}`}
               className="row clickable"
-              style={{ gridTemplateColumns: '1.6fr .9fr .9fr .7fr' }}
+              style={{ gridTemplateColumns: '1fr auto' }}
             >
               <div>
                 <div className="c-strong">{api.name}</div>
@@ -109,14 +116,6 @@ export default async function OverviewPage() {
                     {api.environment}
                   </span>
                 </div>
-              </div>
-              <div>
-                <div className="c-label">REQUESTS</div>
-                <div className="c-mono">---</div>
-              </div>
-              <div>
-                <div className="c-label">UPTIME</div>
-                <div className="c-mono">---</div>
               </div>
               <div className={`status ${api.status || 'active'} c-right`}>
                 <span

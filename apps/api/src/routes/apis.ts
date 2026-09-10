@@ -104,15 +104,7 @@ router.get('/', async (req: AuthRequest, res: Response) => {
     query += ` ORDER BY a.created_at DESC`;
 
     const result = await pool.query(query, params);
-    res.json({
-      apis: result.rows,
-      debug: {
-        userId,
-        workspaceId,
-        query,
-        params,
-      },
-    });
+    res.json({ apis: result.rows });
   } catch (error) {
     console.error('Error fetching APIs:', error);
     res.status(500).json({ error: 'Internal server error' });

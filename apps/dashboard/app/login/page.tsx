@@ -10,15 +10,19 @@ function LoginContent() {
   const [mode, setMode] = useState<'signin' | 'signup'>('signin');
   const [error, setError] = useState('');
   const [isPending, setIsPending] = useState(false);
-
-  const urlError = searchParams.get('error');
-  const isAccountNotLinked = urlError === 'account_not_linked';
+  const [showNotice, setShowNotice] = useState(false);
 
   useEffect(() => {
-    if (isAccountNotLinked) {
+    const urlError = searchParams.get('error');
+    if (urlError === 'account_not_linked') {
       setMode('signup');
+      setShowNotice(true);
+      // Strip the error param from the URL so retries don't loop
+      const url = new URL(window.location.href);
+      url.searchParams.delete('error');
+      window.history.replaceState({}, '', url.pathname);
     }
-  }, [isAccountNotLinked]);
+  }, [searchParams]);
 
   const isSignup = mode === 'signup';
 
@@ -103,7 +107,7 @@ function LoginContent() {
             </div>
           </div>
 
-          {isAccountNotLinked && (
+          {showNotice && (
             <div className="auth-notice">
               <svg
                 width="14"
@@ -116,7 +120,10 @@ function LoginContent() {
                 <circle cx="8" cy="8" r="7" />
                 <path d="M8 4.5v4M8 11v.5" />
               </svg>
-              <span>No account found for that login. Create one below to get started.</span>
+              <span>
+                No account found for that login. Create one below, or sign in with your email and
+                password.
+              </span>
             </div>
           )}
 

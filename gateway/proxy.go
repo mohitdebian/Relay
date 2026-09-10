@@ -217,5 +217,9 @@ func proxyHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Fire and forget logging the request
 	latencyMs := time.Since(start).Milliseconds()
-	go logRequest(api.ID, apiKeyInfo.ID, r.Method, restOfPath, trackingWriter.statusCode, latencyMs)
+	loggedPath := restOfPath
+	if loggedPath == "" {
+		loggedPath = "/"
+	}
+	go logRequest(api.ID, apiKeyInfo.ID, r.Method, loggedPath, trackingWriter.statusCode, latencyMs)
 }

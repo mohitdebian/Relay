@@ -59,11 +59,11 @@ export default async function ApisPage() {
               <div className="c-label">UPTIME</div>
               <div className="c-mono">---</div>
             </div>
-            <div className={`status ${api.status || 'healthy'} c-right`}>
+            <div className={`status ${api.status || 'active'} c-right`}>
               <span
-                className={`dot ${(api.status || 'healthy') === 'healthy' ? 'green' : 'yellow'}`}
+                className={`dot ${(api.status || 'active') === 'active' ? 'green' : 'yellow'}`}
               ></span>
-              {(api.status || 'healthy') === 'healthy' ? 'Healthy' : 'Degraded'}
+              {(api.status || 'active') === 'active' ? 'Healthy' : 'Degraded'}
             </div>
           </Link>
         ))}

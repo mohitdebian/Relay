@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RELAY_ — API infrastructure for teams shipping fast</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #F7F7F5;
+    --surface: #FFFFFF;
+    --border: #E5E5E2;
+    --border-strong: #D8D8D4;
+    --text: #111111;
+    --text-secondary: #737373;
+    --text-tertiary: #A3A3A0;
+    --green: #16A34A;
+    --green-dim: #ECFAF0;
+    --red: #DC2626;
+    --yellow: #C88A04;
+    --blue: #1D6FCE;
+    --radius: 6px;
+    --maxw: 1120px;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ background:var(--bg); color:var(--text); font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif; font-size:14px; line-height:1.55; -webkit-font-smoothing:antialiased; }
+  a{ color:inherit; text-decoration:none; }
+  button{ font-family:inherit; }
+  ul{ list-style:none; }
+  .mono{ font-family:'JetBrains Mono', ui-monospace, monospace; }
+  .pixel{ font-family:'Silkscreen','JetBrains Mono',monospace; }
+  img,svg{ display:block; }
+  .wrap{ max-width:var(--maxw); margin:0 auto; padding:0 32px; }
+  .kicker{ font-family:'Silkscreen',monospace; font-size:10.5px; font-weight:700; letter-spacing:.06em; color:var(--text-tertiary); margin-bottom:10px; }
+
+  /* ---- shared component styles, identical to the product ---- */
+  .btn{ height:36px; padding:0 16px; border-radius:var(--radius); font-size:13px; font-weight:500; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:6px; border:1px solid transparent; background:none; }
+  .btn-primary{ background:var(--text); color:#fff; }
+  .btn-primary:hover{ background:#2b2b2b; }
+  .btn-secondary{ background:var(--surface); border-color:var(--border); color:var(--text); }
+  .btn-secondary:hover{ border-color:var(--border-strong); }
+  .btn-lg{ height:42px; padding:0 20px; font-size:13.5px; }
+
+  .panel{ border:1px solid var(--border); border-radius:var(--radius); background:var(--surface); overflow:hidden; }
+  .row{ display:grid; align-items:center; padding:12px 16px; border-bottom:1px solid var(--border); }
+  .row:last-child{ border-bottom:none; }
+  .row-head{ font-size:10.5px; color:var(--text-tertiary); font-weight:600; letter-spacing:.03em; padding-top:9px; padding-bottom:9px; }
+  .c-strong{ font-weight:500; font-size:13px; }
+  .c-secondary{ color:var(--text-secondary); font-size:11.5px; }
+  .c-mono{ font-family:'JetBrains Mono',monospace; font-size:12.5px; }
+  .c-right{ text-align:right; justify-self:end; }
+
+  .status{ display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:500; }
+  .status.healthy{ color:var(--green); }
+  .dot{ width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+  .dot.green{ background:var(--green); }
+
+  .tag{ font-size:10.5px; padding:1px 6px; border-radius:4px; border:1px solid var(--border); color:var(--text-secondary); }
+
+  .stat-row{ display:flex; border:1px solid var(--border); border-radius:var(--radius); background:var(--surface); }
+  .stat{ flex:1; padding:16px 20px; border-right:1px solid var(--border); }
+  .stat:last-child{ border-right:none; }
+  .stat-label{ font-size:11.5px; color:var(--text-secondary); margin-bottom:6px; }
+  .stat-value{ font-family:'JetBrains Mono',monospace; font-size:21px; font-weight:500; letter-spacing:-.01em; }
+
+  .code-block{ background:#111111; color:#EDEDED; border-radius:var(--radius); padding:18px 20px; font-family:'JetBrains Mono',monospace; font-size:12.5px; line-height:1.85; overflow-x:auto; }
+  .code-block .cm{ color:#6B6B6B; }
+  .code-block .cs{ color:#8FD19E; }
+  .code-block .ck{ color:#7FB6E8; }
+
+  /* ---- nav ---- */
+  .nav{ height:52px; border-bottom:1px solid var(--border); position:sticky; top:0; background:var(--bg); z-index:20; }
+  .nav .wrap{ height:100%; display:flex; align-items:center; justify-content:space-between; }
+  .nav-left{ display:flex; align-items:center; gap:34px; }
+  .logo{ font-family:'Silkscreen',monospace; font-weight:700; font-size:15px; }
+  .nav-links{ display:flex; gap:24px; }
+  .nav-links a{ font-size:13px; color:var(--text-secondary); }
+  .nav-links a:hover{ color:var(--text); }
+  .nav-right{ display:flex; align-items:center; gap:10px; }
+  .nav-right .btn-secondary{ height:32px; padding:0 12px; font-size:12.5px; }
+  .nav-right .btn-primary{ height:32px; padding:0 12px; font-size:12.5px; }
+
+  /* ---- hero ---- */
+  .hero{ padding:64px 0 56px; border-bottom:1px solid var(--border); }
+  .hero-grid{ display:grid; grid-template-columns:1fr; gap:40px; }
+  .hero-copy{ max-width:640px; }
+  .hero h1{ font-size:42px; font-weight:600; letter-spacing:-.02em; line-height:1.15; margin-bottom:16px; }
+  .hero p.lede{ font-size:15.5px; color:var(--text-secondary); max-width:520px; margin-bottom:26px; }
+  .hero-ctas{ display:flex; gap:10px; margin-bottom:14px; }
+  .hero-meta{ font-size:12px; color:var(--text-tertiary); }
+
+  .mock-frame{ margin-top:44px; }
+  .mock-topbar{ height:38px; border:1px solid var(--border); border-bottom:none; border-radius:6px 6px 0 0; background:var(--surface); display:flex; align-items:center; padding:0 14px; gap:8px; }
+  .mock-topbar .mono{ font-size:11px; color:var(--text-tertiary); }
+  .mock-body{ border:1px solid var(--border); border-radius:0 0 6px 6px; background:var(--surface); padding:20px; }
+  .mock-body .stat-row{ margin-bottom:16px; }
+  .mock-body .stat{ padding:12px 16px; }
+  .mock-body .stat-value{ font-size:17px; }
+  .mock-body .row{ grid-template-columns:1.4fr .8fr .8fr .7fr; padding:11px 14px; }
+
+  /* ---- logos ---- */
+  .logos{ padding:28px 0; border-bottom:1px solid var(--border); }
+  .logos .kicker{ text-align:left; margin-bottom:18px; }
+  .logo-strip{ display:flex; flex-wrap:wrap; gap:36px; align-items:center; }
+  .logo-strip span{ font-size:15px; font-weight:600; color:var(--text-tertiary); letter-spacing:-.01em; }
+
+  /* ---- section shell ---- */
+  section.block{ padding:56px 0; border-bottom:1px solid var(--border); }
+  .block-head{ margin-bottom:28px; max-width:560px; }
+  .block-head h2{ font-size:24px; font-weight:600; letter-spacing:-.01em; margin-bottom:8px; }
+  .block-head p{ font-size:13.5px; color:var(--text-secondary); }
+
+  /* ---- stats section ---- */
+  .stats-section .stat-value{ font-size:24px; }
+
+  /* ---- features ---- */
+  .feature-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  .feature-panel{ padding:20px; }
+  .feature-panel .f-title{ font-size:14.5px; font-weight:600; margin-bottom:8px; }
+  .feature-panel .f-desc{ font-size:12.5px; color:var(--text-secondary); margin-bottom:14px; }
+  .feature-panel ul{ display:flex; flex-direction:column; gap:6px; }
+  .feature-panel li{ font-size:12px; color:var(--text-secondary); display:flex; gap:8px; }
+  .feature-panel li .m{ color:var(--green); font-family:'JetBrains Mono',monospace; }
+
+  /* ---- code section ---- */
+  .code-grid{ display:grid; grid-template-columns:1.1fr 1fr; gap:40px; align-items:center; }
+  .code-points{ display:flex; flex-direction:column; gap:16px; }
+  .code-point .cp-title{ font-size:13.5px; font-weight:600; margin-bottom:4px; }
+  .code-point .cp-desc{ font-size:12.5px; color:var(--text-secondary); }
+
+  /* ---- pricing ---- */
+  .pricing-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  .plan{ padding:22px; display:flex; flex-direction:column; }
+  .plan.highlight{ border-color:var(--text); }
+  .plan-name-row{ display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
+  .plan-name{ font-size:14.5px; font-weight:600; }
+  .plan-price{ font-family:'JetBrains Mono',monospace; font-size:26px; font-weight:500; margin:10px 0 4px; }
+  .plan-price span{ font-size:12px; color:var(--text-secondary); font-weight:400; font-family:'Inter',sans-serif; }
+  .plan-desc{ font-size:12px; color:var(--text-secondary); margin-bottom:18px; }
+  .plan ul{ display:flex; flex-direction:column; gap:9px; margin-bottom:20px; flex:1; }
+  .plan li{ font-size:12.5px; color:var(--text); display:flex; gap:8px; }
+  .plan li .m{ color:var(--green); font-family:'JetBrains Mono',monospace; flex-shrink:0; }
+
+  /* ---- closing cta ---- */
+  .closing{ padding:60px 0; text-align:left; border-bottom:1px solid var(--border); }
+  .closing-row{ display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:20px; }
+  .closing h2{ font-size:26px; font-weight:600; letter-spacing:-.01em; }
+  .closing p{ font-size:13px; color:var(--text-secondary); margin-top:6px; }
+  .closing-ctas{ display:flex; gap:10px; align-items:center; }
+
+  /* ---- footer ---- */
+  footer{ padding:44px 0 30px; }
+  .footer-grid{ display:grid; grid-template-columns:1.4fr repeat(4,1fr); gap:24px; margin-bottom:36px; }
+  .footer-brand .logo{ margin-bottom:10px; }
+  .footer-brand p{ font-size:12px; color:var(--text-secondary); max-width:220px; }
+  .footer-col-label{ font-size:10.5px; font-weight:600; color:var(--text-tertiary); letter-spacing:.06em; margin-bottom:12px; }
+  .footer-col a{ display:block; font-size:12.5px; color:var(--text-secondary); margin-bottom:9px; }
+  .footer-col a:hover{ color:var(--text); }
+  .footer-bottom{ display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; padding-top:20px; border-top:1px solid var(--border); font-size:12px; color:var(--text-tertiary); }
+  .footer-status{ display:flex; align-items:center; gap:6px; }
+
+  /* ---- responsive ---- */
+  @media (max-width:900px){
+    .wrap{ padding:0 20px; }
+    .hero{ padding:44px 0 40px; }
+    .hero h1{ font-size:32px; }
+    .nav-links{ display:none; }
+    .mock-body .row{ grid-template-columns:1fr; row-gap:4px; }
+    .mock-body .row-head{ display:none; }
+    .feature-grid{ grid-template-columns:1fr; }
+    .code-grid{ grid-template-columns:1fr; }
+    .pricing-grid{ grid-template-columns:1fr; }
+    .footer-grid{ grid-template-columns:1fr 1fr; }
+    .closing-row{ flex-direction:column; align-items:flex-start; }
+  }
+  @media (max-width:480px){
+    .footer-grid{ grid-template-columns:1fr; }
+    .hero-ctas{ flex-direction:column; align-items:stretch; }
+    .stat-row{ flex-wrap:wrap; }
+    .stat{ flex:1 1 50%; border-bottom:1px solid var(--border); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav class="nav">
+  <div class="wrap">
+    <div class="nav-left">
+      <span class="logo">RELAY_</span>
+      <div class="nav-links">
+        <a href="#features">Product</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#">Docs</a>
+        <a href="#">Changelog</a>
+      </div>
+    </div>
+    <div class="nav-right">
+      <a class="btn btn-secondary" href="#">Sign in</a>
+      <a class="btn btn-primary" href="#">Get started</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <div class="kicker">API INFRASTRUCTURE</div>
+        <h1>Route, secure, and monitor every API your team ships.</h1>
+        <p class="lede">One dashboard for gateways, keys, rate limits, and traffic — so your team spends less time gluing infrastructure together and more time shipping.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary btn-lg" href="#">Get started →</a>
+          <a class="btn btn-secondary btn-lg" href="#">View docs</a>
+        </div>
+        <div class="hero-meta">No credit card required · free up to 100K requests/mo</div>
+      </div>
+    </div>
+
+    <div class="mock-frame">
+      <div class="mock-topbar">
+        <span class="mono">relay.sh/acme-workspace/overview</span>
+      </div>
+      <div class="mock-body">
+        <div class="stat-row">
+          <div class="stat"><div class="stat-label">Requests (24h)</div><div class="stat-value">48.2K</div></div>
+          <div class="stat"><div class="stat-label">Success rate</div><div class="stat-value" style="color:var(--green)">99.82%</div></div>
+          <div class="stat"><div class="stat-label">p95 latency</div><div class="stat-value">42ms</div></div>
+          <div class="stat"><div class="stat-label">Active API keys</div><div class="stat-value">11</div></div>
+        </div>
+        <div class="panel">
+          <div class="row row-head" style="grid-template-columns:1.4fr .8fr .8fr .7fr;">
+            <div>API</div><div>Env</div><div>Requests</div><div class="c-right">Status</div>
+          </div>
+          <div class="row" style="grid-template-columns:1.4fr .8fr .8fr .7fr;">
+            <div class="c-strong">payments-api</div><div><span class="tag">Production</span></div><div class="c-mono c-secondary">21.4K</div><div class="c-right"><span class="status healthy"><span class="dot green"></span>Healthy</span></div>
+          </div>
+          <div class="row" style="grid-template-columns:1.4fr .8fr .8fr .7fr;">
+            <div class="c-strong">notifications-api</div><div><span class="tag">Production</span></div><div class="c-mono c-secondary">14.9K</div><div class="c-right"><span class="status healthy"><span class="dot green"></span>Healthy</span></div>
+          </div>
+          <div class="row" style="grid-template-columns:1.4fr .8fr .8fr .7fr;">
+            <div class="c-strong">internal-reporting</div><div><span class="tag">Staging</span></div><div class="c-mono c-secondary">6.1K</div><div class="c-right"><span class="status healthy"><span class="dot green"></span>Healthy</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LOGOS ============ -->
+<section class="logos">
+  <div class="wrap">
+    <div class="kicker">USED BY ENGINEERING TEAMS AT</div>
+    <div class="logo-strip">
+      <span>NORTHWIND</span><span>VOLT</span><span>ARCHIVE&nbsp;CO</span><span>LEDGERLY</span><span>PING</span><span>ORBITAL</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PLATFORM STATS ============ -->
+<section class="block stats-section">
+  <div class="wrap">
+    <div class="stat-row">
+      <div class="stat"><div class="stat-label">Requests routed / month</div><div class="stat-value">4.8B</div></div>
+      <div class="stat"><div class="stat-label">Platform uptime</div><div class="stat-value" style="color:var(--green)">99.99%</div></div>
+      <div class="stat"><div class="stat-label">Median added latency</div><div class="stat-value">6ms</div></div>
+      <div class="stat"><div class="stat-label">Teams on Relay</div><div class="stat-value">1,240</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FEATURES ============ -->
+<section class="block" id="features">
+  <div class="wrap">
+    <div class="block-head">
+      <div class="kicker">WHAT RELAY_ DOES</div>
+      <h2>Everything between your service and the internet.</h2>
+      <p>Three things you need for any production API, built to work together instead of bolted on separately.</p>
+    </div>
+    <div class="feature-grid">
+      <div class="panel feature-panel">
+        <div class="f-title">Routing &amp; gateways</div>
+        <div class="f-desc">Put every API behind one edge — custom domains, versioned endpoints, and zero-downtime cutovers.</div>
+        <ul>
+          <li><span class="m">›</span>Custom domains with managed SSL</li>
+          <li><span class="m">›</span>Per-endpoint rate limits</li>
+          <li><span class="m">›</span>Blue/green deploys</li>
+        </ul>
+      </div>
+      <div class="panel feature-panel">
+        <div class="f-title">Auth &amp; policy</div>
+        <div class="f-desc">Scope keys per environment, enforce CORS and IP allowlists, and roll a leaked key without a deploy.</div>
+        <ul>
+          <li><span class="m">›</span>Environment-scoped API keys</li>
+          <li><span class="m">›</span>CORS &amp; IP allowlist policies</li>
+          <li><span class="m">›</span>Instant key rotation</li>
+        </ul>
+      </div>
+      <div class="panel feature-panel">
+        <div class="f-title">Observability</div>
+        <div class="f-desc">Every request logged with full headers, body, and timing — searchable the moment it happens.</div>
+        <ul>
+          <li><span class="m">›</span>Full request/response logs</li>
+          <li><span class="m">›</span>Per-endpoint latency &amp; error rate</li>
+          <li><span class="m">›</span>Threshold alerts to Slack/webhook</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CODE / BUILT FOR HOW YOU SHIP ============ -->
+<section class="block">
+  <div class="wrap">
+    <div class="block-head">
+      <div class="kicker">BUILT FOR HOW YOU SHIP</div>
+      <h2>One request to get a production-grade endpoint.</h2>
+    </div>
+    <div class="code-grid">
+      <div class="code-block">
+<span class="cm">$</span> curl <span class="ck">https://api.acme.relay.sh/v1/users</span> \
+<span class="cm">    </span>-H <span class="cs">"Authorization: Bearer sk_live_9f2a...c81"</span>
+
+<span class="cm">{</span>
+<span class="cm">  "status":</span> <span class="cs">200</span><span class="cm">,</span>
+<span class="cm">  "latency_ms":</span> <span class="cs">38</span><span class="cm">,</span>
+<span class="cm">  "region":</span> <span class="cs">"iad1"</span><span class="cm">,</span>
+<span class="cm">  "data": [ … ]</span>
+<span class="cm">}</span>
+      </div>
+      <div class="code-points">
+        <div class="code-point">
+          <div class="cp-title">Connect your existing service</div>
+          <div class="cp-desc">Point a route at your origin — no SDK, no code changes on your service.</div>
+        </div>
+        <div class="code-point">
+          <div class="cp-title">Get a scoped key in seconds</div>
+          <div class="cp-desc">Keys are environment-scoped from the start, so staging traffic can never touch production.</div>
+        </div>
+        <div class="code-point">
+          <div class="cp-title">Watch it in the request log</div>
+          <div class="cp-desc">Every call — headers, body, response, latency — searchable the moment it lands.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRICING ============ -->
+<section class="block" id="pricing">
+  <div class="wrap">
+    <div class="block-head">
+      <div class="kicker">PRICING</div>
+      <h2>Start free. Pay for usage as you grow.</h2>
+    </div>
+    <div class="pricing-grid">
+      <div class="panel plan">
+        <div class="plan-name-row"><div class="plan-name">Free</div></div>
+        <div class="plan-price">$0<span> /mo</span></div>
+        <div class="plan-desc">For side projects and evaluating Relay.</div>
+        <ul>
+          <li><span class="m">✓</span>100K requests / month</li>
+          <li><span class="m">✓</span>1 environment</li>
+          <li><span class="m">✓</span>7-day log retention</li>
+          <li><span class="m">✓</span>Community support</li>
+        </ul>
+        <a class="btn btn-secondary" href="#">Get started</a>
+      </div>
+      <div class="panel plan highlight">
+        <div class="plan-name-row"><div class="plan-name">Team</div><span class="tag">Most teams</span></div>
+        <div class="plan-price">$49<span> /mo</span></div>
+        <div class="plan-desc">For teams running production traffic.</div>
+        <ul>
+          <li><span class="m">✓</span>5M requests / month</li>
+          <li><span class="m">✓</span>Unlimited environments</li>
+          <li><span class="m">✓</span>90-day log retention</li>
+          <li><span class="m">✓</span>Custom domains</li>
+          <li><span class="m">✓</span>Email + Slack support</li>
+        </ul>
+        <a class="btn btn-primary" href="#">Get started</a>
+      </div>
+      <div class="panel plan">
+        <div class="plan-name-row"><div class="plan-name">Enterprise</div></div>
+        <div class="plan-price mono" style="font-size:18px;">Custom</div>
+        <div class="plan-desc">For platforms with compliance and scale needs.</div>
+        <ul>
+          <li><span class="m">✓</span>Unlimited requests</li>
+          <li><span class="m">✓</span>SSO &amp; audit logs</li>
+          <li><span class="m">✓</span>1-year log retention</li>
+          <li><span class="m">✓</span>Dedicated support</li>
+        </ul>
+        <a class="btn btn-secondary" href="#">Talk to sales</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CLOSING CTA ============ -->
+<section class="closing">
+  <div class="wrap">
+    <div class="closing-row">
+      <div>
+        <h2>Ready to ship faster?</h2>
+        <p>Set up your first API route in under five minutes.</p>
+      </div>
+      <div class="closing-ctas">
+        <a class="btn btn-primary btn-lg" href="#">Get started →</a>
+        <a class="btn btn-secondary btn-lg" href="#">View docs</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">RELAY_</div>
+        <p>API infrastructure for teams shipping fast — routing, auth, and observability in one place.</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-label">PRODUCT</div>
+        <a href="#">Overview</a>
+        <a href="#">API Keys</a>
+        <a href="#">Analytics</a>
+        <a href="#">Pricing</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-label">DEVELOPERS</div>
+        <a href="#">Documentation</a>
+        <a href="#">API reference</a>
+        <a href="#">Changelog</a>
+        <a href="#">Status</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-label">COMPANY</div>
+        <a href="#">About</a>
+        <a href="#">Blog</a>
+        <a href="#">Careers</a>
+        <a href="#">Contact</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-label">LEGAL</div>
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Security</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Relay, Inc.</span>
+      <span class="footer-status"><span class="dot green"></span>All systems operational</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

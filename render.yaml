@@ -1,0 +1,33 @@
+services:
+  - type: web
+    name: relay-management-api
+    env: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: ./apps/api
+    envVars:
+      - key: PORT
+        value: 4000
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      # Required for Next.js and Neon Auth IPv4 resolution
+      - key: NODE_OPTIONS
+        value: "--dns-result-order=ipv4first"
+
+  - type: web
+    name: relay-gateway
+    env: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: ./gateway
+    envVars:
+      - key: PORT
+        value: 8080
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: MANAGEMENT_API_URL
+        sync: false

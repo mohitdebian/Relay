@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RELAY_</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #F7F7F5;
+    --surface: #FFFFFF;
+    --border: #E5E5E2;
+    --border-strong: #D8D8D4;
+    --text: #111111;
+    --text-secondary: #737373;
+    --text-tertiary: #A3A3A0;
+    --green: #16A34A;
+    --green-dim: #ECFAF0;
+    --red: #DC2626;
+    --red-dim: #FDECEC;
+    --yellow: #C88A04;
+    --yellow-dim: #FBF3DE;
+    --blue: #1D6FCE;
+    --sidebar-w: 216px;
+    --topbar-h: 52px;
+    --radius: 6px;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ background:var(--bg); color:var(--text); font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif; font-size:13px; line-height:1.5; -webkit-font-smoothing:antialiased; }
+  a{ color:inherit; text-decoration:none; }
+  button{ font-family:inherit; }
+  .mono{ font-family:'JetBrains Mono', ui-monospace, monospace; }
+  .pixel{ font-family:'Silkscreen','JetBrains Mono',monospace; }
+
+  /* ---- shell ---- */
+  .shell{ display:flex; min-height:100vh; }
+  .sidebar{ width:var(--sidebar-w); flex-shrink:0; background:var(--bg); border-right:1px solid var(--border); display:flex; flex-direction:column; position:fixed; top:0; left:0; bottom:0; overflow-y:auto; }
+  .sidebar-brand{ height:var(--topbar-h); display:flex; align-items:center; padding:0 18px; border-bottom:1px solid var(--border); }
+  .sidebar-brand .logo{ font-family:'Silkscreen',monospace; font-weight:700; font-size:15px; }
+  .sidebar-nav{ padding:14px 10px 24px; flex:1; }
+  .nav-group{ margin-bottom:18px; }
+  .nav-group-label{ font-size:10.5px; font-weight:600; color:var(--text-tertiary); letter-spacing:0.06em; padding:0 8px 6px; }
+  .nav-item{ display:flex; align-items:center; height:29px; padding:0 8px; border-radius:var(--radius); color:var(--text-secondary); font-size:13px; cursor:pointer; transition:background .1s ease,color .1s ease; }
+  .nav-item:hover{ background:rgba(0,0,0,.035); color:var(--text); }
+  .nav-item.active{ background:rgba(0,0,0,.05); color:var(--text); font-weight:500; }
+  .sidebar-footer{ padding:12px 18px; border-top:1px solid var(--border); display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text-secondary); }
+  .dot{ width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+  .dot.green{ background:var(--green); } .dot.yellow{ background:var(--yellow); } .dot.red{ background:var(--red); } .dot.grey{ background:var(--text-tertiary); }
+
+  .main-col{ margin-left:var(--sidebar-w); flex:1; min-width:0; display:flex; flex-direction:column; }
+  .topbar{ height:var(--topbar-h); border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; padding:0 20px; position:sticky; top:0; background:var(--bg); z-index:10; }
+  .topbar-search{ display:flex; align-items:center; gap:8px; width:320px; height:30px; padding:0 9px; border:1px solid var(--border); border-radius:var(--radius); background:var(--surface); color:var(--text-tertiary); font-size:12.5px; }
+  .topbar-search .kbd{ margin-left:auto; font-family:'JetBrains Mono',monospace; font-size:10.5px; color:var(--text-tertiary); border:1px solid var(--border); border-radius:4px; padding:1px 5px; background:var(--bg); }
+  .topbar-right{ display:flex; align-items:center; gap:10px; }
+  .env-switcher{ display:flex; align-items:center; gap:7px; height:30px; padding:0 10px; border:1px solid var(--border); border-radius:var(--radius); background:var(--surface); font-size:12.5px; font-weight:500; cursor:pointer; }
+  .env-switcher .chev{ color:var(--text-tertiary); font-size:10px; }
+  .avatar{ width:26px; height:26px; border-radius:50%; background:#1F1F1F; color:#fff; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:600; }
+
+  .page{ padding:28px 32px 64px; max-width:1180px; }
+  .view{ display:none; }
+  .view.visible{ display:block; }
+
+  .breadcrumb{ font-size:12px; color:var(--text-secondary); margin-bottom:8px; cursor:default; }
+  .breadcrumb .crumb-link{ cursor:pointer; }
+  .breadcrumb .crumb-link:hover{ color:var(--text); }
+  .breadcrumb .sep{ margin:0 6px; color:var(--text-tertiary); }
+  .breadcrumb .current{ color:var(--text); font-weight:500; }
+
+  .page-head{ display:flex; align-items:baseline; justify-content:space-between; margin-bottom:22px; }
+  .page-title{ font-family:'Silkscreen',monospace; font-size:20px; font-weight:700; display:flex; align-items:center; gap:12px; }
+  .page-sub{ color:var(--text-secondary); font-size:12.5px; margin-top:4px; }
+
+  .btn{ height:30px; padding:0 12px; border-radius:var(--radius); font-size:12.5px; font-weight:500; cursor:pointer; display:inline-flex; align-items:center; gap:6px; border:1px solid transparent; background:none; }
+  .btn-primary{ background:var(--text); color:#fff; }
+  .btn-primary:hover{ background:#2b2b2b; }
+  .btn-secondary{ background:var(--surface); border-color:var(--border); color:var(--text); }
+  .btn-secondary:hover{ border-color:var(--border-strong); }
+  .btn-danger{ background:var(--surface); border-color:var(--red-dim); color:var(--red); }
+  .btn-danger:hover{ background:var(--red-dim); }
+
+  .stat-row{ display:flex; border:1px solid var(--border); border-radius:var(--radius); background:var(--surface); margin-bottom:30px; }
+  .stat{ flex:1; padding:14px 18px; border-right:1px solid var(--border); }
+  .stat:last-child{ border-right:none; }
+  .stat-label{ font-size:11.5px; color:var(--text-secondary); margin-bottom:6px; }
+  .stat-value{ font-family:'JetBrains Mono',monospace; font-size:19px; font-weight:500; letter-spacing:-.01em; }
+  .stat-value.green{ color:var(--green); }
+  .stat-delta{ font-size:11px; color:var(--text-tertiary); margin-top:3px; }
+
+  .section{ margin-bottom:34px; }
+  .section-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+  .section-title{ font-size:13px; font-weight:600; }
+  .section-link{ font-size:12px; color:var(--text-secondary); cursor:pointer; }
+  .section-link:hover{ color:var(--text); }
+
+  .panel{ border:1px solid var(--border); border-radius:var(--radius); background:var(--surface); overflow:hidden; }
+  .row{ display:grid; align-items:center; padding:12px 16px; border-bottom:1px solid var(--border); }
+  .row:last-child{ border-bottom:none; }
+  .row-head{ font-size:10.5px; color:var(--text-tertiary); font-weight:600; letter-spacing:.03em; padding-top:9px; padding-bottom:9px; }
+  .row.clickable{ cursor:pointer; transition:background .1s ease; }
+  .row.clickable:hover{ background:rgba(0,0,0,.015); }
+
+  .c-strong{ font-weight:500; font-size:13px; }
+  .c-secondary{ color:var(--text-secondary); font-size:11.5px; }
+  .c-mono{ font-family:'JetBrains Mono',monospace; font-size:12.5px; }
+  .c-right{ text-align:right; justify-self:end; }
+  .c-label{ font-size:10.5px; color:var(--text-tertiary); margin-bottom:2px; }
+
+  .status{ display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:500; }
+  .status.healthy,.status.active,.status.enabled,.status.ok{ color:var(--green); }
+  .status.degraded,.status.pending{ color:var(--yellow); }
+  .status.down,.status.failing,.status.disabled{ color:var(--red); }
+
+  .tag{ font-size:10.5px; padding:1px 6px; border-radius:4px; border:1px solid var(--border); color:var(--text-secondary); }
+  .badge{ font-size:10.5px; padding:2px 7px; border-radius:4px; background:var(--bg); border:1px solid var(--border); color:var(--text-secondary); }
+
+  .tabs{ display:flex; gap:20px; border-bottom:1px solid var(--border); margin-bottom:22px; }
+  .tab{ padding:0 0 10px; font-size:13px; color:var(--text-secondary); cursor:pointer; border-bottom:2px solid transparent; }
+  .tab:hover{ color:var(--text); }
+  .tab.active{ color:var(--text); font-weight:500; border-bottom-color:var(--text); }
+
+  .filter-bar{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; }
+  .filter-chip{ height:28px; padding:0 10px; border:1px solid var(--border); border-radius:6px; font-size:12px; color:var(--text-secondary); display:inline-flex; align-items:center; gap:6px; cursor:pointer; background:var(--surface); }
+  .filter-chip:hover{ border-color:var(--border-strong); color:var(--text); }
+  .filter-chip .chev{ color:var(--text-tertiary); font-size:9px; }
+
+  .bars{ display:flex; align-items:flex-end; gap:3px; height:64px; padding:8px 16px 0; }
+  .bar{ flex:1; background:var(--border-strong); border-radius:2px 2px 0 0; }
+  .bar.peak{ background:var(--green); }
+  .bars-axis{ display:flex; justify-content:space-between; padding:6px 16px 12px; font-size:10.5px; color:var(--text-tertiary); border-bottom:1px solid var(--border); }
+
+  .log-row{ display:grid; grid-template-columns:70px 52px 1fr 44px 56px; align-items:center; gap:10px; }
+  .method{ font-weight:600; font-size:11px; }
+  .method.get{ color:var(--blue); } .method.post{ color:var(--green); } .method.delete{ color:var(--red); } .method.put{ color:var(--yellow); }
+
+  .field{ margin-bottom:16px; max-width:420px; }
+  .field label{ display:block; font-size:12px; font-weight:500; margin-bottom:6px; }
+  .field .hint{ font-size:11.5px; color:var(--text-tertiary); margin-top:5px; }
+  .field input, .field select{ width:100%; height:32px; border:1px solid var(--border); border-radius:var(--radius); background:var(--surface); padding:0 10px; font-size:12.5px; font-family:inherit; color:var(--text); }
+  .field input:focus, .field select:focus{ outline:none; border-color:var(--border-strong); }
+
+  .plan-card{ display:flex; justify-content:space-between; align-items:center; padding:18px; margin-bottom:24px; }
+  .plan-name{ font-size:15px; font-weight:600; }
+  .plan-detail{ font-size:12px; color:var(--text-secondary); margin-top:3px; }
+  .usage-bar-track{ height:6px; border-radius:3px; background:var(--bg); border:1px solid var(--border); overflow:hidden; margin-top:8px; width:220px; }
+  .usage-bar-fill{ height:100%; background:var(--green); }
+
+  .drawer-backdrop{ position:fixed; inset:0; background:rgba(0,0,0,0); pointer-events:none; transition:background .15s ease; z-index:30; }
+  .drawer-backdrop.open{ background:rgba(0,0,0,.25); pointer-events:auto; }
+  .drawer{ position:fixed; top:0; right:-440px; width:420px; height:100%; background:var(--surface); border-left:1px solid var(--border); z-index:31; transition:right .18s ease; overflow-y:auto; padding:20px; }
+  .drawer.open{ right:0; }
+  .drawer-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; }
+  .drawer-title{ font-size:14px; font-weight:600; }
+  .drawer-close{ cursor:pointer; color:var(--text-secondary); font-size:18px; line-height:1; }
+  .drawer-section{ margin-bottom:18px; }
+  .drawer-section-title{ font-size:11px; font-weight:600; color:var(--text-tertiary); letter-spacing:.03em; margin-bottom:8px; }
+  .kv{ display:flex; justify-content:space-between; padding:5px 0; font-size:12px; border-bottom:1px solid var(--border); }
+  .kv:last-child{ border-bottom:none; }
+  .kv .k{ color:var(--text-secondary); }
+  .kv .v{ font-family:'JetBrains Mono',monospace; }
+  .code-block{ background:var(--bg); border:1px solid var(--border); border-radius:5px; padding:10px; font-family:'JetBrains Mono',monospace; font-size:11.5px; white-space:pre-wrap; word-break:break-all; }
+
+  /* ---- modal: centered, blocking — for creation/commitment flows (vs. the drawer, which is for inspecting an existing item without blocking) ---- */
+  .modal-backdrop{ position:fixed; inset:0; background:rgba(0,0,0,0); pointer-events:none; transition:background .15s ease; z-index:40; display:flex; align-items:center; justify-content:center; }
+  .modal-backdrop.open{ background:rgba(0,0,0,.25); pointer-events:auto; }
+  .modal{ width:100%; max-width:440px; margin:20px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); opacity:0; transform:translateY(4px) scale(.99); transition:opacity .15s ease, transform .15s ease; }
+  .modal-backdrop.open .modal{ opacity:1; transform:translateY(0) scale(1); }
+  .modal-head{ display:flex; justify-content:space-between; align-items:center; padding:16px 20px; border-bottom:1px solid var(--border); }
+  .modal-title{ font-size:14px; font-weight:600; }
+  .modal-close{ cursor:pointer; color:var(--text-secondary); font-size:18px; line-height:1; }
+  .modal-close:hover{ color:var(--text); }
+  .modal-body{ padding:20px; }
+  .modal-body .field:last-child{ margin-bottom:0; }
+  .modal-body .field{ max-width:none; }
+  .modal-body textarea{ width:100%; height:64px; resize:vertical; border:1px solid var(--border); border-radius:var(--radius); background:var(--surface); padding:8px 10px; font-size:12.5px; font-family:inherit; color:var(--text); }
+  .modal-body textarea:focus{ outline:none; border-color:var(--border-strong); }
+  .modal-foot{ display:flex; justify-content:flex-end; gap:8px; padding:14px 20px; border-top:1px solid var(--border); }
+
+  /* modal step 2: created-API confirmation */
+  .modal-success-line{ display:flex; align-items:center; gap:8px; font-size:13px; font-weight:500; margin-bottom:16px; }
+  .modal-kv-panel{ border:1px solid var(--border); border-radius:var(--radius); background:var(--bg); padding:2px 12px; margin-bottom:14px; }
+  .modal-kv-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:9px 0; border-bottom:1px solid var(--border); }
+  .modal-kv-row:last-child{ border-bottom:none; }
+  .modal-kv-row .k{ font-size:11px; color:var(--text-tertiary); flex-shrink:0; }
+  .modal-kv-row .v{ font-family:'JetBrains Mono',monospace; font-size:12px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .modal-copy-btn{ height:24px; padding:0 8px; font-size:11px; flex-shrink:0; }
+  .modal-warning{ display:flex; gap:8px; font-size:11.5px; color:#8A6416; background:var(--yellow-dim); border:1px solid #EFDFAE; border-radius:var(--radius); padding:9px 10px; line-height:1.5; }
+
+  @media (max-width:900px){
+    .sidebar{ display:none; }
+    .main-col{ margin-left:0; }
+    .stat-row{ flex-wrap:wrap; }
+    .stat{ flex:1 1 50%; border-bottom:1px solid var(--border); }
+    .drawer{ width:100%; right:-100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <aside class="sidebar">
+    <div class="sidebar-brand"><span class="logo">RELAY_</span></div>
+    <nav class="sidebar-nav">
+      <div class="nav-group">
+        <div class="nav-group-label">WORKSPACE</div>
+        <div class="nav-item active" id="nav-overview" onclick="showView('overview',this)">Overview</div>
+        <div class="nav-item" id="nav-apis" onclick="showView('apis',this)">APIs</div>
+        <div class="nav-item" id="nav-endpoints" onclick="showView('endpoints',this)">Endpoints</div>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label">USAGE</div>
+        <div class="nav-item" id="nav-activity" onclick="showView('activity',this)">Activity</div>
+        <div class="nav-item" id="nav-analytics" onclick="showView('analytics',this)">Analytics</div>
+        <div class="nav-item" id="nav-logs" onclick="showView('logs',this)">Logs</div>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label">ACCESS</div>
+        <div class="nav-item" id="nav-keys" onclick="showView('keys',this)">API Keys</div>
+        <div class="nav-item" id="nav-domains" onclick="showView('domains',this)">Domains</div>
+        <div class="nav-item" id="nav-webhooks" onclick="showView('webhooks',this)">Webhooks</div>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label">GOVERNANCE</div>
+        <div class="nav-item" id="nav-policies" onclick="showView('policies',this)">Policies</div>
+        <div class="nav-item" id="nav-ratelimits" onclick="showView('ratelimits',this)">Rate Limits</div>
+        <div class="nav-item" id="nav-members" onclick="showView('members',this)">Members</div>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label">SETTINGS</div>
+        <div class="nav-item" id="nav-general" onclick="showView('general',this)">General</div>
+        <div class="nav-item" id="nav-billing" onclick="showView('billing',this)">Billing</div>
+      </div>
+    </nav>
+    <div class="sidebar-footer"><span class="dot green"></span><span>Production</span></div>
+  </aside>
+
+  <div class="main-col">
+    <header class="topbar">
+      <div class="topbar-search"><span>Search APIs, endpoints, requests…</span><span class="kbd">⌘K</span></div>
+      <div class="topbar-right">
+        <div class="env-switcher"><span class="dot green"></span><span>Production</span><span class="chev">▾</span></div>
+        <div class="avatar">MG</div>
+      </div>
+    </header>
+
+    <main class="page">
+
+      <!-- ============ OVERVIEW ============ -->
+      <div class="view visible" id="view-overview">
+        <div class="page-head">
+          <div><div class="page-title">OVERVIEW</div><div class="page-sub">acme-workspace · 4 APIs · last updated 12s ago</div></div>
+          <button class="btn btn-primary" onclick="openNewApiModal()">+ New API</button>
+        </div>
+
+        <div class="stat-row">
+          <div class="stat"><div class="stat-label">Requests (24h)</div><div class="stat-value">48.2K</div><div class="stat-delta">+6.1% vs prior 24h</div></div>
+          <div class="stat"><div class="stat-label">Success rate</div><div class="stat-value green">99.82%</div><div class="stat-delta">86 errors</div></div>
+          <div class="stat"><div class="stat-label">p95 latency</div><div class="stat-value">42ms</div><div class="stat-delta">−3ms vs prior 24h</div></div>
+          <div class="stat"><div class="stat-label">Active API keys</div><div class="stat-value">11</div><div class="stat-delta">2 used in last hour</div></div>
+        </div>
+
+        <div class="section">
+          <div class="section-head"><div class="section-title">Your APIs</div><div class="section-link" onclick="showView('apis', document.getElementById('nav-apis'))">View all</div></div>
+          <div class="panel" id="overview-api-list"></div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1.5fr 1fr; gap:24px;">
+          <div class="section">
+            <div class="section-head"><div class="section-title">Recent activity</div><div class="section-link" onclick="showView('logs', document.getElementById('nav-logs'))">View logs</div></div>
+            <div class="panel" id="overview-log-list"></div>
+          </div>
+          <div class="section">
+            <div class="section-head"><div class="section-title">API keys</div><div class="section-link" onclick="showView('keys', document.getElementById('nav-keys'))">Manage</div></div>
+            <div class="panel" style="padding:14px 16px;" id="overview-keys"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ APIS LIST ============ -->
+      <div class="view" id="view-apis">
+        <div class="page-head">
+          <div><div class="page-title">APIS</div><div class="page-sub">4 APIs across 3 environments</div></div>
+          <button class="btn btn-primary" onclick="openNewApiModal()">+ New API</button>
+        </div>
+        <div class="filter-bar">
+          <div class="filter-chip">Environment <span class="chev">▾</span></div>
+          <div class="filter-chip">Type <span class="chev">▾</span></div>
+          <div class="filter-chip">Status <span class="chev">▾</span></div>
+        </div>
+        <div class="panel" id="apis-full-list"></div>
+      </div>
+
+      <!-- ============ API DETAIL ============ -->
+      <div class="view" id="view-api-detail">
+        <div class="breadcrumb">
+          <span class="crumb-link" onclick="showView('apis', document.getElementById('nav-apis'))">APIs</span>
+          <span class="sep">/</span>
+          <span class="current" id="api-detail-crumb">User API</span>
+        </div>
+        <div class="page-head">
+          <div>
+            <div class="page-title" id="api-detail-name">User API<span class="tag" style="font-family:'Inter',sans-serif;">v1</span></div>
+            <div class="page-sub" id="api-detail-sub">REST · Production · <span style="color:var(--green); font-weight:500;">Healthy</span></div>
+          </div>
+          <button class="btn btn-secondary">Edit API</button>
+        </div>
+
+        <div class="tabs">
+          <div class="tab active" id="tabbtn-overview" onclick="showTab('overview')">Overview</div>
+          <div class="tab" id="tabbtn-endpoints" onclick="showTab('endpoints')">Endpoints</div>
+          <div class="tab" id="tabbtn-traffic" onclick="showTab('traffic')">Traffic</div>
+          <div class="tab" id="tabbtn-logs" onclick="showTab('logs')">Logs</div>
+          <div class="tab" id="tabbtn-keys" onclick="showTab('keys')">Keys</div>
+          <div class="tab" id="tabbtn-settings" onclick="showTab('settings')">Settings</div>
+        </div>
+
+        <div id="tab-overview" class="api-tab-panel">
+          <div class="stat-row">
+            <div class="stat"><div class="stat-label">Request volume (24h)</div><div class="stat-value" id="detail-stat-requests">12.4K</div></div>
+            <div class="stat"><div class="stat-label">Success rate</div><div class="stat-value green" id="detail-stat-success">99.9%</div></div>
+            <div class="stat"><div class="stat-label">p95 latency</div><div class="stat-value" id="detail-stat-latency">38ms</div></div>
+            <div class="stat"><div class="stat-label">Errors (24h)</div><div class="stat-value" id="detail-stat-errors">9</div></div>
+          </div>
+          <div class="section">
+            <div class="section-head"><div class="section-title">Endpoints</div><div class="section-link" onclick="showTab('endpoints')">View all</div></div>
+            <div class="panel" id="api-detail-endpoints-preview"></div>
+          </div>
+        </div>
+
+        <div id="tab-endpoints" class="api-tab-panel" style="display:none;">
+          <div class="panel" id="api-detail-endpoints-full"></div>
+        </div>
+
+        <div id="tab-traffic" class="api-tab-panel" style="display:none;">
+          <div class="panel" style="margin-bottom:20px;">
+            <div class="bars" id="traffic-bars"></div>
+            <div class="bars-axis"><span>00:00</span><span>06:00</span><span>12:00</span><span>18:00</span><span>24:00</span></div>
+            <div style="display:flex; padding:14px 16px;">
+              <div style="flex:1;"><div class="c-label">REQUESTS</div><div class="c-mono" id="traffic-stat-requests" style="font-size:15px;">12.4K</div></div>
+              <div style="flex:1;"><div class="c-label">ERRORS</div><div class="c-mono" id="traffic-stat-errors" style="font-size:15px; color:var(--red);">9</div></div>
+              <div style="flex:1;"><div class="c-label">AVG LATENCY</div><div class="c-mono" id="traffic-stat-latency" style="font-size:15px;">31ms</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="tab-logs" class="api-tab-panel" style="display:none;">
+          <div class="page-sub" style="margin-bottom:14px;">Showing requests to <span class="c-mono" id="api-detail-logs-label">User API</span> only.</div>
+          <div class="panel" id="api-detail-logs"></div>
+        </div>
+
+        <div id="tab-keys" class="api-tab-panel" style="display:none;">
+          <div class="panel" style="padding:14px 16px;" id="api-detail-keys"></div>
+        </div>
+
+        <div id="tab-settings" class="api-tab-panel" style="display:none;">
+          <div class="field"><label>API name</label><input type="text" id="settings-name" value="User API"></div>
+          <div class="field"><label>Base URL</label><input type="text" id="settings-baseurl" value="https://api.acme.com/v1/users" class="mono"></div>
+          <div class="field"><label>Description</label><input type="text" id="settings-description" value="Handles user accounts, profiles and sessions."></div>
+          <button class="btn btn-primary" style="margin-top:4px;">Save changes</button>
+          <div class="section" style="margin-top:36px;">
+            <div class="section-title" style="color:var(--red); margin-bottom:10px;">Danger zone</div>
+            <div class="panel" style="padding:14px 16px; display:flex; justify-content:space-between; align-items:center;">
+              <div><div class="c-strong">Delete this API</div><div class="c-secondary">Removes all endpoints, keys and logs. This cannot be undone.</div></div>
+              <button class="btn btn-danger">Delete API</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ ENDPOINTS (aggregate) ============ -->
+      <div class="view" id="view-endpoints">
+        <div class="page-head">
+          <div><div class="page-title">ENDPOINTS</div><div class="page-sub">18 endpoints across 4 APIs</div></div>
+        </div>
+        <div class="filter-bar">
+          <div class="filter-chip">API <span class="chev">▾</span></div>
+          <div class="filter-chip">Method <span class="chev">▾</span></div>
+          <div class="filter-chip">Status <span class="chev">▾</span></div>
+        </div>
+        <div class="panel" id="endpoints-agg-list"></div>
+      </div>
+
+      <!-- ============ ACTIVITY ============ -->
+      <div class="view" id="view-activity">
+        <div class="page-head">
+          <div><div class="page-title">ACTIVITY</div><div class="page-sub">Events across your workspace</div></div>
+        </div>
+        <div class="panel" id="activity-list"></div>
+      </div>
+
+      <!-- ============ ANALYTICS ============ -->
+      <div class="view" id="view-analytics">
+        <div class="page-head">
+          <div><div class="page-title">ANALYTICS</div><div class="page-sub">Last 24 hours</div></div>
+        </div>
+        <div class="filter-bar">
+          <div class="filter-chip">API <span class="chev">▾</span></div>
+          <div class="filter-chip">API Key <span class="chev">▾</span></div>
+          <div class="filter-chip">Endpoint <span class="chev">▾</span></div>
+          <div class="filter-chip">Environment <span class="chev">▾</span></div>
+          <div class="filter-chip">Status <span class="chev">▾</span></div>
+          <div class="filter-chip">Last 24h <span class="chev">▾</span></div>
+        </div>
+        <div class="stat-row">
+          <div class="stat"><div class="stat-label">Requests</div><div class="stat-value">48.2K</div></div>
+          <div class="stat"><div class="stat-label">Success</div><div class="stat-value green">99.82%</div></div>
+          <div class="stat"><div class="stat-label">p95 latency</div><div class="stat-value">42ms</div></div>
+          <div class="stat"><div class="stat-label">Usage cost</div><div class="stat-value">$18.42</div></div>
+        </div>
+
+        <div class="section">
+          <div class="section-head"><div class="section-title">By endpoint</div></div>
+          <div class="panel" id="analytics-by-endpoint"></div>
+        </div>
+        <div class="section">
+          <div class="section-head"><div class="section-title">By API key</div></div>
+          <div class="panel" id="analytics-by-key"></div>
+        </div>
+      </div>
+
+      <!-- ============ LOGS ============ -->
+      <div class="view" id="view-logs">
+        <div class="page-head">
+          <div><div class="page-title">LOGS</div><div class="page-sub">Live request log</div></div>
+        </div>
+        <div class="filter-bar">
+          <div class="filter-chip">API <span class="chev">▾</span></div>
+          <div class="filter-chip">Method <span class="chev">▾</span></div>
+          <div class="filter-chip">Status <span class="chev">▾</span></div>
+          <div class="filter-chip">Environment <span class="chev">▾</span></div>
+          <div class="filter-chip">Last hour <span class="chev">▾</span></div>
+        </div>
+        <div class="panel" id="logs-full-list"></div>
+      </div>
+
+      <!-- ============ API KEYS ============ -->
+      <div class="view" id="view-keys">
+        <div class="page-head">
+          <div><div class="page-title">API KEYS</div><div class="page-sub">11 active keys</div></div>
+          <button class="btn btn-primary">+ Create key</button>
+        </div>
+        <div class="section">
+          <div class="section-head"><div class="section-title">Production</div></div>
+          <div class="panel" id="keys-production"></div>
+        </div>
+        <div class="section">
+          <div class="section-head"><div class="section-title">Staging</div></div>
+          <div class="panel" id="keys-staging"></div>
+        </div>
+        <div class="section">
+          <div class="section-head"><div class="section-title">Development</div></div>
+          <div class="panel" id="keys-development"></div>
+        </div>
+      </div>
+
+      <!-- ============ DOMAINS ============ -->
+      <div class="view" id="view-domains">
+        <div class="page-head">
+          <div><div class="page-title">DOMAINS</div><div class="page-sub">3 custom domains</div></div>
+          <button class="btn btn-primary">+ Add domain</button>
+        </div>
+        <div class="panel" id="domains-list"></div>
+      </div>
+
+      <!-- ============ WEBHOOKS ============ -->
+      <div class="view" id="view-webhooks">
+        <div class="page-head">
+          <div><div class="page-title">WEBHOOKS</div><div class="page-sub">2 configured endpoints</div></div>
+          <button class="btn btn-primary">+ Add webhook</button>
+        </div>
+        <div class="panel" id="webhooks-list"></div>
+      </div>
+
+      <!-- ============ POLICIES ============ -->
+      <div class="view" id="view-policies">
+        <div class="page-head">
+          <div><div class="page-title">POLICIES</div><div class="page-sub">Applied across your APIs</div></div>
+          <button class="btn btn-primary">+ New policy</button>
+        </div>
+        <div class="panel" id="policies-list"></div>
+      </div>
+
+      <!-- ============ RATE LIMITS ============ -->
+      <div class="view" id="view-ratelimits">
+        <div class="page-head">
+          <div><div class="page-title">RATE LIMITS</div><div class="page-sub">4 active rules</div></div>
+          <button class="btn btn-primary">+ New rule</button>
+        </div>
+        <div class="panel" id="ratelimits-list"></div>
+      </div>
+
+      <!-- ============ MEMBERS ============ -->
+      <div class="view" id="view-members">
+        <div class="page-head">
+          <div><div class="page-title">MEMBERS</div><div class="page-sub">5 people in acme-workspace</div></div>
+          <button class="btn btn-primary">+ Invite member</button>
+        </div>
+        <div class="panel" id="members-list"></div>
+      </div>
+
+      <!-- ============ GENERAL SETTINGS ============ -->
+      <div class="view" id="view-general">
+        <div class="page-head"><div><div class="page-title">GENERAL</div><div class="page-sub">Workspace settings</div></div></div>
+        <div class="field"><label>Workspace name</label><input type="text" value="Acme Inc."></div>
+        <div class="field"><label>Workspace slug</label><input type="text" value="acme-workspace" class="mono"><div class="hint">relay.dev/acme-workspace</div></div>
+        <div class="field"><label>Default environment</label><select><option>Production</option><option>Staging</option><option>Development</option></select></div>
+        <div class="field"><label>Timezone</label><select><option>UTC</option><option>Asia/Kolkata</option><option>America/New_York</option></select></div>
+        <button class="btn btn-primary" style="margin-top:4px;">Save changes</button>
+        <div class="section" style="margin-top:36px;">
+          <div class="section-title" style="color:var(--red); margin-bottom:10px;">Danger zone</div>
+          <div class="panel" style="padding:14px 16px; display:flex; justify-content:space-between; align-items:center;">
+            <div><div class="c-strong">Delete this workspace</div><div class="c-secondary">Removes all APIs, keys, domains and members permanently.</div></div>
+            <button class="btn btn-danger">Delete workspace</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ BILLING ============ -->
+      <div class="view" id="view-billing">
+        <div class="page-head"><div><div class="page-title">BILLING</div><div class="page-sub">Plan and usage</div></div></div>
+        <div class="panel plan-card">
+          <div>
+            <div class="plan-name">Scale plan</div>
+            <div class="plan-detail">$49/mo · 1M requests included · $0.80 per 10K after</div>
+          </div>
+          <button class="btn btn-secondary">Change plan</button>
+        </div>
+        <div class="section">
+          <div class="section-head"><div class="section-title">Usage this cycle</div><div class="section-link">Sep 1 – Sep 30</div></div>
+          <div class="panel" style="padding:16px;">
+            <div style="display:flex; justify-content:space-between; align-items:baseline;">
+              <div class="c-mono" style="font-size:15px;">612K <span class="c-secondary" style="font-family:'Inter',sans-serif;">/ 1M requests</span></div>
+              <div class="c-secondary">$18.42 overage</div>
+            </div>
+            <div class="usage-bar-track" style="width:100%;"><div class="usage-bar-fill" style="width:61%;"></div></div>
+          </div>
+        </div>
+        <div class="section">
+          <div class="section-head"><div class="section-title">Invoices</div></div>
+          <div class="panel" id="invoices-list"></div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<div class="drawer-backdrop" id="drawer-backdrop" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-head">
+    <div class="drawer-title mono">GET /api/v1/products</div>
+    <div class="drawer-close" onclick="closeDrawer()">&times;</div>
+  </div>
+  <div class="drawer-section">
+    <div class="drawer-section-title">REQUEST</div>
+    <div class="kv"><span class="k">Timestamp</span><span class="v">2026-09-09 10:39:04</span></div>
+    <div class="kv"><span class="k">Method</span><span class="v">GET</span></div>
+    <div class="kv"><span class="k">Path</span><span class="v">/api/v1/products</span></div>
+    <div class="kv"><span class="k">Query</span><span class="v">?limit=50&sort=-created</span></div>
+  </div>
+  <div class="drawer-section">
+    <div class="drawer-section-title">HEADERS</div>
+    <div class="code-block">Authorization: Bearer sk_live_••••••••••••
+User-Agent: acme-web/2.4.1
+Accept: application/json</div>
+  </div>
+  <div class="drawer-section">
+    <div class="drawer-section-title">RESPONSE</div>
+    <div class="kv"><span class="k">Status</span><span class="v" style="color:var(--red);">500</span></div>
+    <div class="kv"><span class="k">Latency</span><span class="v">312ms</span></div>
+  </div>
+  <div class="drawer-section">
+    <div class="drawer-section-title">RESPONSE BODY</div>
+    <div class="code-block">{
+  "error": "internal_error",
+  "message": "upstream database timeout"
+}</div>
+  </div>
+</div>
+
+<!-- ============ MODAL: NEW API (two-step: create form → created confirmation) ============ -->
+<div class="modal-backdrop" id="new-api-backdrop" onclick="if(event.target===this) closeNewApiModal()">
+  <div class="modal">
+
+    <!-- step 1: create form -->
+    <div id="new-api-step-form">
+      <div class="modal-head">
+        <div class="modal-title">New API</div>
+        <div class="modal-close" onclick="closeNewApiModal()">&times;</div>
+      </div>
+      <form id="new-api-form" onsubmit="return submitNewApi(event)">
+        <div class="modal-body">
+          <div class="field">
+            <label>API name</label>
+            <input type="text" id="newapi-name" placeholder="Orders API" required autofocus>
+          </div>
+          <div class="field">
+            <label>Type</label>
+            <select id="newapi-type">
+              <option>REST</option>
+              <option>GraphQL</option>
+              <option>gRPC</option>
+              <option>WebSocket</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Environment</label>
+            <select id="newapi-env">
+              <option>Production</option>
+              <option>Staging</option>
+              <option>Development</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Description <span style="color:var(--text-tertiary); font-weight:400;">(optional)</span></label>
+            <textarea id="newapi-desc" placeholder="What this API is for"></textarea>
+            <div class="hint">Shown on the API's overview page.</div>
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button type="button" class="btn btn-secondary" onclick="closeNewApiModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="newapi-submit">Create API</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- step 2: created confirmation -->
+    <div id="new-api-step-success" style="display:none;">
+      <div class="modal-head">
+        <div class="modal-title">API created</div>
+        <div class="modal-close" onclick="closeNewApiModal()">&times;</div>
+      </div>
+      <div class="modal-body">
+        <div class="modal-success-line">
+          <span class="dot green"></span>
+          <span id="newapi-success-name">Orders API</span>
+          <span class="tag" id="newapi-success-env">Production</span>
+        </div>
+        <div class="modal-kv-panel">
+          <div class="modal-kv-row">
+            <span class="k">BASE URL</span>
+            <span class="v" id="newapi-success-url" title="relay.dev/acme-workspace/orders-api">relay.dev/acme-workspace/orders-api</span>
+          </div>
+          <div class="modal-kv-row">
+            <span class="k">API KEY</span>
+            <span class="v" id="newapi-success-key">rly_live_••••••••••••4f2a</span>
+            <button type="button" class="btn btn-secondary modal-copy-btn" onclick="copyNewApiKey()" id="newapi-copy-btn">Copy</button>
+          </div>
+        </div>
+        <div class="modal-warning">
+          <span>⚠</span>
+          <span>This key is shown only once. Store it securely — you won't be able to view it again.</span>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button type="button" class="btn btn-primary" onclick="closeNewApiModal()">Done</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // ---------- data ----------
+  const apis = [
+    { name:"User API", type:"REST", version:"v1", env:"Production", requests:"12.4K", uptime:"99.8%", latency:"38ms", status:"healthy" },
+    { name:"Auth API", type:"REST", version:"v2", env:"Production", requests:"8.1K", uptime:"100%", latency:"29ms", status:"healthy" },
+    { name:"Payment API", type:"REST", version:"v1", env:"Staging", requests:"4.2K", uptime:"99.9%", latency:"51ms", status:"healthy" },
+    { name:"Notification API", type:"REST", version:"v1", env:"Development", requests:"1.2K", uptime:"97.4%", latency:"88ms", status:"degraded" },
+  ];
+
+  const logs = [
+    { time:"10:42:12", method:"GET", path:"/api/v1/users", status:200, latency:"42ms", api:"User API" },
+    { time:"10:41:31", method:"POST", path:"/api/v1/auth/login", status:200, latency:"81ms", api:"Auth API" },
+    { time:"10:39:04", method:"GET", path:"/api/v1/notify/send", status:500, latency:"312ms", api:"Notification API" },
+    { time:"10:38:52", method:"GET", path:"/api/v1/users/8841", status:200, latency:"38ms", api:"User API" },
+    { time:"10:37:19", method:"DELETE", path:"/api/v1/auth/sessions/9c2f", status:204, latency:"29ms", api:"Auth API" },
+    { time:"10:36:45", method:"PUT", path:"/api/v1/users/8841", status:200, latency:"55ms", api:"User API" },
+    { time:"10:35:02", method:"GET", path:"/api/v1/payments", status:200, latency:"47ms", api:"Payment API" },
+    { time:"10:34:18", method:"POST", path:"/api/v1/notify/webhooks-test", status:400, latency:"19ms", api:"Notification API" },
+    { time:"10:30:10", method:"POST", path:"/api/v1/auth/refresh", status:200, latency:"22ms", api:"Auth API" },
+    { time:"10:20:44", method:"POST", path:"/api/v1/payments/charge", status:200, latency:"118ms", api:"Payment API" },
+  ];
+
+  const endpoints = [
+    { method:"GET", path:"/users", api:"User API", requests:"6.1K", latency:"31ms", status:"healthy" },
+    { method:"POST", path:"/users", api:"User API", requests:"2.0K", latency:"58ms", status:"healthy" },
+    { method:"GET", path:"/users/:id", api:"User API", requests:"3.8K", latency:"27ms", status:"healthy" },
+    { method:"DELETE", path:"/users/:id", api:"User API", requests:"0.5K", latency:"33ms", status:"healthy" },
+    { method:"POST", path:"/auth/login", api:"Auth API", requests:"5.4K", latency:"81ms", status:"healthy" },
+    { method:"POST", path:"/auth/refresh", api:"Auth API", requests:"2.7K", latency:"22ms", status:"healthy" },
+    { method:"GET", path:"/payments", api:"Payment API", requests:"2.9K", latency:"44ms", status:"healthy" },
+    { method:"POST", path:"/payments/charge", api:"Payment API", requests:"1.3K", latency:"120ms", status:"healthy" },
+    { method:"POST", path:"/notify/send", api:"Notification API", requests:"1.2K", latency:"88ms", status:"degraded" },
+  ];
+
+  const keys = {
+    Production: [
+      { name:"Production", secret:"sk_live_••••••••••••", used:"2m ago" },
+      { name:"CI pipeline", secret:"sk_live_••••••••••••", used:"4h ago" },
+    ],
+    Staging: [
+      { name:"Staging", secret:"sk_stg_••••••••••••", used:"1h ago" },
+    ],
+    Development: [
+      { name:"Local dev — Mohit", secret:"sk_dev_••••••••••••", used:"9h ago" },
+    ],
+  };
+
+  const apiKeysMap = {
+    "User API": [
+      { name:"User API — Production", secret:"sk_live_••••••••••••", used:"2m ago" },
+      { name:"User API — CI pipeline", secret:"sk_live_••••••••••••", used:"4h ago" },
+    ],
+    "Auth API": [
+      { name:"Auth API — Production", secret:"sk_live_••••••••••••", used:"11m ago" },
+    ],
+    "Payment API": [
+      { name:"Payment API — Staging", secret:"sk_stg_••••••••••••", used:"1h ago" },
+    ],
+    "Notification API": [
+      { name:"Notification API — Development", secret:"sk_dev_••••••••••••", used:"9h ago" },
+    ],
+  };
+
+  const trafficData = {
+    "User API": { bars:[10,14,12,18,22,26,30,38,44,52,55,60,64,61,58,53,57,62,68,71,65,50,36,22], requests:"12.4K", errors:9, latency:"31ms" },
+    "Auth API": { bars:[22,24,20,26,30,34,40,48,52,58,60,62,65,63,60,57,55,59,64,66,60,48,34,24], requests:"8.1K", errors:3, latency:"24ms" },
+    "Payment API": { bars:[6,8,7,9,12,16,20,26,30,36,40,44,48,46,43,40,42,45,48,44,38,28,18,10], requests:"4.2K", errors:6, latency:"58ms" },
+    "Notification API": { bars:[3,4,3,5,6,8,10,14,16,20,24,28,32,36,40,44,48,52,55,50,40,28,16,8], requests:"1.2K", errors:31, latency:"91ms" },
+  };
+
+  const apiSettingsMap = {
+    "User API": { baseUrl:"https://api.acme.com/v1/users", description:"Handles user accounts, profiles and sessions." },
+    "Auth API": { baseUrl:"https://api.acme.com/v2/auth", description:"Issues and refreshes authentication tokens." },
+    "Payment API": { baseUrl:"https://api.acme.com/v1/payments", description:"Processes charges, refunds and payment methods." },
+    "Notification API": { baseUrl:"https://api.acme.com/v1/notify", description:"Sends transactional emails, SMS and push notifications." },
+  };
+
+  function esc(s){ return s; }
+
+  function renderApiRow(a, dense){
+    return `<div class="row clickable" style="grid-template-columns:1.6fr .9fr .9fr .7fr;" onclick="openApi('${a.name}')">
+      <div><div class="c-strong">${a.name}</div><div class="c-secondary">${a.type} · ${a.version} <span class="tag">${a.env}</span></div></div>
+      <div><div class="c-label">REQUESTS</div><div class="c-mono">${a.requests}</div></div>
+      <div><div class="c-label">UPTIME</div><div class="c-mono">${a.uptime}</div></div>
+      <div class="status ${a.status} c-right"><span class="dot ${a.status==='healthy'?'green':'yellow'}"></span>${a.status==='healthy'?'Healthy':'Degraded'}</div>
+    </div>`;
+  }
+
+  function renderApiRowFull(a){
+    return `<div class="row clickable" style="grid-template-columns:1.6fr .8fr .8fr .8fr .7fr;" onclick="openApi('${a.name}')">
+      <div><div class="c-strong">${a.name}</div><div class="c-secondary">${a.type} · ${a.version} <span class="tag">${a.env}</span></div></div>
+      <div><div class="c-label">REQUESTS</div><div class="c-mono">${a.requests}</div></div>
+      <div><div class="c-label">LATENCY</div><div class="c-mono">${a.latency}</div></div>
+      <div><div class="c-label">UPTIME</div><div class="c-mono">${a.uptime}</div></div>
+      <div class="status ${a.status} c-right"><span class="dot ${a.status==='healthy'?'green':'yellow'}"></span>${a.status==='healthy'?'Healthy':'Degraded'}</div>
+    </div>`;
+  }
+
+  function renderLogRow(l, clickable){
+    const okClass = l.status < 400 ? 'ok' : 'err';
+    const openAttr = clickable ? `onclick="openDrawer()"` : '';
+    return `<div class="row log-row ${clickable?'clickable':''}" ${openAttr}>
+      <span class="c-secondary mono">${l.time}</span>
+      <span class="method ${l.method.toLowerCase()}">${l.method}</span>
+      <span class="mono" style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${l.path}</span>
+      <span class="mono c-right" style="color:${l.status<400?'var(--green)':'var(--red)'};">${l.status}</span>
+      <span class="mono c-secondary c-right">${l.latency}</span>
+    </div>`;
+  }
+
+  function renderEndpointRow(e){
+    return `<div class="row" style="grid-template-columns:70px 1.4fr 1fr .8fr .8fr .7fr;">
+      <span class="method ${e.method.toLowerCase()}">${e.method}</span>
+      <span class="mono">${e.path}</span>
+      <span class="c-secondary">${e.api}</span>
+      <span class="c-mono">${e.requests}</span>
+      <span class="c-mono">${e.latency}</span>
+      <span class="status ${e.status} c-right"><span class="dot ${e.status==='healthy'?'green':'yellow'}"></span>${e.status==='healthy'?'Healthy':'Degraded'}</span>
+    </div>`;
+  }
+
+  function renderKeyRow(k){
+    return `<div class="row" style="grid-template-columns:1fr auto; padding:10px 0; border-bottom:1px solid var(--border);">
+      <div><div class="c-strong">${k.name}</div><div class="c-secondary mono">${k.secret}</div></div>
+      <div class="c-secondary c-right">used ${k.used}</div>
+    </div>`;
+  }
+
+  // ---------- populate static sections ----------
+  document.getElementById('overview-api-list').innerHTML = apis.map(a=>renderApiRow(a)).join('');
+  document.getElementById('apis-full-list').innerHTML = apis.map(a=>renderApiRowFull(a)).join('');
+  document.getElementById('overview-log-list').innerHTML = logs.slice(0,5).map(l=>renderLogRow(l,false)).join('');
+  document.getElementById('logs-full-list').innerHTML = logs.map(l=>renderLogRow(l,true)).join('');
+  document.getElementById('api-detail-endpoints-preview').innerHTML = endpoints.slice(0,4).map(e=>renderEndpointRow(e)).join('');
+  document.getElementById('api-detail-endpoints-full').innerHTML = endpoints.filter(e=>e.api==="User API").map(e=>renderEndpointRow(e)).join('');
+  document.getElementById('api-detail-logs').innerHTML = logs.slice(0,5).map(l=>renderLogRow(l,true)).join('');
+  document.getElementById('endpoints-agg-list').innerHTML = endpoints.map(e=>renderEndpointRow(e)).join('');
+
+  const overviewKeysHtml = [...keys.Production.slice(0,2), keys.Staging[0]].map(renderKeyRow).join('');
+  document.getElementById('overview-keys').innerHTML = overviewKeysHtml;
+  document.getElementById('api-detail-keys').innerHTML = apiKeysMap["User API"].map(renderKeyRow).join('');
+  document.getElementById('keys-production').innerHTML = keys.Production.map(k=>`<div class="row" style="grid-template-columns:1fr 1fr auto;"><div class="c-strong">${k.name}</div><div class="c-secondary mono">${k.secret}</div><div class="c-secondary c-right">used ${k.used}</div></div>`).join('');
+  document.getElementById('keys-staging').innerHTML = keys.Staging.map(k=>`<div class="row" style="grid-template-columns:1fr 1fr auto;"><div class="c-strong">${k.name}</div><div class="c-secondary mono">${k.secret}</div><div class="c-secondary c-right">used ${k.used}</div></div>`).join('');
+  document.getElementById('keys-development').innerHTML = keys.Development.map(k=>`<div class="row" style="grid-template-columns:1fr 1fr auto;"><div class="c-strong">${k.name}</div><div class="c-secondary mono">${k.secret}</div><div class="c-secondary c-right">used ${k.used}</div></div>`).join('');
+
+  // traffic bars
+  function renderTrafficBars(name){
+    const t = trafficData[name] || trafficData["User API"];
+    const peakIdx = t.bars.indexOf(Math.max(...t.bars));
+    document.getElementById('traffic-bars').innerHTML = t.bars.map((v,i)=>`<div class="bar ${i===peakIdx?'peak':''}" style="height:${v}%;"></div>`).join('');
+    document.getElementById('traffic-stat-requests').textContent = t.requests;
+    document.getElementById('traffic-stat-errors').textContent = t.errors;
+    document.getElementById('traffic-stat-latency').textContent = t.latency;
+  }
+  renderTrafficBars("User API");
+
+  // activity feed
+  const activity = [
+    { text:"API key <b>Production</b> was used to deploy", who:"CI pipeline", when:"2m ago" },
+    { text:"Endpoint <span class=\"mono\">POST /users</span> latency threshold breached", who:"Notification API", when:"38m ago" },
+    { text:"New API key created", who:"Mohit Gupta", when:"1h ago" },
+    { text:"Webhook <span class=\"mono\">order.completed</span> delivery failed, retrying", who:"Payment API", when:"2h ago" },
+    { text:"Rate limit rule updated: 1000 req/min → 2000 req/min", who:"Mohit Gupta", when:"5h ago" },
+    { text:"Deployment to <b>Production</b> succeeded", who:"User API v1", when:"1d ago" },
+    { text:"Domain <span class=\"mono\">staging-api.acme.com</span> verified", who:"System", when:"2d ago" },
+  ];
+  document.getElementById('activity-list').innerHTML = activity.map(a=>`<div class="row" style="grid-template-columns:1fr auto auto;">
+    <div style="font-size:12.5px;">${a.text}</div>
+    <div class="c-secondary">${a.who}</div>
+    <div class="c-secondary c-right">${a.when}</div>
+  </div>`).join('');
+
+  // analytics breakdowns
+  const byEndpoint = [
+    { path:"POST /auth/login", requests:"5.4K", errors:2, latency:"81ms" },
+    { path:"GET /users", requests:"6.1K", errors:0, latency:"31ms" },
+    { path:"GET /users/:id", requests:"3.8K", errors:1, latency:"27ms" },
+    { path:"POST /payments/charge", requests:"1.3K", errors:4, latency:"120ms" },
+    { path:"POST /notify/send", requests:"1.2K", errors:31, latency:"88ms" },
+  ];
+  document.getElementById('analytics-by-endpoint').innerHTML = byEndpoint.map(e=>`<div class="row" style="grid-template-columns:1.6fr .8fr .8fr .8fr;">
+    <span class="mono">${e.path}</span>
+    <span class="c-mono">${e.requests}</span>
+    <span class="c-mono" style="color:${e.errors>10?'var(--red)':'var(--text)'};">${e.errors} errors</span>
+    <span class="c-mono c-right">${e.latency}</span>
+  </div>`).join('');
+
+  const byKey = [
+    { name:"Production", requests:"31.2K", cost:"$11.80" },
+    { name:"CI pipeline", requests:"9.4K", cost:"$3.10" },
+    { name:"Staging", requests:"6.1K", cost:"$2.40" },
+    { name:"Local dev — Mohit", requests:"1.5K", cost:"$1.12" },
+  ];
+  document.getElementById('analytics-by-key').innerHTML = byKey.map(k=>`<div class="row" style="grid-template-columns:1.6fr .8fr .8fr;">
+    <span class="c-strong">${k.name}</span>
+    <span class="c-mono">${k.requests}</span>
+    <span class="c-mono c-right">${k.cost}</span>
+  </div>`).join('');
+
+  // domains
+  const domains = [
+    { host:"api.acme.com", target:"User API · Production", ssl:"Valid", status:"healthy" },
+    { host:"staging-api.acme.com", target:"Payment API · Staging", ssl:"Valid", status:"healthy" },
+    { host:"dev-api.acme.com", target:"Notification API · Development", ssl:"Pending", status:"pending" },
+  ];
+  document.getElementById('domains-list').innerHTML = domains.map(d=>`<div class="row" style="grid-template-columns:1.4fr 1fr .8fr .8fr;">
+    <span class="mono c-strong">${d.host}</span>
+    <span class="c-secondary">${d.target}</span>
+    <span class="c-secondary">SSL: ${d.ssl}</span>
+    <span class="status ${d.status} c-right"><span class="dot ${d.status==='healthy'?'green':'yellow'}"></span>${d.status==='healthy'?'Verified':'Pending'}</span>
+  </div>`).join('');
+
+  // webhooks
+  const webhooks = [
+    { url:"https://acme.com/hooks/orders", events:["order.completed","order.refunded"], status:"active", last:"3m ago" },
+    { url:"https://acme.com/hooks/alerts", events:["api.degraded"], status:"failing", last:"2h ago" },
+  ];
+  document.getElementById('webhooks-list').innerHTML = webhooks.map(w=>`<div class="row" style="grid-template-columns:1.6fr 1fr .8fr .8fr;">
+    <span class="mono c-strong">${w.url}</span>
+    <span>${w.events.map(e=>`<span class="badge" style="margin-right:4px;">${e}</span>`).join('')}</span>
+    <span class="c-secondary">last ${w.last}</span>
+    <span class="status ${w.status} c-right"><span class="dot ${w.status==='active'?'green':'red'}"></span>${w.status==='active'?'Active':'Failing'}</span>
+  </div>`).join('');
+
+  // policies
+  const policies = [
+    { name:"Require API key", type:"Authentication", scope:"Global", status:"enabled" },
+    { name:"CORS — allow acme.com", type:"CORS", scope:"User API", status:"enabled" },
+    { name:"Block non-allowlisted IPs", type:"IP Allowlist", scope:"Payment API", status:"enabled" },
+    { name:"Strip debug headers", type:"Transform", scope:"Global", status:"disabled" },
+  ];
+  document.getElementById('policies-list').innerHTML = policies.map(p=>`<div class="row" style="grid-template-columns:1.4fr .9fr 1fr .7fr;">
+    <span class="c-strong">${p.name}</span>
+    <span class="c-secondary">${p.type}</span>
+    <span class="c-secondary">${p.scope}</span>
+    <span class="status ${p.status} c-right"><span class="dot ${p.status==='enabled'?'green':'grey'}"></span>${p.status==='enabled'?'Enabled':'Disabled'}</span>
+  </div>`).join('');
+
+  // rate limits
+  const rateLimits = [
+    { scope:"Global", limit:"2000 req / min", action:"Throttle" },
+    { scope:"User API", limit:"1000 req / min", action:"Throttle" },
+    { scope:"Payment API", limit:"200 req / min", action:"Reject (429)" },
+    { scope:"Per API key (unauthenticated)", limit:"60 req / min", action:"Reject (429)" },
+  ];
+  document.getElementById('ratelimits-list').innerHTML = rateLimits.map(r=>`<div class="row" style="grid-template-columns:1.4fr 1fr 1fr;">
+    <span class="c-strong">${r.scope}</span>
+    <span class="c-mono">${r.limit}</span>
+    <span class="c-secondary c-right">${r.action}</span>
+  </div>`).join('');
+
+  // members
+  const members = [
+    { name:"Mohit Gupta", email:"mohit@acme.com", role:"Owner", active:"now" },
+    { name:"Mayank Sharma", email:"mayank@acme.com", role:"Admin", active:"2h ago" },
+    { name:"Riya Sen", email:"riya@acme.com", role:"Member", active:"1d ago" },
+    { name:"Devansh Rao", email:"devansh@acme.com", role:"Member", active:"3d ago" },
+    { name:"Priya Nair", email:"priya@acme.com", role:"Member", active:"6d ago" },
+  ];
+  document.getElementById('members-list').innerHTML = members.map(m=>`<div class="row" style="grid-template-columns:1.4fr 1fr .8fr .8fr;">
+    <span class="c-strong">${m.name}</span>
+    <span class="c-secondary mono">${m.email}</span>
+    <span class="badge">${m.role}</span>
+    <span class="c-secondary c-right">active ${m.active}</span>
+  </div>`).join('');
+
+  // invoices
+  const invoices = [
+    { date:"Sep 1, 2026", amount:"$67.42", status:"Paid" },
+    { date:"Aug 1, 2026", amount:"$58.10", status:"Paid" },
+    { date:"Jul 1, 2026", amount:"$49.00", status:"Paid" },
+  ];
+  document.getElementById('invoices-list').innerHTML = invoices.map(i=>`<div class="row" style="grid-template-columns:1fr 1fr auto;">
+    <span>${i.date}</span>
+    <span class="c-mono">${i.amount}</span>
+    <span class="c-secondary c-right">${i.status}</span>
+  </div>`).join('');
+
+  // ---------- routing ----------
+  function showView(id, navEl){
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('visible'));
+    document.getElementById('view-'+id).classList.add('visible');
+    document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+    if(navEl) navEl.classList.add('active');
+    window.scrollTo(0,0);
+  }
+
+  const apiDetails = {
+    "User API": { sub:"REST · Production", status:"Healthy", color:"var(--green)" },
+    "Auth API": { sub:"REST · Production", status:"Healthy", color:"var(--green)" },
+    "Payment API": { sub:"REST · Staging", status:"Healthy", color:"var(--green)" },
+    "Notification API": { sub:"REST · Development", status:"Degraded", color:"var(--yellow)" },
+  };
+
+  function openApi(name){
+    const d = apiDetails[name] || apiDetails["User API"];
+    const a = apis.find(x=>x.name===name) || apis[0];
+    const s = apiSettingsMap[name] || apiSettingsMap["User API"];
+
+    document.getElementById('api-detail-crumb').textContent = name;
+    document.getElementById('api-detail-name').innerHTML = name + '<span class="tag" style="font-family:\'Inter\',sans-serif;">' + a.version + '</span>';
+    document.getElementById('api-detail-sub').innerHTML = d.sub + ' · <span style="color:'+d.color+'; font-weight:500;">' + d.status + '</span>';
+
+    // Overview tab
+    document.getElementById('api-detail-endpoints-full').innerHTML = endpoints.filter(e=>e.api===name).map(e=>renderEndpointRow(e)).join('') || '<div class="row"><span class="c-secondary">No endpoints yet.</span></div>';
+    document.getElementById('api-detail-endpoints-preview').innerHTML = endpoints.filter(e=>e.api===name).slice(0,4).map(e=>renderEndpointRow(e)).join('') || '<div class="row"><span class="c-secondary">No endpoints yet.</span></div>';
+    document.getElementById('detail-stat-requests').textContent = a.requests;
+    document.getElementById('detail-stat-success').textContent = a.uptime;
+    document.getElementById('detail-stat-latency').textContent = a.latency;
+    document.getElementById('detail-stat-errors').textContent = trafficData[name] ? trafficData[name].errors : "—";
+
+    // Traffic tab
+    renderTrafficBars(name);
+
+    // Logs tab
+    document.getElementById('api-detail-logs-label').textContent = name;
+    const apiLogs = logs.filter(l=>l.api===name).slice(0,6);
+    document.getElementById('api-detail-logs').innerHTML = apiLogs.length
+      ? apiLogs.map(l=>renderLogRow(l,true)).join('')
+      : '<div class="row"><span class="c-secondary">No requests logged yet.</span></div>';
+
+    // Keys tab
+    const apiKeys = apiKeysMap[name] || [];
+    document.getElementById('api-detail-keys').innerHTML = apiKeys.length
+      ? apiKeys.map(renderKeyRow).join('')
+      : '<div class="row"><span class="c-secondary">No keys scoped to this API yet.</span></div>';
+
+    // Settings tab
+    document.getElementById('settings-name').value = name;
+    document.getElementById('settings-baseurl').value = s.baseUrl;
+    document.getElementById('settings-description').value = s.description;
+
+    showView('api-detail');
+    document.getElementById('nav-apis').classList.add('active');
+    showTab('overview');
+  }
+
+  function showTab(tab){
+    document.querySelectorAll('.api-tab-panel').forEach(p=>p.style.display='none');
+    document.getElementById('tab-'+tab).style.display='block';
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.getElementById('tabbtn-'+tab).classList.add('active');
+  }
+
+  function openDrawer(){
+    document.getElementById('drawer').classList.add('open');
+    document.getElementById('drawer-backdrop').classList.add('open');
+  }
+  function closeDrawer(){
+    document.getElementById('drawer').classList.remove('open');
+    document.getElementById('drawer-backdrop').classList.remove('open');
+  }
+
+  /* ---- New API modal ---- */
+  function openNewApiModal(){
+    document.getElementById('new-api-form').reset();
+    document.getElementById('newapi-submit').textContent = 'Create API';
+    document.getElementById('newapi-submit').disabled = false;
+    document.getElementById('new-api-step-form').style.display = 'block';
+    document.getElementById('new-api-step-success').style.display = 'none';
+    document.getElementById('new-api-backdrop').classList.add('open');
+    document.getElementById('newapi-name').focus();
+  }
+
+  function closeNewApiModal(){
+    document.getElementById('new-api-backdrop').classList.remove('open');
+    // step resets on next open (openNewApiModal), not here — lets the close
+    // transition finish on whichever step the user was looking at
+  }
+
+  function submitNewApi(e){
+    e.preventDefault();
+    const name = document.getElementById('newapi-name').value.trim();
+    if(!name) return false;
+
+    const btn = document.getElementById('newapi-submit');
+    btn.disabled = true;
+    btn.textContent = 'Creating…';
+
+    // wire up to real API-creation endpoint here — on success, populate the
+    // fields below from the response instead of the placeholder values used here
+    setTimeout(()=>{
+      const env = document.getElementById('newapi-env').value;
+      const slug = name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+      document.getElementById('newapi-success-name').textContent = name;
+      document.getElementById('newapi-success-env').textContent = env;
+      document.getElementById('newapi-success-url').textContent = 'relay.dev/acme-workspace/' + slug;
+      document.getElementById('newapi-success-url').title = 'relay.dev/acme-workspace/' + slug;
+
+      document.getElementById('new-api-step-form').style.display = 'none';
+      document.getElementById('new-api-step-success').style.display = 'block';
+
+      // TODO: also insert the new row into #apis-full-list / #overview-api-list
+      // once real API data is available, so the list reflects it without a reload
+    }, 350);
+
+    return false;
+  }
+
+  function copyNewApiKey(){
+    const keyEl = document.getElementById('newapi-success-key');
+    const btn = document.getElementById('newapi-copy-btn');
+    // this copies the masked placeholder — wire to the real unmasked key string
+    // returned by the create-API response, not the display text
+    navigator.clipboard?.writeText(keyEl.textContent);
+    btn.textContent = 'Copied';
+    setTimeout(()=>{ btn.textContent = 'Copy'; }, 1500);
+  }
+</script>
+
+</body>
+</html>

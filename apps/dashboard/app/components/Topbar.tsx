@@ -1,0 +1,37 @@
+import { fetchAPI } from '../lib/api';
+import CommandPalette from './CommandPalette';
+import UserMenu from './UserMenu';
+import InboxBell from './InboxBell';
+
+const isRedirectError = (e: any) => e && e.digest && e.digest.startsWith('NEXT_REDIRECT');
+
+export default async function Topbar() {
+  const { user } = await fetchAPI('/auth/me').catch((e) => {
+    if (isRedirectError(e)) throw e;
+    return { user: { email: 'Unknown' } };
+  });
+  const seed = user?.email || 'unknown';
+  const avatarUrl = `https://api.dicebear.com/7.x/pixel-art/svg?seed=${encodeURIComponent(seed)}`;
+
+  // Fetch pending invitations for inbox
+  const invitationsData = await fetchAPI('/invitations').catch((e) => {
+    if (isRedirectError(e)) throw e;
+    return { invitations: [] };
+  });
+  const invitations = invitationsData?.invitations || [];
+
+  return (
+    <header className="topbar">
+      <CommandPalette />
+      <div className="topbar-right">
+        <div className="env-switcher">
+          <span className="dot green"></span>
+          <span>Production</span>
+          <span className="chev">▾</span>
+        </div>
+        <InboxBell invitations={invitations} />
+        <UserMenu email={user.email} avatarUrl={avatarUrl} />
+      </div>
+    </header>
+  );
+}

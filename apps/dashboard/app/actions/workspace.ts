@@ -32,9 +32,12 @@ export async function createWorkspaceAction(prevState: any, formData: FormData) 
     const name = formData.get('workspace') as string;
     if (!name) return { error: 'Workspace name is required' };
 
+    // Generate a URL-friendly slug from the workspace name
+    const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'workspace-' + Date.now();
+
     const res = await fetchAPI('/workspaces', {
       method: 'POST',
-      body: JSON.stringify({ name }),
+      body: JSON.stringify({ name, slug }),
     });
 
     const cookieStore = await cookies();

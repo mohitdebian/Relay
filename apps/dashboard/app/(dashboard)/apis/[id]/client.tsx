@@ -125,14 +125,14 @@ export default function ApiDetailClient({
                 }}
               >
                 <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', opacity: 0.9 }}>
-                  {typeof window !== 'undefined' ? (window.location.hostname === 'localhost' ? 'http://127.0.0.1:8080/' : 'https://gateway.relay.com/') : 'http://127.0.0.1:8080/'}{api.slug}
+                  {(process.env.NEXT_PUBLIC_GATEWAY_URL || (typeof window !== 'undefined' && window.location.hostname !== 'localhost' ? 'https://your-gateway.com' : 'http://127.0.0.1:8080')).replace(/\/$/, '')}/{api.slug}
                 </div>
                 <button
                   className="btn btn-secondary"
                   style={{ padding: '4px 8px', fontSize: '12px', marginLeft: '12px', flexShrink: 0 }}
                   onClick={(e) => {
                     const btn = e.currentTarget;
-                    const url = typeof window !== 'undefined' ? (window.location.hostname === 'localhost' ? 'http://127.0.0.1:8080/' : 'https://gateway.relay.com/') + api.slug : 'http://127.0.0.1:8080/' + api.slug;
+                    const url = `${(process.env.NEXT_PUBLIC_GATEWAY_URL || (typeof window !== 'undefined' && window.location.hostname !== 'localhost' ? 'https://your-gateway.com' : 'http://127.0.0.1:8080')).replace(/\/$/, '')}/${api.slug}`;
                     navigator.clipboard.writeText(url);
                     const originalText = btn.innerText;
                     btn.innerText = 'Copied!';

@@ -182,16 +182,16 @@ export function NewApiModal({ open, onClose }: NewApiModalProps) {
                 <span className="k">BASE URL</span>
                 <span
                   className="v"
-                  title={typeof window !== 'undefined' ? (window.location.hostname === 'localhost' ? 'http://127.0.0.1:8080/' : 'https://gateway.relay.com/') + (createdData?.slug || 'api') : 'http://127.0.0.1:8080/' + (createdData?.slug || 'api')}
+                  title={`${(process.env.NEXT_PUBLIC_GATEWAY_URL || (typeof window !== 'undefined' && window.location.hostname !== 'localhost' ? 'https://your-gateway.com' : 'http://127.0.0.1:8080')).replace(/\/$/, '')}/${createdData?.slug || 'api'}`}
                 >
-                  <Typewriter text={typeof window !== 'undefined' ? (window.location.hostname === 'localhost' ? 'http://127.0.0.1:8080/' : 'https://gateway.relay.com/') + (createdData?.slug || 'api') : 'http://127.0.0.1:8080/' + (createdData?.slug || 'api')} />
+                  <Typewriter text={`${(process.env.NEXT_PUBLIC_GATEWAY_URL || (typeof window !== 'undefined' && window.location.hostname !== 'localhost' ? 'https://your-gateway.com' : 'http://127.0.0.1:8080')).replace(/\/$/, '')}/${createdData?.slug || 'api'}`} />
                 </span>
                 <button
                   type="button"
                   className="btn btn-secondary modal-copy-btn"
                   onClick={() => {
                     if (!createdData) return;
-                    const url = typeof window !== 'undefined' ? (window.location.hostname === 'localhost' ? 'http://127.0.0.1:8080/' : 'https://gateway.relay.com/') + createdData.slug : 'http://127.0.0.1:8080/' + createdData.slug;
+                    const url = `${(process.env.NEXT_PUBLIC_GATEWAY_URL || (typeof window !== 'undefined' && window.location.hostname !== 'localhost' ? 'https://your-gateway.com' : 'http://127.0.0.1:8080')).replace(/\/$/, '')}/${createdData.slug}`;
                     navigator.clipboard.writeText(url).then(() => {
                       setCopyUrlText('Copied!');
                       setTimeout(() => setCopyUrlText('Copy'), 2000);

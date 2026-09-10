@@ -1,4 +1,6 @@
 'use client';
+import { NewApiModal } from '@/app/components/modals/NewApiModal';
+import { ConfirmModal } from '@/app/components/modals/ConfirmModal';
 import Typewriter from '@/app/components/Typewriter';
 
 import { useState } from 'react';
@@ -19,6 +21,20 @@ export default function ApiDetailClient({
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('overview');
   const [isDeleting, setIsDeleting] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
+  const handleDelete = async () => {
+    setIsDeleting(true);
+    const res = await deleteApiAction(api.id);
+    if (res.success) {
+      router.push('/apis');
+    } else {
+      alert(res.error || 'Failed to delete API');
+      setIsDeleting(false);
+      setShowDeleteConfirm(false);
+    }
+  };
+
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [drawerLog, setDrawerLog] = useState<any>(null);
 
@@ -372,23 +388,23 @@ export default function ApiDetailClient({
               <button
                 className="btn btn-danger"
                 disabled={isDeleting}
-                onClick={async () => {
-                  if (confirm('Are you sure you want to delete this API?')) {
-                    setIsDeleting(true);
-                    const res = await deleteApiAction(api.id);
-                    if (res.success) {
-                      router.push('/apis');
-                    } else {
-                      alert(res.error || 'Failed to delete API');
-                      setIsDeleting(false);
-                    }
-                  }
-                }}
+                onClick={() => setShowDeleteConfirm(true)}
               >
                 {isDeleting ? 'Deleting...' : 'Delete API'}
               </button>
             </div>
           </div>
+
+          <ConfirmModal
+            open={showDeleteConfirm}
+            onClose={() => setShowDeleteConfirm(false)}
+            onConfirm={handleDelete}
+            title="Delete API"
+            message="Are you sure you want to delete this API? This will permanently remove all endpoints, keys, and logs. This action cannot be undone."
+            confirmText="Delete"
+            isDestructive={true}
+            isLoading={isDeleting}
+          />
         </>
       )}
 

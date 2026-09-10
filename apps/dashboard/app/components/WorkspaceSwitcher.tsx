@@ -67,8 +67,8 @@ export default function WorkspaceSwitcher({
               width: '20px',
               height: '20px',
               borderRadius: '4px',
-              background: 'var(--primary)',
-              color: 'white',
+              background: 'var(--text)',
+              color: 'var(--bg)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -144,11 +144,11 @@ export default function WorkspaceSwitcher({
                   borderRadius: '3px',
                   background:
                     w.id.toString() === activeWorkspaceId?.toString()
-                      ? 'var(--primary)'
+                      ? 'var(--text)'
                       : 'var(--border)',
                   color:
                     w.id.toString() === activeWorkspaceId?.toString()
-                      ? 'white'
+                      ? 'var(--bg)'
                       : 'var(--text-secondary)',
                   display: 'flex',
                   alignItems: 'center',

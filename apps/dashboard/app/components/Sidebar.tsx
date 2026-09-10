@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import WorkspaceSwitcher from './WorkspaceSwitcher';
 
 const navGroups = [
@@ -44,6 +45,14 @@ export default function Sidebar({
   activeWorkspaceId?: string;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      router.refresh();
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [router]);
 
   function isActive(href: string) {
     if (href === '/overview') return pathname === '/overview' || pathname === '/';

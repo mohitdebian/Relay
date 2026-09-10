@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   description: 'API Gateway & Developer Platform',
 };
 
+export const dynamic = 'force-dynamic';
+
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

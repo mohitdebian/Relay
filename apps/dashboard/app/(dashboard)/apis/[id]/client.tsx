@@ -3,7 +3,9 @@ import Typewriter from '@/app/components/Typewriter';
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import Drawer from '../../../components/Drawer';
+import { deleteApiAction } from '../../../actions/api';
 
 export default function ApiDetailClient({
   api,
@@ -14,7 +16,9 @@ export default function ApiDetailClient({
   keys: any[];
   analytics: any;
 }) {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState('overview');
+  const [isDeleting, setIsDeleting] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [drawerLog, setDrawerLog] = useState<any>(null);
 
@@ -292,7 +296,24 @@ export default function ApiDetailClient({
                   Removes all endpoints, keys and logs. This cannot be undone.
                 </div>
               </div>
-              <button className="btn btn-danger">Delete API</button>
+              <button 
+                className="btn btn-danger" 
+                disabled={isDeleting}
+                onClick={async () => {
+                  if (confirm('Are you sure you want to delete this API?')) {
+                    setIsDeleting(true);
+                    const res = await deleteApiAction(api.id);
+                    if (res.success) {
+                      router.push('/apis');
+                    } else {
+                      alert(res.error || 'Failed to delete API');
+                      setIsDeleting(false);
+                    }
+                  }
+                }}
+              >
+                {isDeleting ? 'Deleting...' : 'Delete API'}
+              </button>
             </div>
           </div>
         </>

@@ -93,3 +93,19 @@ export async function createApiKeyAction(apiId: number, name: string, environmen
     return { success: false, error: error.message };
   }
 }
+
+export async function deleteApiAction(apiId: number) {
+  try {
+    const res = await fetchAPI(`/apis/${apiId}`, {
+      method: 'DELETE',
+    });
+
+    revalidatePath('/apis');
+    revalidatePath('/overview');
+
+    return { success: true, message: res.message };
+  } catch (error: any) {
+    if (isRedirectError(error)) throw error;
+    return { success: false, error: error.message };
+  }
+}

@@ -19,10 +19,10 @@
 .search-btn { display: flex; align-items: center; gap: 8px; width: 240px; height: 30px; padding: 0 9px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); color: var(--text-tertiary); font-size: 13px; cursor: text; }
 .search-btn .kbd { margin-left: auto; font-family: 'JetBrains Mono', monospace; font-size: 11px; border: 1px solid var(--border); border-radius: 4px; padding: 1px 5px; }
 
-/* ---- shell: nav | content | toc ---- */
-.docs-shell { display: flex; align-items: flex-start; }
+/* ---- layout: content | toc ---- */
+.docs-content-layout { display: flex; align-items: flex-start; flex: 1; min-height: calc(100vh - var(--topbar-h)); }
 
-.docs-nav { width: var(--nav-w); flex-shrink: 0; padding: 14px 10px 24px; position: sticky; top: var(--topbar-h); height: calc(100vh - var(--topbar-h)); overflow-y: auto; }
+.sidebar.docs-sidebar .nav-group-label { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; color: var(--text-tertiary); letter-spacing: 0.06em; padding: 0 10px 8px; }
 .nav-item.method { display: flex; gap: 7px; align-items: center; }
 .m-tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 600; width: 32px; flex-shrink: 0; }
 .m-tag.get { color: var(--blue); } .m-tag.post { color: var(--green); } .m-tag.delete { color: var(--red); }

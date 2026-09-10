@@ -9,9 +9,6 @@ export function DocsTopbar() {
   return (
     <header className="topbar">
       <div className="topbar-left">
-        <Link href="/docs" className="logo">
-          RELAY_
-        </Link>
         <nav className="topbar-nav">
           <Link href="/docs" className={pathname === '/docs' ? 'active' : ''}>Docs</Link>
           <Link href="/docs/api-keys/create" className={isActive('/docs/api-keys') || isActive('/docs/apis')}>

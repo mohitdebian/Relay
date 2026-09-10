@@ -25,6 +25,20 @@ export default async function OverviewPage() {
   });
   const analyticsOverview = data_analytics?.overview;
 
+  let successRate: number | null = null;
+  let successRateColor = '';
+  let lowVolume = false;
+
+  if (analyticsOverview) {
+    if (analyticsOverview.totalRequests > 0) {
+      successRate = ((analyticsOverview.totalRequests - analyticsOverview.totalErrors) / analyticsOverview.totalRequests) * 100;
+      if (successRate >= 99) successRateColor = 'green';
+      else if (successRate >= 95) successRateColor = 'yellow';
+      else successRateColor = 'red';
+    }
+    lowVolume = analyticsOverview.totalRequests < 20;
+  }
+
   let allKeys: any[] = [];
   if (apis.length > 0) {
     const keysPromises = apis.map((api: any) =>
@@ -60,7 +74,11 @@ export default async function OverviewPage() {
             {analyticsOverview ? analyticsOverview.totalRequests : '---'}
           </div>
           <div className="stat-delta">
-            {analyticsOverview && analyticsOverview.totalRequestsDelta !== undefined ? (
+            {!analyticsOverview ? (
+              'N/A'
+            ) : lowVolume ? (
+              <span className="c-secondary">not enough data for a trend</span>
+            ) : analyticsOverview.totalRequestsDelta !== undefined ? (
               <span className={analyticsOverview.totalRequestsDelta >= 0 ? 'green' : 'red'}>
                 {analyticsOverview.totalRequestsDelta > 0 ? '+' : ''}
                 {analyticsOverview.totalRequestsDelta}%
@@ -72,17 +90,15 @@ export default async function OverviewPage() {
         </div>
         <div className="stat">
           <div className="stat-label">Success rate</div>
-          <div className="stat-value green">
-            {analyticsOverview && analyticsOverview.totalRequests > 0
-              ? Math.round(
-                  ((analyticsOverview.totalRequests - analyticsOverview.totalErrors) /
-                    analyticsOverview.totalRequests) *
-                    100
-                ) + '%'
-              : '---'}
+          <div className={`stat-value ${successRateColor}`}>
+            {successRate !== null ? Math.round(successRate) + '%' : '---'}
           </div>
           <div className="stat-delta">
-            {analyticsOverview && analyticsOverview.successRateDelta !== undefined ? (
+            {!analyticsOverview ? (
+              'N/A'
+            ) : lowVolume ? (
+              <span className="c-secondary">{analyticsOverview.totalErrors} of {analyticsOverview.totalRequests} failed</span>
+            ) : analyticsOverview.successRateDelta !== undefined ? (
               <span className={analyticsOverview.successRateDelta >= 0 ? 'green' : 'red'}>
                 {analyticsOverview.successRateDelta > 0 ? '+' : ''}
                 {analyticsOverview.successRateDelta}%
@@ -98,7 +114,11 @@ export default async function OverviewPage() {
             {analyticsOverview ? analyticsOverview.averageLatencyMs + 'ms' : '---'}
           </div>
           <div className="stat-delta">
-            {analyticsOverview && analyticsOverview.averageLatencyDelta !== undefined ? (
+            {!analyticsOverview ? (
+              'N/A'
+            ) : lowVolume ? (
+              <span className="c-secondary">not enough data for a trend</span>
+            ) : analyticsOverview.averageLatencyDelta !== undefined ? (
               <span className={analyticsOverview.averageLatencyDelta <= 0 ? 'green' : 'red'}>
                 {analyticsOverview.averageLatencyDelta > 0 ? '+' : ''}
                 {analyticsOverview.averageLatencyDelta}%
@@ -177,7 +197,9 @@ export default async function OverviewPage() {
             )}
             {logs.slice(0, 5).map((log: any, index: number) => (
               <div key={index} className="row log-row">
-                <span className="c-secondary mono">{log.time}</span>
+                <span className="c-secondary mono" style={{ whiteSpace: 'nowrap' }}>
+                  {log.time.replace(/:\d{2}(?=\s|$)/, '')}
+                </span>
                 <span className={`method ${log.method.toLowerCase()}`}>{log.method}</span>
                 <span
                   className="mono"

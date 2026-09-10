@@ -4,6 +4,8 @@ import { headers } from 'next/headers';
 import { auth } from '@/app/lib/auth/server';
 import './landing.css';
 
+export const dynamic = 'force-dynamic';
+
 export default async function LandingPage() {
   const session = await auth.getSession();
 

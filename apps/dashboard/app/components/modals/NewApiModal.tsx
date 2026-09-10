@@ -17,6 +17,7 @@ export function NewApiModal({ open, onClose }: NewApiModalProps) {
   const [name, setName] = useState('');
   const [apiType, setApiType] = useState('REST');
   const [env, setEnv] = useState('production');
+  const [upstreamUrl, setUpstreamUrl] = useState('');
   const [desc, setDesc] = useState('');
   const [copyText, setCopyText] = useState('Copy');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -33,6 +34,7 @@ export function NewApiModal({ open, onClose }: NewApiModalProps) {
     setTimeout(() => {
       setStep(1);
       setName('');
+      setUpstreamUrl('');
       setApiType('REST');
       setEnv('production');
       setDesc('');
@@ -48,7 +50,7 @@ export function NewApiModal({ open, onClose }: NewApiModalProps) {
     setIsSubmitting(true);
     setError('');
 
-    const result = await createApiAction(name, env, desc);
+    const result = await createApiAction(name, env, desc, upstreamUrl || 'https://example.com');
 
     setIsSubmitting(false);
     if (result.success) {
@@ -88,6 +90,16 @@ export function NewApiModal({ open, onClose }: NewApiModalProps) {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 data-testid="api-name-input"
+              />
+            </div>
+            <div className="field">
+              <label>Target URL</label>
+              <input
+                type="url"
+                placeholder="https://api.yourdomain.com"
+                required
+                value={upstreamUrl}
+                onChange={(e) => setUpstreamUrl(e.target.value)}
               />
             </div>
             <div className="field">

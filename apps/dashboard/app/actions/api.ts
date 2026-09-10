@@ -12,7 +12,12 @@ function isRedirectError(error: any) {
   );
 }
 
-export async function createApiAction(name: string, environment: string, description: string) {
+export async function createApiAction(
+  name: string,
+  environment: string,
+  description: string,
+  upstreamUrl: string
+) {
   try {
     // 1. Get user's workspaces to find the workspace_id
     const wsRes = await fetchAPI('/workspaces');
@@ -37,7 +42,7 @@ export async function createApiAction(name: string, environment: string, descrip
         slug,
         environment,
         description,
-        upstream_url: 'https://example.com', // Default mock
+        upstream_url: upstreamUrl,
       }),
     });
 

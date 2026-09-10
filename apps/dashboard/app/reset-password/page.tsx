@@ -29,7 +29,7 @@ function ResetPasswordContent() {
     const newPassword = formData.get('password') as string;
 
     try {
-      // @ts-expect-error: Neon Auth email-otp plugin overwrites the call signature in types
+
       const { error: resetError } = await authClient.resetPassword({
         newPassword,
       });

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useTransition } from 'react';
 import { usePathname } from 'next/navigation';
 import { switchWorkspaceAction } from '@/app/actions/workspace';
 
@@ -12,7 +12,7 @@ export default function WorkspaceSwitcher({
   activeWorkspaceId: string;
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [isPending, setIsPending] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const dropdownRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
@@ -32,11 +32,11 @@ export default function WorkspaceSwitcher({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen]);
 
-  const handleSelect = async (id: string) => {
+  const handleSelect = (id: string) => {
     setIsOpen(false);
-    setIsPending(true);
-    await switchWorkspaceAction(id, pathname);
-    setIsPending(false);
+    startTransition(async () => {
+      await switchWorkspaceAction(id, pathname);
+    });
   };
 
   return (

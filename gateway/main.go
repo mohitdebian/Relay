@@ -13,6 +13,13 @@ type HealthResponse struct {
 }
 
 func healthHandler(w http.ResponseWriter, r *http.Request) {
+	// Ping the backend API to keep it awake on Render Free Tier
+	backendUrl := os.Getenv("BACKEND_URL")
+	if backendUrl != "" {
+		// We ignore errors here since this is just a keep-alive ping
+		go http.Get(backendUrl + "/health")
+	}
+
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(HealthResponse{Status: "ok"})
 }

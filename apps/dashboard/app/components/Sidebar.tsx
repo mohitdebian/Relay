@@ -35,6 +35,10 @@ const navGroups = [
     label: 'SETTINGS',
     items: [{ name: 'General', href: '/settings' }],
   },
+  {
+    label: 'RESOURCES',
+    items: [{ name: 'Documentation', href: '/docs' }],
+  },
 ];
 
 export default function Sidebar({
@@ -57,6 +61,7 @@ export default function Sidebar({
   function isActive(href: string) {
     if (href === '/overview') return pathname === '/overview' || pathname === '/';
     if (href === '/apis') return pathname === '/apis' || pathname.startsWith('/apis/');
+    if (href === '/docs') return pathname === '/docs' || pathname.startsWith('/docs/');
     return pathname === href;
   }
 

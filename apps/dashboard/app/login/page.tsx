@@ -15,7 +15,6 @@ function LoginContent() {
   const urlError = searchParams.get('error');
   const isAccountNotLinked = urlError === 'account_not_linked';
 
-  // If they came with an account_not_linked error, default them to the signup tab
   useEffect(() => {
     if (isAccountNotLinked) {
       setMode('signup');
@@ -83,7 +82,8 @@ function LoginContent() {
         }
       }
 
-      router.push('/overview');
+      // Use hard navigation so the session cookie is picked up by middleware
+      window.location.href = '/overview';
     } catch (err: any) {
       setError(err.message || 'An unexpected error occurred');
       setIsPending(false);
@@ -93,37 +93,25 @@ function LoginContent() {
   return (
     <div className="auth-split">
       <div className="auth-left">
-        {isAccountNotLinked && (
-          <div className="pixel-banner" style={{
-            background: '#ff003c',
-            color: '#fff',
-            padding: '12px 24px',
-            fontFamily: 'monospace',
-            textTransform: 'uppercase',
-            fontWeight: 'bold',
-            letterSpacing: '1px',
-            border: '2px solid #000',
-            boxShadow: '4px 4px 0px #000',
-            marginBottom: '24px',
-            textAlign: 'center',
-            animation: 'blink 2s infinite'
-          }}>
-            <div style={{ fontSize: '18px', marginBottom: '4px' }}>⚠️ MISSION ABORTED ⚠️</div>
-            <div style={{ fontSize: '12px', opacity: 0.9 }}>
-              No player profile found for that account! You need to CREATE AN ACCOUNT first before you can fast-travel with Google/GitHub!
-            </div>
-          </div>
-        )}
-
         <div className="auth-box">
           <div className="auth-logo pixel">RELAY_</div>
 
           <div className="auth-head">
             <div className="auth-title pixel">{isSignup ? 'CREATE ACCOUNT' : 'SIGN IN'}</div>
             <div className="auth-sub">
-              {isSignup ? 'Set up a new workspace' : 'Sign in to acme-workspace'}
+              {isSignup ? 'Set up a new workspace' : 'Welcome back — sign in to continue'}
             </div>
           </div>
+
+          {isAccountNotLinked && (
+            <div className="auth-notice">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <circle cx="8" cy="8" r="7" />
+                <path d="M8 4.5v4M8 11v.5" />
+              </svg>
+              <span>No account found for that login. Create one below to get started.</span>
+            </div>
+          )}
 
           <div className="panel auth-panel">
             <div className="oauth-row">
@@ -249,7 +237,7 @@ function LoginContent() {
               </>
             ) : (
               <>
-                Don't have an account?{' '}
+                Don&apos;t have an account?{' '}
                 <a
                   onClick={() => {
                     setMode('signup');
@@ -278,9 +266,9 @@ function LoginContent() {
         <div className="preview-panel-wrap">
           <div className="preview-copy">
             <h2 className="pixel">Your API infrastructure, under control.</h2>
-            <p>Ship faster with real-time observability, instant API gateways, and seamless scaling.</p>
+            <p>Ship faster with real-time observability, instant API keys, and seamless scaling.</p>
           </div>
-          
+
           <div className="preview-frame">
             <div className="preview-titlebar">
               <div className="preview-dots">
@@ -290,68 +278,66 @@ function LoginContent() {
               </div>
               <div className="preview-path">~/acme-workspace/overview</div>
             </div>
-            
+
             <div className="preview-content">
-              <div className="stat-row" style={{ marginBottom: '32px' }}>
-                <div className="stat">
-                  <div className="stat-label">Requests (24h)</div>
-                  <div className="stat-value">3.2M</div>
-                  <div className="stat-delta" style={{color: 'var(--success)'}}>+12%</div>
+              {/* Stat row */}
+              <div className="preview-stats">
+                <div className="preview-stat">
+                  <div className="preview-stat-label">Requests (24h)</div>
+                  <div className="preview-stat-value">3.2M</div>
+                  <div className="preview-stat-delta positive">+12%</div>
                 </div>
-                <div className="stat">
-                  <div className="stat-label">Success rate</div>
-                  <div className="stat-value green">99.99%</div>
-                  <div className="stat-delta">N/A</div>
+                <div className="preview-stat">
+                  <div className="preview-stat-label">Success rate</div>
+                  <div className="preview-stat-value" style={{ color: 'var(--green)' }}>99.99%</div>
+                  <div className="preview-stat-delta">—</div>
                 </div>
-                <div className="stat">
-                  <div className="stat-label">p95 latency</div>
-                  <div className="stat-value">42ms</div>
-                  <div className="stat-delta" style={{color: 'var(--success)'}}>-5ms</div>
+                <div className="preview-stat">
+                  <div className="preview-stat-label">p95 latency</div>
+                  <div className="preview-stat-value">42ms</div>
+                  <div className="preview-stat-delta positive">-5ms</div>
                 </div>
               </div>
 
-              <div className="panel" style={{ background: 'var(--bg)' }}>
-                <div className="row" style={{ gridTemplateColumns: '1.6fr .9fr .9fr .7fr', padding: '12px 16px', borderBottom: '1px solid var(--border)' }}>
+              {/* API list */}
+              <div className="preview-table">
+                <div className="preview-table-head">
+                  <span>API</span>
+                  <span>REQUESTS</span>
+                  <span>LATENCY</span>
+                  <span style={{ textAlign: 'right' }}>STATUS</span>
+                </div>
+                <div className="preview-table-row">
                   <div>
-                    <div className="c-strong">production-api</div>
-                    <div className="c-secondary" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      REST · v1 <span className="tag">production</span>
-                    </div>
+                    <div className="preview-api-name">production-api</div>
+                    <div className="preview-api-meta">REST · v1 <span className="preview-tag">production</span></div>
                   </div>
-                  <div>
-                    <div className="c-label">REQUESTS</div>
-                    <div>2.8M</div>
-                  </div>
-                  <div>
-                    <div className="c-label">LATENCY</div>
-                    <div>45ms</div>
-                  </div>
-                  <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'center' }}>
-                    <div className="status-indicator">
-                      <div className="status-dot green"></div> Active
-                    </div>
+                  <div>2.8M</div>
+                  <div>45ms</div>
+                  <div style={{ textAlign: 'right' }}>
+                    <span className="preview-status"><span className="preview-status-dot green"></span>Active</span>
                   </div>
                 </div>
-
-                <div className="row" style={{ gridTemplateColumns: '1.6fr .9fr .9fr .7fr', padding: '12px 16px' }}>
+                <div className="preview-table-row">
                   <div>
-                    <div className="c-strong">staging-api</div>
-                    <div className="c-secondary" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      REST · v1 <span className="tag">staging</span>
-                    </div>
+                    <div className="preview-api-name">staging-api</div>
+                    <div className="preview-api-meta">REST · v1 <span className="preview-tag">staging</span></div>
                   </div>
+                  <div>421K</div>
+                  <div>38ms</div>
+                  <div style={{ textAlign: 'right' }}>
+                    <span className="preview-status"><span className="preview-status-dot green"></span>Active</span>
+                  </div>
+                </div>
+                <div className="preview-table-row">
                   <div>
-                    <div className="c-label">REQUESTS</div>
-                    <div>421K</div>
+                    <div className="preview-api-name">internal-api</div>
+                    <div className="preview-api-meta">REST · v2 <span className="preview-tag">production</span></div>
                   </div>
-                  <div>
-                    <div className="c-label">LATENCY</div>
-                    <div>38ms</div>
-                  </div>
-                  <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'center' }}>
-                    <div className="status-indicator">
-                      <div className="status-dot green"></div> Active
-                    </div>
+                  <div>89K</div>
+                  <div>22ms</div>
+                  <div style={{ textAlign: 'right' }}>
+                    <span className="preview-status"><span className="preview-status-dot green"></span>Active</span>
                   </div>
                 </div>
               </div>

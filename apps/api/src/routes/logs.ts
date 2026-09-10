@@ -45,8 +45,10 @@ router.get('/', async (req: AuthRequest, res: Response): Promise<void> => {
         l.status_code,
         l.latency_ms,
         l.created_at,
+        l.method,
+        l.path,
         a.name as api_name,
-        a.upstream_url as path
+        a.upstream_url
       FROM api_request_logs l
       JOIN apis a ON l.api_id = a.id
       WHERE a.workspace_id = $1
@@ -56,7 +58,6 @@ router.get('/', async (req: AuthRequest, res: Response): Promise<void> => {
       [workspaceId]
     );
 
-    // We don't track HTTP method or full path yet in gateway, so we mock them based on upstream_url
     const logs = result.rows.map((row) => ({
       id: row.id,
       time: new Date(row.created_at).toLocaleTimeString([], {
@@ -64,8 +65,8 @@ router.get('/', async (req: AuthRequest, res: Response): Promise<void> => {
         minute: '2-digit',
         second: '2-digit',
       }),
-      method: 'GET', // Mocked for now, until gateway captures it
-      path: row.path,
+      method: row.method || 'GET', 
+      path: row.path || row.upstream_url,
       status: row.status_code,
       latency: `${row.latency_ms}ms`,
       api: row.api_name,

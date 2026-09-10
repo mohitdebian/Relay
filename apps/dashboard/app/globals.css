@@ -99,6 +99,11 @@ button { font-family: inherit; }
 .stat-label { font-family: 'Silkscreen', monospace; font-size: 15px; color: var(--text-secondary); margin-bottom: 6px; }
 .stat-value { font-family: 'JetBrains Mono', monospace; font-size: 21px; font-weight: 500; letter-spacing: -.01em; }
 .stat-value.green { color: var(--green); }
+.stat-value.yellow { color: var(--yellow); }
+.stat-value.red { color: var(--red); }
+.green { color: var(--green); }
+.yellow { color: var(--yellow); }
+.red { color: var(--red); }
 .stat-delta { font-size: 13px; color: var(--text-tertiary); margin-top: 3px; }
 
 .section { margin-bottom: 34px; }

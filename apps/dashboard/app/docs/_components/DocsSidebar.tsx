@@ -21,13 +21,13 @@ export function DocsSidebar() {
       <div className="nav-group">
         <div className="nav-group-label">API KEYS</div>
         <Link href="/docs/api-keys/create" className={`nav-item method${isActive('/docs/api-keys/create')}`}>
-          <span className="m-tag post">POST</span>Create a key
+          <span className="m-tag post">POST</span>Create API key
         </Link>
         <Link href="/docs/api-keys/list" className={`nav-item method${isActive('/docs/api-keys/list')}`}>
-          <span className="m-tag get">GET</span>List keys
+          <span className="m-tag get">GET</span>List API keys
         </Link>
         <Link href="/docs/api-keys/revoke" className={`nav-item method${isActive('/docs/api-keys/revoke')}`}>
-          <span className="m-tag delete">DEL</span>Revoke a key
+          <span className="m-tag delete">DEL</span>Revoke API key
         </Link>
       </div>
       <div className="nav-group">
@@ -36,11 +36,11 @@ export function DocsSidebar() {
           <span className="m-tag get">GET</span>List APIs
         </Link>
         <Link href="/docs/apis/create" className={`nav-item method${isActive('/docs/apis/create')}`}>
-          <span className="m-tag post">POST</span>Create an API
+          <span className="m-tag post">POST</span>Create API Route
         </Link>
-        <div className="nav-item method">
+        <Link href="/docs/apis/stats" className={`nav-item method${isActive('/docs/apis/stats')}`}>
           <span className="m-tag get">GET</span>Get endpoint stats
-        </div>
+        </Link>
       </div>
       <div className="nav-group">
         <div className="nav-group-label">WEBHOOKS</div>

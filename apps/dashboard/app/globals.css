@@ -457,3 +457,8 @@ footer { padding: 44px 0 30px; }
   margin-left: 8px;
   flex-shrink: 0;
 }
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}

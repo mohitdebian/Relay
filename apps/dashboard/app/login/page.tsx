@@ -1,15 +1,26 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, Suspense, useEffect } from 'react';
 import Link from 'next/link';
 import { authClient } from '@/app/lib/auth/client';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
-export default function LoginPage() {
+function LoginContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [mode, setMode] = useState<'signin' | 'signup'>('signin');
   const [error, setError] = useState('');
   const [isPending, setIsPending] = useState(false);
+
+  const urlError = searchParams.get('error');
+  const isAccountNotLinked = urlError === 'account_not_linked';
+
+  // If they came with an account_not_linked error, default them to the signup tab
+  useEffect(() => {
+    if (isAccountNotLinked) {
+      setMode('signup');
+    }
+  }, [isAccountNotLinked]);
 
   const isSignup = mode === 'signup';
 
@@ -25,8 +36,6 @@ export default function LoginPage() {
         setError(error.message || `Failed to login with ${provider}`);
         setIsPending(false);
       }
-      // If success, Better Auth usually redirects automatically to callbackURL
-      // But we add a fallback manual redirect just in case
       if (data?.url) {
         window.location.href = data.url;
       }
@@ -50,7 +59,6 @@ export default function LoginPage() {
         const name = formData.get('name') as string;
         const workspace = formData.get('workspace') as string;
 
-        // Pass workspace name inside name or a custom field if supported, otherwise rely on the backend JIT
         const { data, error: signUpError } = await authClient.signUp.email({
           email,
           password,
@@ -87,6 +95,28 @@ export default function LoginPage() {
       <div className="bg-grid"></div>
 
       <div className="auth-shell">
+        {isAccountNotLinked && (
+          <div className="pixel-banner" style={{
+            background: '#ff003c',
+            color: '#fff',
+            padding: '12px 24px',
+            fontFamily: 'monospace',
+            textTransform: 'uppercase',
+            fontWeight: 'bold',
+            letterSpacing: '1px',
+            border: '2px solid #000',
+            boxShadow: '4px 4px 0px #000',
+            marginBottom: '24px',
+            textAlign: 'center',
+            animation: 'blink 2s infinite'
+          }}>
+            <div style={{ fontSize: '18px', marginBottom: '4px' }}>⚠️ MISSION ABORTED ⚠️</div>
+            <div style={{ fontSize: '12px', opacity: 0.9 }}>
+              No player profile found for that account! You need to CREATE AN ACCOUNT first before you can fast-travel with Google/GitHub!
+            </div>
+          </div>
+        )}
+
         <div className="auth-box">
           <div className="auth-logo pixel">RELAY_</div>
 
@@ -242,5 +272,13 @@ export default function LoginPage() {
         </div>
       </div>
     </>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div style={{ display: 'flex', height: '100vh', justifyContent: 'center', alignItems: 'center' }}>LOADING...</div>}>
+      <LoginContent />
+    </Suspense>
   );
 }

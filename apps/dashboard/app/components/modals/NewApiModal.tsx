@@ -20,6 +20,7 @@ export function NewApiModal({ open, onClose }: NewApiModalProps) {
   const [upstreamUrl, setUpstreamUrl] = useState('');
   const [desc, setDesc] = useState('');
   const [copyText, setCopyText] = useState('Copy');
+  const [copyUrlText, setCopyUrlText] = useState('Copy');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [createdData, setCreatedData] = useState<{
@@ -39,6 +40,7 @@ export function NewApiModal({ open, onClose }: NewApiModalProps) {
       setEnv('production');
       setDesc('');
       setCopyText('Copy');
+      setCopyUrlText('Copy');
       setError('');
       setIsSubmitting(false);
       setCreatedData(null);
@@ -180,10 +182,24 @@ export function NewApiModal({ open, onClose }: NewApiModalProps) {
                 <span className="k">BASE URL</span>
                 <span
                   className="v"
-                  title={`relay.dev/acme-workspace/${createdData?.slug || 'api'}`}
+                  title={typeof window !== 'undefined' ? (window.location.hostname === 'localhost' ? 'http://127.0.0.1:8080/' : 'https://gateway.relay.com/') + (createdData?.slug || 'api') : 'http://127.0.0.1:8080/' + (createdData?.slug || 'api')}
                 >
-                  <Typewriter text={`relay.dev/acme-workspace/${createdData?.slug || 'api'}`} />
+                  <Typewriter text={typeof window !== 'undefined' ? (window.location.hostname === 'localhost' ? 'http://127.0.0.1:8080/' : 'https://gateway.relay.com/') + (createdData?.slug || 'api') : 'http://127.0.0.1:8080/' + (createdData?.slug || 'api')} />
                 </span>
+                <button
+                  type="button"
+                  className="btn btn-secondary modal-copy-btn"
+                  onClick={() => {
+                    if (!createdData) return;
+                    const url = typeof window !== 'undefined' ? (window.location.hostname === 'localhost' ? 'http://127.0.0.1:8080/' : 'https://gateway.relay.com/') + createdData.slug : 'http://127.0.0.1:8080/' + createdData.slug;
+                    navigator.clipboard.writeText(url).then(() => {
+                      setCopyUrlText('Copied!');
+                      setTimeout(() => setCopyUrlText('Copy'), 2000);
+                    });
+                  }}
+                >
+                  {copyUrlText}
+                </button>
               </div>
               <div className="modal-kv-row">
                 <span className="k">API KEY</span>

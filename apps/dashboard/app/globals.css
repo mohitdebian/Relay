@@ -30,10 +30,10 @@ button { font-family: inherit; }
 .shell { display: flex; min-height: 100vh; }
 .sidebar { width: var(--sidebar-w); flex-shrink: 0; background: var(--bg); border-right: 1px solid var(--border); display: flex; flex-direction: column; position: fixed; top: 0; left: 0; bottom: 0; overflow-y: auto; z-index: 20; }
 .sidebar-brand { height: var(--topbar-h); display: flex; align-items: center; padding: 0 18px; border-bottom: 1px solid var(--border); }
-.sidebar-brand .logo { font-family: 'Silkscreen', monospace; font-weight: 700; font-size: 30px; }
+.logo { font-family: 'Silkscreen', monospace; font-weight: 700; font-size: 30px; }
 .sidebar-nav { padding: 14px 10px 24px; flex: 1; }
 .nav-group { margin-bottom: 18px; }
-.nav-group-label { font-size: 10.5px; font-weight: 600; color: var(--text-tertiary); letter-spacing: .06em; padding: 0 10px 6px; }
+.nav-group-label { font-family: 'Silkscreen', monospace; font-size: 18px; font-weight: 400; color: var(--text-secondary); letter-spacing: 0.02em; padding: 0 10px 6px; }
 .nav-item { display: flex; align-items: center; height: 29px; padding: 0 10px; margin-bottom: 2px; border-radius: var(--radius); color: var(--text-secondary); font-size: 13px; cursor: pointer; transition: background .1s ease, color .1s ease; }
 .nav-item:hover { background: rgba(0,0,0,.035); color: var(--text); }
 .nav-item.active { background: rgba(0,0,0,.05); color: var(--text); font-weight: 500; }

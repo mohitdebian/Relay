@@ -74,7 +74,13 @@ export default function WorkspaceSwitcher({
               justifyContent: 'center',
             }}
           >
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style={{ shapeRendering: 'crispEdges' }}>
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              style={{ shapeRendering: 'crispEdges' }}
+            >
               <path d="M4 4h6v2h10v14H4V4zm8 4H6v10h12V8h-6z" />
             </svg>
           </div>
@@ -149,7 +155,13 @@ export default function WorkspaceSwitcher({
                   justifyContent: 'center',
                 }}
               >
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" style={{ shapeRendering: 'crispEdges' }}>
+                <svg
+                  width="10"
+                  height="10"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  style={{ shapeRendering: 'crispEdges' }}
+                >
                   <path d="M4 4h6v2h10v14H4V4zm8 4H6v10h12V8h-6z" />
                 </svg>
               </div>

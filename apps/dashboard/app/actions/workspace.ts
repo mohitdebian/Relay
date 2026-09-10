@@ -33,7 +33,11 @@ export async function createWorkspaceAction(prevState: any, formData: FormData) 
     if (!name) return { error: 'Workspace name is required' };
 
     // Generate a URL-friendly slug from the workspace name
-    const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'workspace-' + Date.now();
+    const slug =
+      name
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '') || 'workspace-' + Date.now();
 
     const res = await fetchAPI('/workspaces', {
       method: 'POST',
@@ -75,7 +79,7 @@ export async function updateWorkspaceAction(prevState: any, formData: FormData) 
   }
 }
 
-export async function deleteWorkspaceAction(id?: string) {
+export async function deleteWorkspaceAction(_id?: string) {
   try {
     const cookieStore = await cookies();
     const workspaceId = cookieStore.get('relay_active_workspace')?.value;

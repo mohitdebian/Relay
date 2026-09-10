@@ -3,10 +3,9 @@
 import { useState, FormEvent, Suspense, useEffect } from 'react';
 import Link from 'next/link';
 import { authClient } from '@/app/lib/auth/client';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
 function LoginContent() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const [mode, setMode] = useState<'signin' | 'signup'>('signin');
   const [error, setError] = useState('');
@@ -38,8 +37,8 @@ function LoginContent() {
       if (data?.url) {
         window.location.href = data.url;
       }
-    } catch (err: any) {
-      setError(err.message || 'An error occurred during social login');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'An error occurred during social login');
       setIsPending(false);
     }
   };
@@ -58,7 +57,7 @@ function LoginContent() {
         const name = formData.get('name') as string;
         const workspace = formData.get('workspace') as string;
 
-        const { data, error: signUpError } = await authClient.signUp.email({
+        const { error: signUpError } = await authClient.signUp.email({
           email,
           password,
           name: name || workspace.split('-')[0],
@@ -70,7 +69,7 @@ function LoginContent() {
           return;
         }
       } else {
-        const { data, error: signInError } = await authClient.signIn.email({
+        const { error: signInError } = await authClient.signIn.email({
           email,
           password,
         });
@@ -83,9 +82,10 @@ function LoginContent() {
       }
 
       // Use hard navigation so the session cookie is picked up by middleware
+      // eslint-disable-next-line @next/next/no-location-assign-relative-destination
       window.location.href = '/overview';
-    } catch (err: any) {
-      setError(err.message || 'An unexpected error occurred');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'An unexpected error occurred');
       setIsPending(false);
     }
   };
@@ -105,7 +105,14 @@ function LoginContent() {
 
           {isAccountNotLinked && (
             <div className="auth-notice">
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 16 16"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              >
                 <circle cx="8" cy="8" r="7" />
                 <path d="M8 4.5v4M8 11v.5" />
               </svg>
@@ -257,9 +264,7 @@ function LoginContent() {
           )}
         </div>
 
-        <div className="auth-footer">
-          © 2026 Relay · Privacy · Terms · Status
-        </div>
+        <div className="auth-footer">© 2026 Relay · Privacy · Terms · Status</div>
       </div>
 
       <div className="auth-right">
@@ -289,7 +294,9 @@ function LoginContent() {
                 </div>
                 <div className="preview-stat">
                   <div className="preview-stat-label">Success rate</div>
-                  <div className="preview-stat-value" style={{ color: 'var(--green)' }}>99.99%</div>
+                  <div className="preview-stat-value" style={{ color: 'var(--green)' }}>
+                    99.99%
+                  </div>
                   <div className="preview-stat-delta">—</div>
                 </div>
                 <div className="preview-stat">
@@ -310,34 +317,46 @@ function LoginContent() {
                 <div className="preview-table-row">
                   <div>
                     <div className="preview-api-name">production-api</div>
-                    <div className="preview-api-meta">REST · v1 <span className="preview-tag">production</span></div>
+                    <div className="preview-api-meta">
+                      REST · v1 <span className="preview-tag">production</span>
+                    </div>
                   </div>
                   <div>2.8M</div>
                   <div>45ms</div>
                   <div style={{ textAlign: 'right' }}>
-                    <span className="preview-status"><span className="preview-status-dot green"></span>Active</span>
+                    <span className="preview-status">
+                      <span className="preview-status-dot green"></span>Active
+                    </span>
                   </div>
                 </div>
                 <div className="preview-table-row">
                   <div>
                     <div className="preview-api-name">staging-api</div>
-                    <div className="preview-api-meta">REST · v1 <span className="preview-tag">staging</span></div>
+                    <div className="preview-api-meta">
+                      REST · v1 <span className="preview-tag">staging</span>
+                    </div>
                   </div>
                   <div>421K</div>
                   <div>38ms</div>
                   <div style={{ textAlign: 'right' }}>
-                    <span className="preview-status"><span className="preview-status-dot green"></span>Active</span>
+                    <span className="preview-status">
+                      <span className="preview-status-dot green"></span>Active
+                    </span>
                   </div>
                 </div>
                 <div className="preview-table-row">
                   <div>
                     <div className="preview-api-name">internal-api</div>
-                    <div className="preview-api-meta">REST · v2 <span className="preview-tag">production</span></div>
+                    <div className="preview-api-meta">
+                      REST · v2 <span className="preview-tag">production</span>
+                    </div>
                   </div>
                   <div>89K</div>
                   <div>22ms</div>
                   <div style={{ textAlign: 'right' }}>
-                    <span className="preview-status"><span className="preview-status-dot green"></span>Active</span>
+                    <span className="preview-status">
+                      <span className="preview-status-dot green"></span>Active
+                    </span>
                   </div>
                 </div>
               </div>
@@ -351,7 +370,20 @@ function LoginContent() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div style={{ display: 'flex', height: '100vh', justifyContent: 'center', alignItems: 'center' }}>LOADING...</div>}>
+    <Suspense
+      fallback={
+        <div
+          style={{
+            display: 'flex',
+            height: '100vh',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          LOADING...
+        </div>
+      }
+    >
       <LoginContent />
     </Suspense>
   );

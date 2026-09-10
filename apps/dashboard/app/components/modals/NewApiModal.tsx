@@ -16,7 +16,7 @@ export function NewApiModal({ open, onClose }: NewApiModalProps) {
   const [step, setStep] = useState<1 | 2>(1);
   const [name, setName] = useState('');
   const [apiType, setApiType] = useState('REST');
-  const [env, setEnv] = useState('Production');
+  const [env, setEnv] = useState('production');
   const [desc, setDesc] = useState('');
   const [copyText, setCopyText] = useState('Copy');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -34,7 +34,7 @@ export function NewApiModal({ open, onClose }: NewApiModalProps) {
       setStep(1);
       setName('');
       setApiType('REST');
-      setEnv('Production');
+      setEnv('production');
       setDesc('');
       setCopyText('Copy');
       setError('');
@@ -109,9 +109,9 @@ export function NewApiModal({ open, onClose }: NewApiModalProps) {
                 value={env}
                 onChange={setEnv}
                 options={[
-                  { label: 'Production', value: 'Production' },
-                  { label: 'Staging', value: 'Staging' },
-                  { label: 'Development', value: 'Development' },
+                  { label: 'Production', value: 'production' },
+                  { label: 'Staging', value: 'staging' },
+                  { label: 'Development', value: 'development' },
                 ]}
               />
             </div>

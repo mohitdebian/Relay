@@ -38,7 +38,7 @@ export function CreateKeyModal({ open, onClose }: CreateKeyModalProps) {
     setTimeout(() => {
       setStep(1);
       setName('');
-      setEnv('Production');
+      setEnv('production');
       setCopyText('Copy');
       setError('');
       setIsSubmitting(false);

@@ -79,9 +79,12 @@ router.post(
     }
 
     try {
+      const crypto = require('crypto');
+      const secret = crypto.randomBytes(32).toString('hex');
+
       const result = await pool.query(
-        'INSERT INTO webhooks (workspace_id, url, events) VALUES ($1, $2, $3) RETURNING *',
-        [workspaceId, url, JSON.stringify(events)]
+        'INSERT INTO webhooks (workspace_id, url, secret, events) VALUES ($1, $2, $3, $4) RETURNING *',
+        [workspaceId, url, secret, JSON.stringify(events)]
       );
       res.status(201).json({ webhook: result.rows[0] });
     } catch (error) {

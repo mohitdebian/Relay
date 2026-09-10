@@ -2,6 +2,8 @@ import { redirect } from 'next/navigation';
 import { headers } from 'next/headers';
 import { auth } from '@/app/lib/auth/server';
 
+export const dynamic = 'force-dynamic';
+
 export default async function LoginLayout({ children }: { children: React.ReactNode }) {
   const session = await auth.getSession();
 

@@ -1,0 +1,49 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test-and-lint:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        
+    - name: Install dependencies (API)
+      working-directory: ./apps/api
+      run: npm install
+      
+    - name: Lint API
+      working-directory: ./apps/api
+      run: npm run lint
+      
+    - name: Test API
+      working-directory: ./apps/api
+      run: npm run test --passWithNoTests
+
+    - name: Install dependencies (Dashboard)
+      working-directory: ./apps/dashboard
+      run: npm install
+      
+    - name: Lint Dashboard
+      working-directory: ./apps/dashboard
+      run: npm run lint
+
+    - name: Build Dashboard
+      working-directory: ./apps/dashboard
+      run: npm run build

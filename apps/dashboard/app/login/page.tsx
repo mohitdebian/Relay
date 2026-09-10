@@ -91,10 +91,8 @@ function LoginContent() {
   };
 
   return (
-    <>
-      <div className="bg-grid"></div>
-
-      <div className="auth-shell">
+    <div className="auth-split">
+      <div className="auth-left">
         {isAccountNotLinked && (
           <div className="pixel-banner" style={{
             background: '#ff003c',
@@ -270,8 +268,98 @@ function LoginContent() {
             </div>
           )}
         </div>
+
+        <div className="auth-footer">
+          © 2026 Relay · Privacy · Terms · Status
+        </div>
       </div>
-    </>
+
+      <div className="auth-right">
+        <div className="preview-panel-wrap">
+          <div className="preview-copy">
+            <h2 className="pixel">Your API infrastructure, under control.</h2>
+            <p>Ship faster with real-time observability, instant API gateways, and seamless scaling.</p>
+          </div>
+          
+          <div className="preview-frame">
+            <div className="preview-titlebar">
+              <div className="preview-dots">
+                <div className="preview-dot"></div>
+                <div className="preview-dot"></div>
+                <div className="preview-dot"></div>
+              </div>
+              <div className="preview-path">~/acme-workspace/overview</div>
+            </div>
+            
+            <div className="preview-content">
+              <div className="stat-row" style={{ marginBottom: '32px' }}>
+                <div className="stat">
+                  <div className="stat-label">Requests (24h)</div>
+                  <div className="stat-value">3.2M</div>
+                  <div className="stat-delta" style={{color: 'var(--success)'}}>+12%</div>
+                </div>
+                <div className="stat">
+                  <div className="stat-label">Success rate</div>
+                  <div className="stat-value green">99.99%</div>
+                  <div className="stat-delta">N/A</div>
+                </div>
+                <div className="stat">
+                  <div className="stat-label">p95 latency</div>
+                  <div className="stat-value">42ms</div>
+                  <div className="stat-delta" style={{color: 'var(--success)'}}>-5ms</div>
+                </div>
+              </div>
+
+              <div className="panel" style={{ background: 'var(--bg)' }}>
+                <div className="row" style={{ gridTemplateColumns: '1.6fr .9fr .9fr .7fr', padding: '12px 16px', borderBottom: '1px solid var(--border)' }}>
+                  <div>
+                    <div className="c-strong">production-api</div>
+                    <div className="c-secondary" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      REST · v1 <span className="tag">production</span>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="c-label">REQUESTS</div>
+                    <div>2.8M</div>
+                  </div>
+                  <div>
+                    <div className="c-label">LATENCY</div>
+                    <div>45ms</div>
+                  </div>
+                  <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'center' }}>
+                    <div className="status-indicator">
+                      <div className="status-dot green"></div> Active
+                    </div>
+                  </div>
+                </div>
+
+                <div className="row" style={{ gridTemplateColumns: '1.6fr .9fr .9fr .7fr', padding: '12px 16px' }}>
+                  <div>
+                    <div className="c-strong">staging-api</div>
+                    <div className="c-secondary" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      REST · v1 <span className="tag">staging</span>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="c-label">REQUESTS</div>
+                    <div>421K</div>
+                  </div>
+                  <div>
+                    <div className="c-label">LATENCY</div>
+                    <div>38ms</div>
+                  </div>
+                  <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'center' }}>
+                    <div className="status-indicator">
+                      <div className="status-dot green"></div> Active
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 

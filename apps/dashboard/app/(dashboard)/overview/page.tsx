@@ -9,9 +9,10 @@ import { NewApiButton } from '@/app/components/modals/NewApiModal';
 export default async function OverviewPage() {
   const data_apis = await fetchAPI('/apis').catch((e) => {
     if (isRedirectError(e)) throw e;
-    return { apis: [] };
+    return { apis: [], debugError: e.message };
   });
   const apis = data_apis?.apis || [];
+  const debugError = (data_apis as any)?.debugError;
 
   const data_logs = await getLogsAction().catch((e) => {
     if (isRedirectError(e)) throw e;
@@ -43,6 +44,16 @@ export default async function OverviewPage() {
             <Typewriter text="OVERVIEW" />
           </div>
           <div className="page-sub">{apis.length} APIs · last updated just now</div>
+          {debugError && (
+            <div style={{ color: 'red', marginTop: '10px' }}>
+              DEBUG ERROR: {debugError}
+            </div>
+          )}
+          {(data_apis as any)?.debug && (
+            <pre style={{ fontSize: '10px', color: '#999', marginTop: '10px' }}>
+              {JSON.stringify((data_apis as any).debug, null, 2)}
+            </pre>
+          )}
         </div>
         <NewApiButton />
       </div>

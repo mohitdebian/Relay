@@ -20,14 +20,14 @@
 .search-btn .kbd { margin-left: auto; font-family: 'JetBrains Mono', monospace; font-size: 11px; border: 1px solid var(--border); border-radius: 4px; padding: 1px 5px; }
 
 /* ---- layout: content | toc ---- */
-.docs-content-layout { display: flex; align-items: flex-start; flex: 1; min-height: calc(100vh - var(--topbar-h)); }
+.docs-content-layout { display: flex; align-items: flex-start; flex: 1; min-height: calc(100vh - var(--topbar-h)); justify-content: flex-start; gap: 40px; padding: 0 50px; }
 
 .sidebar.docs-sidebar .nav-group-label { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; color: var(--text-tertiary); letter-spacing: 0.06em; padding: 0 10px 8px; }
 .nav-item.method { display: flex; gap: 7px; align-items: center; }
 .m-tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 600; width: 32px; flex-shrink: 0; }
 .m-tag.get { color: var(--blue); } .m-tag.post { color: var(--green); } .m-tag.delete { color: var(--red); }
 
-.docs-main { width: 100%; max-width: 960px; margin: 0 auto; padding: 40px 64px; }
+.docs-main { flex: 1; min-width: 0; max-width: 840px; margin: 0; padding: 40px 0; }
 
 .docs-breadcrumb { font-size: 14px; color: var(--text-tertiary); margin-bottom: 16px; font-weight: 500; }
 .docs-h1 { font-family: 'Silkscreen', monospace; font-size: 32px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }

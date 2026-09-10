@@ -39,9 +39,9 @@ export function AddWebhookModal({ open, onClose }: AddWebhookModalProps) {
     else events = [event];
 
     const res = await createWebhookAction(url, events);
-    
+
     setLoading(false);
-    
+
     if (res.success) {
       router.refresh();
       handleClose();
@@ -54,7 +54,11 @@ export function AddWebhookModal({ open, onClose }: AddWebhookModalProps) {
     <Modal open={open} onClose={handleClose} title="Add Webhook">
       <form onSubmit={submitWebhook}>
         <div className="modal-body">
-          {error && <div className="c-red mb-4" style={{ color: 'var(--red)', marginBottom: '16px' }}>{error}</div>}
+          {error && (
+            <div className="c-red mb-4" style={{ color: 'var(--red)', marginBottom: '16px' }}>
+              {error}
+            </div>
+          )}
           <div className="field">
             <label>Payload URL</label>
             <input
@@ -83,7 +87,12 @@ export function AddWebhookModal({ open, onClose }: AddWebhookModalProps) {
           </div>
         </div>
         <div className="modal-foot">
-          <button type="button" className="btn btn-secondary" onClick={handleClose} disabled={loading}>
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={handleClose}
+            disabled={loading}
+          >
             Cancel
           </button>
           <button type="submit" className="btn btn-primary" disabled={loading}>

@@ -22,8 +22,7 @@
 /* ---- shell: nav | content | toc ---- */
 .docs-shell { display: flex; max-width: 1440px; margin: 0 auto; align-items: flex-start; }
 
-.docs-nav { width: var(--nav-w); flex-shrink: 0; padding: 26px 14px; position: sticky; top: var(--topbar-h); height: calc(100vh - var(--topbar-h)); overflow-y: auto; }
-.docs-nav .nav-group-label { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; padding: 0 10px 8px; color: var(--text-tertiary); }
+.docs-nav { width: var(--nav-w); flex-shrink: 0; padding: 14px 10px 24px; position: sticky; top: var(--topbar-h); height: calc(100vh - var(--topbar-h)); overflow-y: auto; }
 .nav-item.method { display: flex; gap: 7px; align-items: center; }
 .m-tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 600; width: 32px; flex-shrink: 0; }
 .m-tag.get { color: var(--blue); } .m-tag.post { color: var(--green); } .m-tag.delete { color: var(--red); }

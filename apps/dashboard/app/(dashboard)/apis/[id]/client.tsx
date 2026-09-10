@@ -91,7 +91,19 @@ export default function ApiDetailClient({
             </div>
             <div className="stat">
               <div className="stat-label">Success rate</div>
-              <div className="stat-value green">100%</div>
+              <div
+                className={`stat-value ${parseInt(traffic.requests.toString(), 10) > 0 && parseInt(traffic.errors.toString(), 10) / parseInt(traffic.requests.toString(), 10) > 0.05 ? 'yellow' : 'green'}`}
+              >
+                {parseInt(traffic.requests.toString(), 10) > 0
+                  ? Math.round(
+                      ((parseInt(traffic.requests.toString(), 10) -
+                        parseInt(traffic.errors.toString(), 10)) /
+                        parseInt(traffic.requests.toString(), 10)) *
+                        100
+                    )
+                  : 100}
+                %
+              </div>
             </div>
             <div className="stat">
               <div className="stat-label">Avg latency</div>

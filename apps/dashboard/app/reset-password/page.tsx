@@ -29,7 +29,6 @@ function ResetPasswordContent() {
     const newPassword = formData.get('password') as string;
 
     try {
-
       const { error: resetError } = await authClient.resetPassword({
         newPassword,
       });

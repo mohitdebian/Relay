@@ -23,27 +23,28 @@
 .docs-shell { display: flex; max-width: 1440px; margin: 0 auto; align-items: flex-start; }
 
 .docs-nav { width: var(--nav-w); flex-shrink: 0; padding: 26px 14px; position: sticky; top: var(--topbar-h); height: calc(100vh - var(--topbar-h)); overflow-y: auto; }
+.docs-nav .nav-group-label { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; padding: 0 10px 8px; color: var(--text-tertiary); }
 .nav-item.method { display: flex; gap: 7px; align-items: center; }
 .m-tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 600; width: 32px; flex-shrink: 0; }
 .m-tag.get { color: var(--blue); } .m-tag.post { color: var(--green); } .m-tag.delete { color: var(--red); }
 
-.docs-main { flex: 1; min-width: 0; padding: 36px 48px; max-width: 760px; }
+.docs-main { flex: 1; min-width: 0; padding: 40px 64px; max-width: 960px; }
 
-.docs-breadcrumb { font-size: 13px; color: var(--text-tertiary); margin-bottom: 14px; }
-.docs-h1 { font-family: 'Silkscreen', monospace; font-size: 22px; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-.endpoint-badge { display: inline-flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 13px; background: var(--surface); border: 1px solid var(--border); border-radius: 5px; padding: 4px 10px; margin-bottom: 22px; }
+.docs-breadcrumb { font-size: 14px; color: var(--text-tertiary); margin-bottom: 16px; font-weight: 500; }
+.docs-h1 { font-family: 'Silkscreen', monospace; font-size: 32px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.endpoint-badge { display: inline-flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 5px; padding: 5px 12px; margin-bottom: 24px; }
 .endpoint-badge .m { font-weight: 700; }
 .endpoint-badge .m.post { color: var(--green); }
 .endpoint-badge .m.get { color: var(--blue); }
 .endpoint-badge .m.delete { color: var(--red); }
 
-.docs-lede { font-size: 14px; color: var(--text-secondary); margin-bottom: 28px; max-width: 60ch; }
+.docs-lede { font-size: 16px; color: var(--text-secondary); margin-bottom: 32px; max-width: 75ch; line-height: 1.6; }
 
-.docs-h2 { font-size: 16px; font-weight: 600; margin: 32px 0 12px; scroll-margin-top: 70px; }
-.docs-h3 { font-size: 14px; font-weight: 600; margin: 22px 0 8px; scroll-margin-top: 70px; }
-.docs-p { font-size: 13px; color: var(--text); margin-bottom: 14px; max-width: 62ch; line-height: 1.6; }
+.docs-h2 { font-size: 22px; font-weight: 600; margin: 40px 0 16px; scroll-margin-top: 70px; }
+.docs-h3 { font-size: 18px; font-weight: 600; margin: 28px 0 12px; scroll-margin-top: 70px; }
+.docs-p { font-size: 15px; color: var(--text); margin-bottom: 18px; max-width: 75ch; line-height: 1.65; }
 .docs-p.muted { color: var(--text-secondary); }
-code.docs-inline { font-family: 'JetBrains Mono', monospace; font-size: 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 1px 5px; }
+code.docs-inline { font-family: 'JetBrains Mono', monospace; font-size: 13.5px; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 2px 6px; }
 
 /* params table */
 .docs-params { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 22px; background: var(--surface); }

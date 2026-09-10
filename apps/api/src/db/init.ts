@@ -84,6 +84,7 @@ export async function initDb() {
         id SERIAL PRIMARY KEY,
         workspace_id INTEGER REFERENCES workspaces(id) ON DELETE CASCADE,
         url VARCHAR(255) NOT NULL,
+        secret VARCHAR(255),
         events JSONB NOT NULL,
         status VARCHAR(50) DEFAULT 'active',
         last_triggered_at TIMESTAMP,
@@ -105,6 +106,7 @@ export async function initDb() {
 
     // Retroactive update for existing databases
     await pool.query(`ALTER TABLE apis ADD COLUMN IF NOT EXISTS shared_secret VARCHAR(255);`);
+    await pool.query(`ALTER TABLE webhooks ADD COLUMN IF NOT EXISTS secret VARCHAR(255);`);
 
     console.log('Database initialized');
   } catch (error) {

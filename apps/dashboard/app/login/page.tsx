@@ -15,7 +15,7 @@ function LoginContent() {
   useEffect(() => {
     const urlError = searchParams.get('error');
     if (urlError === 'account_not_linked') {
-      setMode('signup');
+      setMode('signin');
       setShowNotice(true);
       // Strip the error param from the URL so retries don't loop
       const url = new URL(window.location.href);
@@ -121,8 +121,8 @@ function LoginContent() {
                 <path d="M8 4.5v4M8 11v.5" />
               </svg>
               <span>
-                No account found for that login. Create one below, or sign in with your email and
-                password.
+                An account with this email already exists. Please sign in with
+                your email and password instead.
               </span>
             </div>
           )}

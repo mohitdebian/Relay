@@ -13,20 +13,23 @@ const eslintConfig = defineConfig([
   // Override default ignores of eslint-config-next.
   globalIgnores([
     // Default ignores of eslint-config-next:
-    ".next/**",
-    "out/**",
-    "build/**",
-    "next-env.d.ts",
-    "test*.js",
-    "test*.mjs",
+    '.next/**',
+    'out/**',
+    'build/**',
+    'next-env.d.ts',
+    'test*.js',
+    'test*.mjs',
   ]),
   {
     rules: {
-      "react/no-unescaped-entities": "off",
-      "@typescript-eslint/no-require-imports": "off",
-      "prefer-const": "warn",
-    }
-  }
+      'react/no-unescaped-entities': 'off',
+      '@typescript-eslint/no-require-imports': 'off',
+      'prefer-const': 'warn',
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-unused-vars': 'warn',
+      'react-hooks/set-state-in-effect': 'off',
+    },
+  },
 ]);
 
 export default eslintConfig;

@@ -15,7 +15,8 @@ export default async function DashboardLayout({ children }: { children: React.Re
     redirect('/onboarding');
   }
 
-  const activeWorkspaceId = cookieStore.get('relay_active_workspace')?.value || workspaces[0].id.toString();
+  const activeWorkspaceId =
+    cookieStore.get('relay_active_workspace')?.value || workspaces[0].id.toString();
 
   return (
     <div className="shell">

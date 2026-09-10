@@ -6,7 +6,7 @@ import { redirect } from 'next/navigation';
 
 export async function switchWorkspaceAction(workspaceId: string, currentPath: string) {
   const cookieStore = await cookies();
-  
+
   // Set the active workspace cookie (expires in 30 days)
   cookieStore.set('relay_active_workspace', workspaceId, {
     path: '/',
@@ -56,7 +56,7 @@ export async function updateWorkspaceAction(prevState: any, formData: FormData) 
     const name = formData.get('name') as string;
     const cookieStore = await cookies();
     const workspaceId = cookieStore.get('relay_active_workspace')?.value;
-    
+
     if (!workspaceId) return { error: 'No active workspace' };
     if (!name) return { error: 'Name is required' };
 
@@ -76,13 +76,13 @@ export async function deleteWorkspaceAction(id?: string) {
   try {
     const cookieStore = await cookies();
     const workspaceId = cookieStore.get('relay_active_workspace')?.value;
-    
+
     if (!workspaceId) return { error: 'No active workspace' };
 
     await fetchAPI(`/workspaces/${workspaceId}`, {
       method: 'DELETE',
     });
-    
+
     // Clear the active workspace cookie since it's deleted
     cookieStore.delete('relay_active_workspace');
   } catch (error: any) {
@@ -97,7 +97,7 @@ export async function deleteAccountAction() {
     await fetchAPI('/users/me', {
       method: 'DELETE',
     });
-    
+
     const cookieStore = await cookies();
     cookieStore.delete('relay_active_workspace');
   } catch (error: any) {

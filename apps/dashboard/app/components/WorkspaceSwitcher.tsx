@@ -4,10 +4,10 @@ import { useState, useRef, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { switchWorkspaceAction } from '@/app/actions/workspace';
 
-export default function WorkspaceSwitcher({ 
-  workspaces, 
-  activeWorkspaceId 
-}: { 
+export default function WorkspaceSwitcher({
+  workspaces,
+  activeWorkspaceId,
+}: {
   workspaces: any[];
   activeWorkspaceId: string;
 }) {
@@ -16,7 +16,8 @@ export default function WorkspaceSwitcher({
   const dropdownRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
-  const activeWorkspace = workspaces.find((w) => w.id.toString() === activeWorkspaceId?.toString()) || workspaces[0];
+  const activeWorkspace =
+    workspaces.find((w) => w.id.toString() === activeWorkspaceId?.toString()) || workspaces[0];
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -39,9 +40,13 @@ export default function WorkspaceSwitcher({
   };
 
   return (
-    <div className="workspace-switcher" ref={dropdownRef} style={{ position: 'relative', margin: '20px', cursor: 'pointer' }}>
-      <div 
-        className="switcher-trigger" 
+    <div
+      className="workspace-switcher"
+      ref={dropdownRef}
+      style={{ position: 'relative', margin: '20px', cursor: 'pointer' }}
+    >
+      <div
+        className="switcher-trigger"
         onClick={() => setIsOpen(!isOpen)}
         style={{
           display: 'flex',
@@ -57,21 +62,30 @@ export default function WorkspaceSwitcher({
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ 
-            width: '20px', 
-            height: '20px', 
-            borderRadius: '4px', 
-            background: 'var(--primary)',
-            color: 'white',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontWeight: 800,
-            fontSize: '11px'
-          }}>
+          <div
+            style={{
+              width: '20px',
+              height: '20px',
+              borderRadius: '4px',
+              background: 'var(--primary)',
+              color: 'white',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontWeight: 800,
+              fontSize: '11px',
+            }}
+          >
             {activeWorkspace?.name?.charAt(0).toUpperCase() || 'W'}
           </div>
-          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '120px' }}>
+          <span
+            style={{
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+              maxWidth: '120px',
+            }}
+          >
             {activeWorkspace?.name || 'Select Workspace'}
           </span>
         </div>
@@ -79,7 +93,7 @@ export default function WorkspaceSwitcher({
       </div>
 
       {isOpen && (
-        <div 
+        <div
           className="switcher-dropdown panel"
           style={{
             position: 'absolute',
@@ -100,27 +114,43 @@ export default function WorkspaceSwitcher({
                 padding: '8px 12px',
                 fontSize: '13px',
                 borderRadius: '4px',
-                background: w.id.toString() === activeWorkspaceId?.toString() ? 'var(--bg-panel)' : 'transparent',
+                background:
+                  w.id.toString() === activeWorkspaceId?.toString()
+                    ? 'var(--bg-panel)'
+                    : 'transparent',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '8px'
+                gap: '8px',
               }}
               onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg-panel)')}
-              onMouseLeave={(e) => (e.currentTarget.style.background = w.id.toString() === activeWorkspaceId?.toString() ? 'var(--bg-panel)' : 'transparent')}
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.background =
+                  w.id.toString() === activeWorkspaceId?.toString()
+                    ? 'var(--bg-panel)'
+                    : 'transparent')
+              }
             >
-              <div style={{ 
-                width: '16px', 
-                height: '16px', 
-                borderRadius: '3px', 
-                background: w.id.toString() === activeWorkspaceId?.toString() ? 'var(--primary)' : 'var(--border)',
-                color: w.id.toString() === activeWorkspaceId?.toString() ? 'white' : 'var(--text-secondary)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontWeight: 800,
-                fontSize: '9px'
-              }}>
+              <div
+                style={{
+                  width: '16px',
+                  height: '16px',
+                  borderRadius: '3px',
+                  background:
+                    w.id.toString() === activeWorkspaceId?.toString()
+                      ? 'var(--primary)'
+                      : 'var(--border)',
+                  color:
+                    w.id.toString() === activeWorkspaceId?.toString()
+                      ? 'white'
+                      : 'var(--text-secondary)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontWeight: 800,
+                  fontSize: '9px',
+                }}
+              >
                 {w.name?.charAt(0).toUpperCase()}
               </div>
               {w.name}

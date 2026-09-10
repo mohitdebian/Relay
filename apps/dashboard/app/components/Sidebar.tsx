@@ -36,7 +36,13 @@ const navGroups = [
   },
 ];
 
-export default function Sidebar({ workspaces = [], activeWorkspaceId = '' }: { workspaces?: any[], activeWorkspaceId?: string }) {
+export default function Sidebar({
+  workspaces = [],
+  activeWorkspaceId = '',
+}: {
+  workspaces?: any[];
+  activeWorkspaceId?: string;
+}) {
   const pathname = usePathname();
 
   function isActive(href: string) {

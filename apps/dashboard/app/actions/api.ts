@@ -19,10 +19,12 @@ export async function createApiAction(name: string, environment: string, descrip
     if (!wsRes.workspaces || wsRes.workspaces.length === 0) {
       throw new Error('No workspaces found. Please create a workspace first.');
     }
-    
-    const cookieStore = await import('next/headers').then(m => m.cookies());
+
+    const cookieStore = await import('next/headers').then((m) => m.cookies());
     const cookieId = cookieStore.get('relay_active_workspace')?.value;
-    const activeWorkspace = cookieId ? wsRes.workspaces.find((w: any) => w.id.toString() === cookieId) : wsRes.workspaces[0];
+    const activeWorkspace = cookieId
+      ? wsRes.workspaces.find((w: any) => w.id.toString() === cookieId)
+      : wsRes.workspaces[0];
     const workspaceId = activeWorkspace?.id || wsRes.workspaces[0].id;
 
     // 2. Create the API

@@ -15,7 +15,7 @@ export async function fetchAPI(endpoint: string, options: RequestInit = {}) {
   if (!token) {
     console.log('NO TOKEN FOUND. COOKIES PRESENT:', cookieStore.getAll());
     redirect('/login');
-  console.log("FETCHING:", `${API_URL}${endpoint}`);
+    console.log('FETCHING:', `${API_URL}${endpoint}`);
   }
 
   const activeWorkspaceId = cookieStore.get('relay_active_workspace')?.value;

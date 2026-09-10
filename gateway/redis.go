@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"strings"
 	"time"
 
 	"github.com/redis/go-redis/v9"
@@ -23,6 +24,15 @@ var rateLimitScript = redis.NewScript(`
 `)
 
 func initRedis(redisUrl string) error {
+	// Upstash requires TLS, but often users put redis:// or https:// instead of rediss://
+	if strings.Contains(redisUrl, "upstash.io") {
+		if strings.HasPrefix(redisUrl, "redis://") {
+			redisUrl = strings.Replace(redisUrl, "redis://", "rediss://", 1)
+		} else if strings.HasPrefix(redisUrl, "https://") {
+			redisUrl = strings.Replace(redisUrl, "https://", "rediss://", 1)
+		}
+	}
+
 	opt, err := redis.ParseURL(redisUrl)
 	if err != nil {
 		return err

@@ -184,7 +184,9 @@ export function NewApiModal({ open, onClose }: NewApiModalProps) {
                   className="v"
                   title={`${(process.env.NEXT_PUBLIC_GATEWAY_URL || (typeof window !== 'undefined' && window.location.hostname !== 'localhost' ? 'https://your-gateway.com' : 'http://127.0.0.1:8080')).replace(/\/$/, '')}/${createdData?.slug || 'api'}`}
                 >
-                  <Typewriter text={`${(process.env.NEXT_PUBLIC_GATEWAY_URL || (typeof window !== 'undefined' && window.location.hostname !== 'localhost' ? 'https://your-gateway.com' : 'http://127.0.0.1:8080')).replace(/\/$/, '')}/${createdData?.slug || 'api'}`} />
+                  <Typewriter
+                    text={`${(process.env.NEXT_PUBLIC_GATEWAY_URL || (typeof window !== 'undefined' && window.location.hostname !== 'localhost' ? 'https://your-gateway.com' : 'http://127.0.0.1:8080')).replace(/\/$/, '')}/${createdData?.slug || 'api'}`}
+                  />
                 </span>
                 <button
                   type="button"

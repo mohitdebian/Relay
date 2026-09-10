@@ -58,8 +58,7 @@ export default function ApiDetailClient({
       <div className="page-head">
         <div>
           <div className="page-title">
-            <Typewriter text={api.name} />{' '}
-            <span className="tag">{api.environment}</span>
+            <Typewriter text={api.name} /> <span className="tag">{api.environment}</span>
           </div>
           <div
             className="page-sub"
@@ -103,7 +102,7 @@ export default function ApiDetailClient({
               <div className="stat-value">{traffic.errors}</div>
             </div>
           </div>
-          
+
           <div className="section">
             <div className="section-title" style={{ marginBottom: '10px' }}>
               Gateway URL
@@ -124,12 +123,30 @@ export default function ApiDetailClient({
                   alignItems: 'center',
                 }}
               >
-                <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', opacity: 0.9 }}>
-                  {(process.env.NEXT_PUBLIC_GATEWAY_URL || (typeof window !== 'undefined' && window.location.hostname !== 'localhost' ? 'https://your-gateway.com' : 'http://127.0.0.1:8080')).replace(/\/$/, '')}/{api.slug}
+                <div
+                  style={{
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                    opacity: 0.9,
+                  }}
+                >
+                  {(
+                    process.env.NEXT_PUBLIC_GATEWAY_URL ||
+                    (typeof window !== 'undefined' && window.location.hostname !== 'localhost'
+                      ? 'https://your-gateway.com'
+                      : 'http://127.0.0.1:8080')
+                  ).replace(/\/$/, '')}
+                  /{api.slug}
                 </div>
                 <button
                   className="btn btn-secondary"
-                  style={{ padding: '4px 8px', fontSize: '12px', marginLeft: '12px', flexShrink: 0 }}
+                  style={{
+                    padding: '4px 8px',
+                    fontSize: '12px',
+                    marginLeft: '12px',
+                    flexShrink: 0,
+                  }}
                   onClick={(e) => {
                     const btn = e.currentTarget;
                     const url = `${(process.env.NEXT_PUBLIC_GATEWAY_URL || (typeof window !== 'undefined' && window.location.hostname !== 'localhost' ? 'https://your-gateway.com' : 'http://127.0.0.1:8080')).replace(/\/$/, '')}/${api.slug}`;
@@ -286,8 +303,9 @@ export default function ApiDetailClient({
                 Shared Secret
               </div>
               <div className="c-secondary" style={{ marginBottom: '12px' }}>
-                Use this secret to verify that incoming requests are proxied by Relay. 
-                Relay will inject the <code>X-Relay-Signature</code> header into every request sent to your upstream URL.
+                Use this secret to verify that incoming requests are proxied by Relay. Relay will
+                inject the <code>X-Relay-Signature</code> header into every request sent to your
+                upstream URL.
               </div>
               <div
                 className="mono"
@@ -301,7 +319,9 @@ export default function ApiDetailClient({
                   alignItems: 'center',
                 }}
               >
-                <span>{api.shared_secret || 'Not generated yet (API created before feature was added)'}</span>
+                <span>
+                  {api.shared_secret || 'Not generated yet (API created before feature was added)'}
+                </span>
                 {api.shared_secret && (
                   <button
                     className="btn btn-secondary"
@@ -337,8 +357,8 @@ export default function ApiDetailClient({
                   Removes all endpoints, keys and logs. This cannot be undone.
                 </div>
               </div>
-              <button 
-                className="btn btn-danger" 
+              <button
+                className="btn btn-danger"
                 disabled={isDeleting}
                 onClick={async () => {
                   if (confirm('Are you sure you want to delete this API?')) {

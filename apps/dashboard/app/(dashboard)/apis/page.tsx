@@ -44,7 +44,10 @@ export default async function ApisPage() {
             <div>
               <div className="c-strong">{api.name}</div>
               <div className="c-secondary">
-                REST · v1 <span className="tag" style={{ marginLeft: '6px' }}>{api.environment}</span>
+                REST · v1{' '}
+                <span className="tag" style={{ marginLeft: '6px' }}>
+                  {api.environment}
+                </span>
               </div>
             </div>
             <div>

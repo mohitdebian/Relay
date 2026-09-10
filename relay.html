@@ -642,6 +642,7 @@ Accept: application/json</div>
           <div class="modal-kv-row">
             <span class="k">BASE URL</span>
             <span class="v" id="newapi-success-url" title="relay.dev/acme-workspace/orders-api">relay.dev/acme-workspace/orders-api</span>
+            <button type="button" class="btn btn-secondary modal-copy-btn" onclick="copyBaseUrl()" id="newapi-copy-url-btn">Copy</button>
           </div>
           <div class="modal-kv-row">
             <span class="k">API KEY</span>
@@ -1067,6 +1068,14 @@ Accept: application/json</div>
     // this copies the masked placeholder — wire to the real unmasked key string
     // returned by the create-API response, not the display text
     navigator.clipboard?.writeText(keyEl.textContent);
+    btn.textContent = 'Copied';
+    setTimeout(()=>{ btn.textContent = 'Copy'; }, 1500);
+  }
+
+  function copyBaseUrl(){
+    const urlEl = document.getElementById('newapi-success-url');
+    const btn = document.getElementById('newapi-copy-url-btn');
+    navigator.clipboard?.writeText(urlEl.textContent);
     btn.textContent = 'Copied';
     setTimeout(()=>{ btn.textContent = 'Copy'; }, 1500);
   }

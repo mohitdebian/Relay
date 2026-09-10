@@ -103,6 +103,49 @@ export default function ApiDetailClient({
               <div className="stat-value">{traffic.errors}</div>
             </div>
           </div>
+          
+          <div className="section">
+            <div className="section-title" style={{ marginBottom: '10px' }}>
+              Gateway URL
+            </div>
+            <div className="panel" style={{ padding: '14px 16px' }}>
+              <div className="c-secondary" style={{ marginBottom: '12px' }}>
+                Base URL for routing requests through Relay to your API.
+              </div>
+              <div
+                className="mono"
+                style={{
+                  background: 'var(--bg-card)',
+                  padding: '8px 12px',
+                  borderRadius: '4px',
+                  border: '1px solid var(--border)',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', opacity: 0.9 }}>
+                  {typeof window !== 'undefined' ? (window.location.hostname === 'localhost' ? 'http://127.0.0.1:8080/' : 'https://gateway.relay.com/') : 'http://127.0.0.1:8080/'}{api.slug}
+                </div>
+                <button
+                  className="btn btn-secondary"
+                  style={{ padding: '4px 8px', fontSize: '12px', marginLeft: '12px', flexShrink: 0 }}
+                  onClick={(e) => {
+                    const btn = e.currentTarget;
+                    const url = typeof window !== 'undefined' ? (window.location.hostname === 'localhost' ? 'http://127.0.0.1:8080/' : 'https://gateway.relay.com/') + api.slug : 'http://127.0.0.1:8080/' + api.slug;
+                    navigator.clipboard.writeText(url);
+                    const originalText = btn.innerText;
+                    btn.innerText = 'Copied!';
+                    setTimeout(() => {
+                      btn.innerText = originalText;
+                    }, 2000);
+                  }}
+                >
+                  Copy
+                </button>
+              </div>
+            </div>
+          </div>
           <div className="section">
             <div className="section-head">
               <div className="section-title">Endpoints</div>

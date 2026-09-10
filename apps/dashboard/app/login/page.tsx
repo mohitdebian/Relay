@@ -208,7 +208,7 @@ function LoginContent() {
                 <div className="field-label-row">
                   <label>Password</label>
                   {!isSignup && (
-                    <Link className="auth-forgot auth-only-signin" href="#">
+                    <Link className="auth-forgot auth-only-signin" href="/forgot-password">
                       Forgot password?
                     </Link>
                   )}

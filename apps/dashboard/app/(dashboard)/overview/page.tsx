@@ -119,9 +119,9 @@ export default async function OverviewPage() {
               </div>
               <div className={`status ${api.status || 'active'} c-right`}>
                 <span
-                  className={`dot ${(api.status || 'active') === 'active' ? 'green' : 'yellow'}`}
+                  className={`dot ${(api.status?.toLowerCase() || 'active') === 'active' ? 'green' : 'yellow'}`}
                 ></span>
-                {(api.status || 'active') === 'active' ? 'Healthy' : 'Degraded'}
+                {(api.status?.toLowerCase() || 'active') === 'active' ? 'Healthy' : 'Degraded'}
               </div>
             </Link>
           ))}

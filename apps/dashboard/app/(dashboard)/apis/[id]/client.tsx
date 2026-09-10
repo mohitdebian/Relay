@@ -52,8 +52,8 @@ export default function ApiDetailClient({
 
   const detail = {
     sub: `REST · v1`,
-    status: api.status === 'degraded' ? 'Degraded' : 'Healthy',
-    color: api.status === 'degraded' ? 'var(--yellow)' : 'var(--green)',
+    status: api.status?.toLowerCase() === 'degraded' ? 'Degraded' : 'Healthy',
+    color: api.status?.toLowerCase() === 'degraded' ? 'var(--yellow)' : 'var(--green)',
   };
 
   const settings = {
@@ -83,7 +83,6 @@ export default function ApiDetailClient({
             }}
           ></div>
         </div>
-        <button className="btn btn-secondary">Edit API</button>
       </div>
 
       <div className="tabs">

@@ -1,3 +1,5 @@
+'use server';
+
 import { fetchAPI } from '../lib/api';
 function isRedirectError(error: any) {
   return error && error.message && error.message === 'NEXT_REDIRECT';

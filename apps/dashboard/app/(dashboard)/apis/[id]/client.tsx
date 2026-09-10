@@ -35,7 +35,7 @@ export default function ApiDetailClient({
   const peakIdx = traffic.bars.indexOf(maxBar);
 
   const detail = {
-    sub: `REST · ${api.environment}`,
+    sub: `REST · v1`,
     status: api.status === 'degraded' ? 'Degraded' : 'Healthy',
     color: api.status === 'degraded' ? 'var(--yellow)' : 'var(--green)',
   };
@@ -59,9 +59,7 @@ export default function ApiDetailClient({
         <div>
           <div className="page-title">
             <Typewriter text={api.name} />{' '}
-            <span className="tag" style={{ fontFamily: "'Inter', sans-serif" }}>
-              v1
-            </span>
+            <span className="tag">{api.environment}</span>
           </div>
           <div
             className="page-sub"

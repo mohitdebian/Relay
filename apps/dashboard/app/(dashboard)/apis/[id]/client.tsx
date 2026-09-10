@@ -233,6 +233,47 @@ export default function ApiDetailClient({
           </button>
 
           <div className="section" style={{ marginTop: '36px' }}>
+            <div className="section-title" style={{ marginBottom: '10px' }}>
+              Backend Verification
+            </div>
+            <div className="panel" style={{ padding: '14px 16px' }}>
+              <div className="c-strong" style={{ marginBottom: '4px' }}>
+                Shared Secret
+              </div>
+              <div className="c-secondary" style={{ marginBottom: '12px' }}>
+                Use this secret to verify that incoming requests are proxied by Relay. 
+                Relay will inject the <code>X-Relay-Signature</code> header into every request sent to your upstream URL.
+              </div>
+              <div
+                className="mono"
+                style={{
+                  background: 'var(--bg-card)',
+                  padding: '8px 12px',
+                  borderRadius: '4px',
+                  border: '1px solid var(--border)',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <span>{api.shared_secret || 'Not generated yet (API created before feature was added)'}</span>
+                {api.shared_secret && (
+                  <button
+                    className="btn btn-secondary"
+                    style={{ padding: '4px 8px', fontSize: '12px' }}
+                    onClick={() => {
+                      navigator.clipboard.writeText(api.shared_secret);
+                      // In a real app, you'd show a toast here
+                    }}
+                  >
+                    Copy
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="section" style={{ marginTop: '36px' }}>
             <div className="section-title" style={{ color: 'var(--red)', marginBottom: '10px' }}>
               Danger zone
             </div>

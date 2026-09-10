@@ -46,9 +46,11 @@ router.post(
     }
 
     try {
+      const sharedSecret = `whsec_${crypto.randomBytes(24).toString('hex')}`;
+
       const result = await pool.query(
-        `INSERT INTO apis (workspace_id, name, slug, description, upstream_url, environment, rate_limit_enabled, rate_limit_max, rate_limit_window) 
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) 
+        `INSERT INTO apis (workspace_id, name, slug, description, upstream_url, shared_secret, environment, rate_limit_enabled, rate_limit_max, rate_limit_window) 
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) 
        RETURNING *`,
         [
           workspace_id,
@@ -56,6 +58,7 @@ router.post(
           slug,
           description || null,
           upstream_url,
+          sharedSecret,
           environment || 'production',
           rate_limit_enabled || false,
           rate_limit_max || 100,

@@ -12,6 +12,7 @@ type ApiConfig struct {
 	Slug             string
 	Description      sql.NullString
 	UpstreamURL      string
+	SharedSecret     sql.NullString
 	Status           string
 	Environment      string
 	RateLimitEnabled bool

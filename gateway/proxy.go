@@ -194,6 +194,9 @@ func proxyHandler(w http.ResponseWriter, r *http.Request) {
 		
 		req.Header.Del("X-API-Key")
 		req.Header.Set("X-Relay-Api-Id", fmt.Sprintf("%d", api.ID))
+		if api.SharedSecret.Valid && api.SharedSecret.String != "" {
+			req.Header.Set("X-Relay-Signature", api.SharedSecret.String)
+		}
 	}
 
 	// Customize ErrorHandler to handle upstream unavailable

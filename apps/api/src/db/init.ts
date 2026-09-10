@@ -33,6 +33,7 @@ export async function initDb() {
         slug VARCHAR(255) UNIQUE NOT NULL,
         description TEXT,
         upstream_url VARCHAR(255) NOT NULL,
+        shared_secret VARCHAR(255),
         status VARCHAR(50) DEFAULT 'ACTIVE',
         environment VARCHAR(50) DEFAULT 'production',
         rate_limit_enabled BOOLEAN DEFAULT false,
@@ -101,6 +102,10 @@ export async function initDb() {
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
     `);
+    
+    // Retroactive update for existing databases
+    await pool.query(`ALTER TABLE apis ADD COLUMN IF NOT EXISTS shared_secret VARCHAR(255);`);
+    
     console.log('Database initialized');
   } catch (error) {
     console.error('Error initializing database:', error);

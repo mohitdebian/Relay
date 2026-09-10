@@ -27,14 +27,14 @@ func initDB(connStr string) error {
 func getApiBySlug(slug string) (*ApiConfig, error) {
 	api := &ApiConfig{}
 	query := `
-		SELECT id, workspace_id, name, slug, description, upstream_url, status, environment, 
+		SELECT id, workspace_id, name, slug, description, upstream_url, shared_secret, status, environment, 
 		       rate_limit_enabled, rate_limit_max, rate_limit_window, created_at, updated_at
 		FROM apis
 		WHERE slug = $1 AND status = 'ACTIVE'
 	`
 	err := db.QueryRow(query, slug).Scan(
 		&api.ID, &api.WorkspaceID, &api.Name, &api.Slug, &api.Description,
-		&api.UpstreamURL, &api.Status, &api.Environment, 
+		&api.UpstreamURL, &api.SharedSecret, &api.Status, &api.Environment, 
 		&api.RateLimitEnabled, &api.RateLimitMax, &api.RateLimitWindow, 
 		&api.CreatedAt, &api.UpdatedAt,
 	)

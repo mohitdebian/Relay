@@ -7,12 +7,12 @@ export function DocsTopbar() {
   const isActive = (path: string) => (pathname.startsWith(path) ? ' active' : '');
 
   return (
-    <header className="docs-topbar">
-      <div className="docs-topbar-left">
+    <header className="topbar">
+      <div className="topbar-left">
         <Link href="/docs" className="logo">
           RELAY_
         </Link>
-        <nav className="docs-topbar-nav">
+        <nav className="topbar-nav">
           <Link href="/docs" className={pathname === '/docs' ? 'active' : ''}>Docs</Link>
           <Link href="/docs/api-keys/create" className={isActive('/docs/api-keys') || isActive('/docs/apis')}>
             API Reference
@@ -21,7 +21,7 @@ export function DocsTopbar() {
           <Link href="/docs/changelog" className={isActive('/docs/changelog')}>Changelog</Link>
         </nav>
       </div>
-      <div className="docs-topbar-right">
+      <div className="topbar-right">
         <div className="search-btn">
           <span>Search docs…</span>
           <span className="kbd">⌘K</span>

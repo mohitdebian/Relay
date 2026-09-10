@@ -11,6 +11,8 @@ const navGroups = [
     items: [
       { name: 'Overview', href: '/overview' },
       { name: 'APIs', href: '/apis' },
+      { name: 'Endpoints', href: '/endpoints' },
+      { name: 'Domains', href: '/domains' },
     ],
   },
   {
@@ -21,6 +23,7 @@ const navGroups = [
     label: 'ACCESS',
     items: [
       { name: 'API Keys', href: '/keys' },
+      { name: 'Policies', href: '/policies' },
       { name: 'Webhooks', href: '/webhooks' },
     ],
   },
@@ -29,6 +32,7 @@ const navGroups = [
     items: [
       { name: 'Rate Limits', href: '/rate-limits' },
       { name: 'Members', href: '/members' },
+      { name: 'Billing', href: '/billing' },
     ],
   },
   {

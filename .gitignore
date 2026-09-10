@@ -4,3 +4,4 @@ dist/
 .next/
 .neon
 .env.local
+gateway/gateway

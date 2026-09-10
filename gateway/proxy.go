@@ -191,6 +191,7 @@ func proxyHandler(w http.ResponseWriter, r *http.Request) {
 		
 		targetPath := strings.TrimSuffix(targetUrl.Path, "/")
 		req.URL.Path = targetPath + restOfPath
+		req.Host = targetUrl.Host
 		
 		req.Header.Del("X-API-Key")
 		req.Header.Set("X-Relay-Api-Id", fmt.Sprintf("%d", api.ID))

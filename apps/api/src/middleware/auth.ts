@@ -41,7 +41,7 @@ export async function authMiddleware(
   }
 
   const token = authHeader.split(' ')[1];
-  
+
   const workspaceIdHeader = req.headers['x-workspace-id'];
   if (workspaceIdHeader && !Array.isArray(workspaceIdHeader)) {
     const parsedId = parseInt(workspaceIdHeader, 10);

@@ -18,7 +18,7 @@ function ForgotPasswordContent() {
     const email = formData.get('email') as string;
 
     try {
-      // @ts-ignore: Neon Auth email-otp plugin overwrites the call signature in types
+      // @ts-expect-error: Neon Auth email-otp plugin overwrites the call signature in types
       const { error: resetError } = await authClient.forgetPassword({
         email,
         redirectTo: window.location.origin + '/reset-password',

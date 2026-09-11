@@ -20,9 +20,15 @@ export function DocsSidebar() {
           <Link href="/docs/introduction" className={`nav-item${isActive('/docs/introduction')}`}>
             Introduction
           </Link>
-          <div className="nav-item">Quickstart</div>
-          <div className="nav-item">Authentication</div>
-          <div className="nav-item">Environments</div>
+          <Link href="/docs/quickstart" className={`nav-item${isActive('/docs/quickstart')}`}>
+            Quickstart
+          </Link>
+          <Link href="/docs/authentication" className={`nav-item${isActive('/docs/authentication')}`}>
+            Authentication
+          </Link>
+          <Link href="/docs/environments" className={`nav-item${isActive('/docs/environments')}`}>
+            Environments
+          </Link>
         </div>
         <div className="nav-group">
           <div className="nav-group-label">API KEYS</div>
@@ -47,15 +53,27 @@ export function DocsSidebar() {
         </div>
         <div className="nav-group">
           <div className="nav-group-label">WEBHOOKS</div>
-          <div className="nav-item">Overview</div>
-          <div className="nav-item">Event types</div>
-          <div className="nav-item">Verifying signatures</div>
+          <Link href="/docs/webhooks/overview" className={`nav-item${isActive('/docs/webhooks/overview')}`}>
+            Overview
+          </Link>
+          <Link href="/docs/webhooks/event-types" className={`nav-item${isActive('/docs/webhooks/event-types')}`}>
+            Event types
+          </Link>
+          <Link href="/docs/webhooks/signatures" className={`nav-item${isActive('/docs/webhooks/signatures')}`}>
+            Verifying signatures
+          </Link>
         </div>
         <div className="nav-group">
           <div className="nav-group-label">REFERENCE</div>
-          <div className="nav-item">Rate limits</div>
-          <div className="nav-item">Errors</div>
-          <div className="nav-item">SDKs & libraries</div>
+          <Link href="/docs/reference/rate-limits" className={`nav-item${isActive('/docs/reference/rate-limits')}`}>
+            Rate limits
+          </Link>
+          <Link href="/docs/reference/errors" className={`nav-item${isActive('/docs/reference/errors')}`}>
+            Errors
+          </Link>
+          <Link href="/docs/reference/sdks" className={`nav-item${isActive('/docs/reference/sdks')}`}>
+            SDKs & libraries
+          </Link>
         </div>
       </nav>
     </aside>

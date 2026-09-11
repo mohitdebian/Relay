@@ -1,0 +1,13 @@
+export default function Page() {
+  return (
+    <>
+      <main className="docs-main">
+        <div className="docs-breadcrumb">Webhooks</div>
+        <h1 className="docs-h1">Verifying Signatures</h1>
+        <p className="docs-lede">
+          This is a placeholder page for Verifying Signatures. More documentation coming soon.
+        </p>
+      </main>
+    </>
+  );
+}

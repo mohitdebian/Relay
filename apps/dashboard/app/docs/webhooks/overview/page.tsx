@@ -68,6 +68,11 @@ export default function WebhooksOverviewPage() {
           Every webhook delivery includes a standard envelope. The <code className="docs-inline">event</code> field indicates what happened, and the <code className="docs-inline">payload</code> contains the specifics of the resource that was affected.
         </p>
 
+        <div style={{ marginTop: '24px', marginBottom: '32px' }}>
+          <div className="docs-response-label">Example webhook payload</div>
+          <CodeCard tabs={payloadTabs} />
+        </div>
+
         <h2 className="docs-h2" id="retries">
           Retry Logic
         </h2>
@@ -78,8 +83,7 @@ export default function WebhooksOverviewPage() {
       </main>
 
       <aside className="docs-side">
-        <div className="docs-response-label">Example webhook payload</div>
-        <CodeCard tabs={payloadTabs} />
+        {/* Prose-only page without right rail */}
       </aside>
     </>
   );

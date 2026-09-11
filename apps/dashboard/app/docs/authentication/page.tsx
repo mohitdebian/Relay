@@ -69,6 +69,11 @@ export default async function AuthenticationPage() {
           Most management endpoints also require a workspace context to ensure you have the correct permissions (e.g., <code className="docs-inline">admin</code> or <code className="docs-inline">owner</code>). You can provide this context using the <code className="docs-inline">x-workspace-id</code> HTTP header, or as a query parameter <code className="docs-inline">?workspaceId=...</code>.
         </p>
 
+        <div style={{ marginTop: '24px', marginBottom: '32px' }}>
+          <div className="docs-response-label">Example request</div>
+          <CodeCard tabs={requestTabs} />
+        </div>
+
         <h2 className="docs-h2" id="unauthorized-errors">
           Unauthorized Errors
         </h2>
@@ -84,13 +89,14 @@ export default async function AuthenticationPage() {
           <li><code className="docs-inline">Unauthorized: Token missing email or sub</code> - The token payload was malformed.</li>
         </ul>
 
+        <div style={{ marginTop: '24px', marginBottom: '32px' }}>
+          <div className="docs-response-label">Example error response · 401 Unauthorized</div>
+          <CodeCard tabs={errorTabs} />
+        </div>
+
       </main>
       <aside className="docs-side">
-        <div className="docs-response-label">Example request</div>
-        <CodeCard tabs={requestTabs} />
-        
-        <div className="docs-response-label" style={{ marginTop: '24px' }}>Example error response · 401 Unauthorized</div>
-        <CodeCard tabs={errorTabs} />
+        {/* Prose-only page without right rail */}
       </aside>
     </>
   );

@@ -55,6 +55,11 @@ export default function WebhooksSignaturesPage() {
         <p className="docs-p">
           Every delivery includes a <code className="docs-inline">Relay-Signature</code> header: an HMAC-SHA256 hash of the raw request body, signed with your webhook's signing secret (shown once when the webhook is created).
         </p>
+
+        <div style={{ marginTop: '24px', marginBottom: '32px' }}>
+          <div className="docs-response-label">Verification example</div>
+          <CodeCard tabs={codeTabs} />
+        </div>
         
         <Callout variant="warn">
           <b>Important —</b> compute the HMAC over the <b>raw request body</b>, before JSON parsing. Re-serializing the parsed object will produce a different signature and always fail verification.
@@ -63,8 +68,7 @@ export default function WebhooksSignaturesPage() {
       </main>
 
       <aside className="docs-side">
-        <div className="docs-response-label">Verification example</div>
-        <CodeCard tabs={codeTabs} />
+        {/* Prose-only page without right rail */}
       </aside>
     </>
   );

@@ -23,7 +23,7 @@ export function DocsTopbar() {
           <span>Search docs…</span>
           <span className="kbd">⌘K</span>
         </div>
-        <Link href="/overview" className="btn-dash">
+        <Link href="/overview" className="btn btn-primary">
           Dashboard →
         </Link>
       </div>

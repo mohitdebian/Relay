@@ -128,7 +128,7 @@ export default async function CreateApiKeyPage() {
           {'\n'}
           {'  '}
           <span className="docs-tok-key">"rawKey"</span>:{' '}
-          <span className="docs-tok-str">"sk_live_9f8e7d6c5b4a..."</span>
+          <span className="docs-tok-str">"relay_live_9f8e7d6c5b4a..."</span>
           {'\n'}
           {'}'}
         </>
@@ -186,20 +186,15 @@ export default async function CreateApiKeyPage() {
           />
           <ParamRow
             name="environment"
-            required={true}
+            required={false}
             type="string"
             description={
               <>
-                One of <code className="docs-inline">production</code>,{' '}
+                Defaults to <code className="docs-inline">production</code>. One of <code className="docs-inline">production</code>,{' '}
                 <code className="docs-inline">staging</code>,{' '}
                 <code className="docs-inline">development</code>.
               </>
             }
-          />
-          <ParamRow
-            name="expires_at"
-            type="string · ISO 8601"
-            description="Optional expiration timestamp. Keys never expire by default."
           />
         </ParamsTable>
 

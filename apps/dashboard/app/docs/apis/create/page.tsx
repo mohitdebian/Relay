@@ -35,7 +35,7 @@ export default async function CreateApiPage() {
     "environment": "production",
     "rate_limit_enabled": true,
     "rate_limit_max": 1000,
-    "rate_limit_window": "1h"
+    "rate_limit_window": 3600
   }`}
             '
           </span>
@@ -86,7 +86,7 @@ export default async function CreateApiPage() {
           <span className="docs-tok-str">1000</span>,{'\n'}
           {'    '}
           <span className="docs-tok-key">"rate_limit_window"</span>:{' '}
-          <span className="docs-tok-str">"1h"</span>
+          <span className="docs-tok-str">3600</span>
           {'\n'}
           {'  }'}
           {'\n}'}
@@ -147,7 +147,7 @@ export default async function CreateApiPage() {
             type="string"
             description={
               <>
-                Defaults to <code className="docs-inline">development</code>. Can also be <code className="docs-inline">staging</code> or <code className="docs-inline">production</code>.
+                Defaults to <code className="docs-inline">production</code>. Can also be <code className="docs-inline">staging</code> or <code className="docs-inline">development</code>.
               </>
             }
           />
@@ -172,8 +172,8 @@ export default async function CreateApiPage() {
           <ParamRow
             name="rate_limit_window"
             required={false}
-            type="string"
-            description="Window duration string (e.g. 1m, 1h)."
+            type="integer"
+            description="Window duration in seconds (e.g. 60)."
           />
         </ParamsTable>
 

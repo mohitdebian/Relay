@@ -24,17 +24,17 @@ export default function GuidesPage() {
           <DocsCard
             title="Next.js App Router"
             description="Protect your Next.js API routes with Relay and verify webhooks."
-            href="#"
+            href="/docs/guides/nextjs"
           />
           <DocsCard
             title="Express & Node.js"
             description="Configure your Express backend to trust Relay edge limits."
-            href="#"
+            href="/docs/guides/express"
           />
           <DocsCard
             title="Python FastAPI"
             description="Proxy traffic to FastAPI and consume JSON webhooks securely."
-            href="#"
+            href="/docs/guides/fastapi"
           />
         </div>
 
@@ -49,17 +49,17 @@ export default function GuidesPage() {
           <DocsCard
             title="Zero-Downtime Migrations"
             description="Use Relay environments to cut over databases with no downtime."
-            href="#"
+            href="/docs/guides/zero-downtime"
           />
           <DocsCard
             title="Custom Auth Strategies"
             description="Integrating third-party Identity Providers with Relay's Edge."
-            href="#"
+            href="/docs/guides/custom-auth"
           />
           <DocsCard
             title="Global Rate Limiting"
             description="How to design rate limits for multi-tenant SaaS applications."
-            href="#"
+            href="/docs/guides/global-rate-limiting"
           />
         </div>
       </main>

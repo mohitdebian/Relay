@@ -20,17 +20,23 @@ export async function fetchAPI(endpoint: string, options: RequestInit = {}) {
 
   const activeWorkspaceId = cookieStore.get('relay_active_workspace')?.value;
 
-  const res = await fetch(`${API_URL}${endpoint}`, {
-    ...options,
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-      ...(activeWorkspaceId ? { 'x-workspace-id': activeWorkspaceId } : {}),
-      ...options.headers,
-    },
-    // Prevent Next.js from aggressively caching dynamic API data
-    cache: 'no-store',
-  });
+  let res;
+  try {
+    res = await fetch(`${API_URL}${endpoint}`, {
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+        ...(activeWorkspaceId ? { 'x-workspace-id': activeWorkspaceId } : {}),
+        ...options.headers,
+      },
+      // Prevent Next.js from aggressively caching dynamic API data
+      cache: 'no-store',
+    });
+  } catch (error: any) {
+    console.error(`Fetch to ${API_URL}${endpoint} failed:`, error);
+    throw new Error('Unable to connect to the API server. Please check if it is running.');
+  }
 
   if (res.status === 401) {
     redirect('/login');

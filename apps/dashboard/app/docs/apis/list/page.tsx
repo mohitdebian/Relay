@@ -12,6 +12,7 @@ export default async function ListApisPage() {
     '$RELAY_TOKEN';
 
   const workspaceId = cookieStore.get('relay_active_workspace')?.value || 'wksp_your_workspace_id';
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.relay.dev';
 
   const tabs = [
     {
@@ -20,7 +21,7 @@ export default async function ListApisPage() {
         <>
           <span className="docs-tok-comment"># list all APIs in the workspace</span>
           {'\n'}
-          curl -X GET https://api.relay.dev/apis \{'\n'}
+          curl -X GET {apiUrl}/apis \{'\n'}
           {'  '}-H <span className="docs-tok-str">"Authorization: Bearer {token}"</span> \
           {'\n'}
           {'  '}-H <span className="docs-tok-str">"x-workspace-id: {workspaceId}"</span>
@@ -33,7 +34,7 @@ export default async function ListApisPage() {
         <>
           <span className="docs-tok-comment">{'// using the fetch API'}</span>
           {'\n'}
-          const response = await fetch('https://api.relay.dev/apis', {'{\n'}
+          const response = await fetch('{apiUrl}/apis', {'{\n'}
           {'  '}method: <span className="docs-tok-str">'GET'</span>,{'\n'}
           {'  '}headers: {'{\n'}
           {'    '}
@@ -63,7 +64,7 @@ export default async function ListApisPage() {
           {'}'}
           {'\n\n'}
           response = requests.get(
-          <span className="docs-tok-str">"https://api.relay.dev/apis"</span>, headers=headers)
+          <span className="docs-tok-str">"{apiUrl}/apis"</span>, headers=headers)
         </>
       ),
     },

@@ -12,6 +12,7 @@ export default async function RevokeKeyPage() {
     '$RELAY_TOKEN';
 
   const workspaceId = cookieStore.get('relay_active_workspace')?.value || 'wksp_your_workspace_id';
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.relay.dev';
 
   const tabs = [
     {
@@ -20,7 +21,7 @@ export default async function RevokeKeyPage() {
         <>
           <span className="docs-tok-comment"># revoke an API key by ID</span>
           {'\n'}
-          curl -X DELETE https://api.relay.dev/api-keys/1 \{'\n'}
+          curl -X DELETE {apiUrl}/api-keys/1 \{'\n'}
           {'  '}-H <span className="docs-tok-str">"Authorization: Bearer {token}"</span>
         </>
       ),
@@ -31,7 +32,7 @@ export default async function RevokeKeyPage() {
         <>
           <span className="docs-tok-comment">{'// using the fetch API'}</span>
           {'\n'}
-          const response = await fetch('https://api.relay.dev/api-keys/1', {'{\n'}
+          const response = await fetch('{apiUrl}/api-keys/1', {'{\n'}
           {'  '}method: <span className="docs-tok-str">'DELETE'</span>,{'\n'}
           {'  '}headers: {'{\n'}
           {'    '}
@@ -57,7 +58,7 @@ export default async function RevokeKeyPage() {
           {'}'}
           {'\n\n'}
           response = requests.delete(
-          <span className="docs-tok-str">"https://api.relay.dev/api-keys/1"</span>, headers=headers)
+          <span className="docs-tok-str">"{apiUrl}/api-keys/1"</span>, headers=headers)
         </>
       ),
     },

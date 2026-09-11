@@ -13,6 +13,7 @@ export default async function CreateApiKeyPage() {
     '$RELAY_TOKEN';
 
   const workspaceId = cookieStore.get('relay_active_workspace')?.value || 'wksp_your_workspace_id';
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.relay.dev';
 
   const tabs = [
     {
@@ -21,7 +22,7 @@ export default async function CreateApiKeyPage() {
         <>
           <span className="docs-tok-comment"># create a production key</span>
           {'\n'}
-          curl -X POST https://api.relay.dev/apis/1/keys \{'\n'}
+          curl -X POST {apiUrl}/apis/1/keys \{'\n'}
           {'  '}-H <span className="docs-tok-str">"Authorization: Bearer {token}"</span> \
           {'\n'}
           {'  '}-H <span className="docs-tok-str">"Content-Type: application/json"</span> \{'\n'}
@@ -43,7 +44,7 @@ export default async function CreateApiKeyPage() {
         <>
           <span className="docs-tok-comment">{'// using the fetch API'}</span>
           {'\n'}
-          const response = await fetch('https://api.relay.dev/apis/1/keys', {'{\n'}
+          const response = await fetch('{apiUrl}/apis/1/keys', {'{\n'}
           {'  '}method: <span className="docs-tok-str">'POST'</span>,{'\n'}
           {'  '}headers: {'{\n'}
           {'    '}
@@ -90,7 +91,7 @@ export default async function CreateApiKeyPage() {
           {'}'}
           {'\n\n'}
           response = requests.post(
-          <span className="docs-tok-str">"https://api.relay.dev/apis/1/keys"</span>, headers=headers,
+          <span className="docs-tok-str">"{apiUrl}/apis/1/keys"</span>, headers=headers,
           json=data)
         </>
       ),

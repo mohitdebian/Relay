@@ -123,7 +123,7 @@ code.docs-inline { font-family: 'JetBrains Mono', monospace; font-size: 13.5px; 
 .docs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; margin: 24px 0 40px; }
 .docs-card { border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; background: var(--surface); transition: border-color 0.15s ease, transform 0.15s ease; display: flex; flex-direction: column; gap: 8px; text-decoration: none; color: inherit; }
 .docs-card:hover { border-color: var(--text-tertiary); transform: translateY(-1px); }
-.docs-card-title { font-family: 'Silkscreen', monospace; font-size: 16px; font-weight: 700; color: var(--text); }
+.docs-card-title { font-size: 15px; font-weight: 600; color: var(--text); }
 .docs-card-desc { font-size: 13.5px; color: var(--text-secondary); line-height: 1.5; }
 
 /* ---- changelog specific styles ---- */

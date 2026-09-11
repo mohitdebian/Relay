@@ -12,6 +12,7 @@ export default async function CreateApiPage() {
     '$RELAY_TOKEN';
 
   const workspaceId = cookieStore.get('relay_active_workspace')?.value || 'wksp_your_workspace_id';
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.relay.dev';
 
   const tabs = [
     {
@@ -20,7 +21,7 @@ export default async function CreateApiPage() {
         <>
           <span className="docs-tok-comment"># create a new API proxy</span>
           {'\n'}
-          curl -X POST https://api.relay.dev/apis \{'\n'}
+          curl -X POST {apiUrl}/apis \{'\n'}
           {'  '}-H <span className="docs-tok-str">"Authorization: Bearer {token}"</span> \
           {'\n'}
           {'  '}-H <span className="docs-tok-str">"Content-Type: application/json"</span> \{'\n'}
@@ -45,7 +46,7 @@ export default async function CreateApiPage() {
         <>
           <span className="docs-tok-comment">{'// using the fetch API'}</span>
           {'\n'}
-          const response = await fetch('https://api.relay.dev/apis', {'{\n'}
+          const response = await fetch('{apiUrl}/apis', {'{\n'}
           {'  '}method: <span className="docs-tok-str">'POST'</span>,{'\n'}
           {'  '}headers: {'{\n'}
           {'    '}
@@ -104,7 +105,7 @@ export default async function CreateApiPage() {
           {'}'}
           {'\n\n'}
           response = requests.post(
-          <span className="docs-tok-str">"https://api.relay.dev/apis"</span>, headers=headers,
+          <span className="docs-tok-str">"{apiUrl}/apis"</span>, headers=headers,
           json=data)
         </>
       ),

@@ -142,10 +142,10 @@ code.docs-inline { font-family: 'JetBrains Mono', monospace; font-size: 13.5px; 
 .changelog-date { font-size: 13px; color: var(--text-secondary); }
 .changelog-version { font-size: 12px; color: var(--text-tertiary); margin-top: 2px; }
 
-.changelog-dot-container { position: relative; width: 1px; flex-shrink: 0; margin-right: 32px; display: flex; justify-content: center; }
+.changelog-dot-container { position: relative; width: 1px; flex-shrink: 0; margin-right: 32px; display: flex; justify-content: center; align-self: stretch; }
 .changelog-dot { width: 11px; height: 11px; border-radius: 50%; border: 2px solid var(--border-strong); background: var(--surface); position: absolute; top: 8px; z-index: 2; }
 .changelog-dot.active { background: var(--green); border-color: var(--green); }
-.changelog-line { position: absolute; top: 14px; bottom: -44px; width: 1px; background: var(--border); z-index: 1; }
+.changelog-line { position: absolute; top: 14px; bottom: -40px; width: 1px; background: var(--border); z-index: 1; }
 .changelog-entry:last-child .changelog-line { display: none; }
 
 .changelog-content { flex: 1; min-width: 0; }

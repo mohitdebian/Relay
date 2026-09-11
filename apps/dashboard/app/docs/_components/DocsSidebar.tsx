@@ -44,9 +44,6 @@ export function DocsSidebar() {
           <Link href="/docs/apis/create" className={`nav-item method${isActive('/docs/apis/create')}`}>
             <span className="m-tag post">POST</span>Create API Route
           </Link>
-          <Link href="/docs/apis/stats" className={`nav-item method${isActive('/docs/apis/stats')}`}>
-            <span className="m-tag get">GET</span>Get endpoint stats
-          </Link>
         </div>
         <div className="nav-group">
           <div className="nav-group-label">WEBHOOKS</div>

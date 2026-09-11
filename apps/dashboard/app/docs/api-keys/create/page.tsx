@@ -21,10 +21,8 @@ export default async function CreateApiKeyPage() {
         <>
           <span className="docs-tok-comment"># create a production key</span>
           {'\n'}
-          curl -X POST https://api.relay.dev/v1/keys \{'\n'}
+          curl -X POST https://api.relay.dev/apis/1/keys \{'\n'}
           {'  '}-H <span className="docs-tok-str">"Authorization: Bearer {token}"</span> \
-          {'\n'}
-          {'  '}-H <span className="docs-tok-str">"x-workspace-id: {workspaceId}"</span> \
           {'\n'}
           {'  '}-H <span className="docs-tok-str">"Content-Type: application/json"</span> \{'\n'}
           {'  '}-d{' '}
@@ -45,13 +43,11 @@ export default async function CreateApiKeyPage() {
         <>
           <span className="docs-tok-comment">{'// using the fetch API'}</span>
           {'\n'}
-          const response = await fetch('https://api.relay.dev/v1/keys', {'{\n'}
+          const response = await fetch('https://api.relay.dev/apis/1/keys', {'{\n'}
           {'  '}method: <span className="docs-tok-str">'POST'</span>,{'\n'}
           {'  '}headers: {'{\n'}
           {'    '}
           <span className="docs-tok-str">'Authorization'</span>: <span className="docs-tok-str">'Bearer {token}'</span>,{'\n'}
-          {'    '}
-          <span className="docs-tok-str">'x-workspace-id'</span>: <span className="docs-tok-str">'{workspaceId}'</span>,{'\n'}
           {'    '}
           <span className="docs-tok-str">'Content-Type'</span>:{' '}
           <span className="docs-tok-str">'application/json'</span>
@@ -78,8 +74,6 @@ export default async function CreateApiKeyPage() {
           {'    '}
           <span className="docs-tok-str">"Authorization"</span>: <span className="docs-tok-str">"Bearer {token}"</span>,{'\n'}
           {'    '}
-          <span className="docs-tok-str">"x-workspace-id"</span>: <span className="docs-tok-str">"{workspaceId}"</span>,{'\n'}
-          {'    '}
           <span className="docs-tok-str">"Content-Type"</span>:{' '}
           <span className="docs-tok-str">"application/json"</span>
           {'\n'}
@@ -96,7 +90,7 @@ export default async function CreateApiKeyPage() {
           {'}'}
           {'\n\n'}
           response = requests.post(
-          <span className="docs-tok-str">"https://api.relay.dev/v1/keys"</span>, headers=headers,
+          <span className="docs-tok-str">"https://api.relay.dev/apis/1/keys"</span>, headers=headers,
           json=data)
         </>
       ),
@@ -111,23 +105,29 @@ export default async function CreateApiKeyPage() {
           {'{'}
           {'\n'}
           {'  '}
+          <span className="docs-tok-key">"apiKey"</span>: {'{'}
+          {'\n'}
+          {'    '}
           <span className="docs-tok-key">"id"</span>:{' '}
-          <span className="docs-tok-str">"key_8f2a1c"</span>,{'\n'}
-          {'  '}
+          <span className="docs-tok-str">1</span>,{'\n'}
+          {'    '}
           <span className="docs-tok-key">"name"</span>:{' '}
           <span className="docs-tok-str">"CI pipeline"</span>,{'\n'}
-          {'  '}
+          {'    '}
           <span className="docs-tok-key">"environment"</span>:{' '}
           <span className="docs-tok-str">"production"</span>,{'\n'}
-          {'  '}
-          <span className="docs-tok-key">"secret"</span>:{' '}
-          <span className="docs-tok-str">"sk_live_9f8e7d6c5b4a..."</span>,{'\n'}
-          {'  '}
+          {'    '}
           <span className="docs-tok-key">"created_at"</span>:{' '}
           <span className="docs-tok-str">"2026-09-11T10:42:00Z"</span>,{'\n'}
-          {'  '}
+          {'    '}
           <span className="docs-tok-key">"last_used_at"</span>:{' '}
           <span className="docs-tok-null">null</span>
+          {'\n'}
+          {'  },'}
+          {'\n'}
+          {'  '}
+          <span className="docs-tok-key">"rawKey"</span>:{' '}
+          <span className="docs-tok-str">"sk_live_9f8e7d6c5b4a..."</span>
           {'\n'}
           {'}'}
         </>
@@ -140,11 +140,11 @@ export default async function CreateApiKeyPage() {
       <main className="docs-main">
         <div className="docs-breadcrumb">API Keys</div>
         <div className="docs-h1">Create an API key</div>
-        <EndpointBadge method="POST" path="/v1/keys" />
+        <EndpointBadge method="POST" path="/apis/:id/keys" />
 
         <div className="docs-lede">
           Creates a new API key scoped to a single environment. Keys are shown in full exactly once
-          — store the returned <code className="docs-inline">secret</code> immediately.
+          — store the returned <code className="docs-inline">rawKey</code> immediately.
         </div>
 
         <h2 className="docs-h2" id="auth">
@@ -157,12 +157,24 @@ export default async function CreateApiKeyPage() {
         </p>
 
         <Callout variant="warn">
-          <b>Note —</b> the response's <code className="docs-inline">secret</code> field is only
+          <b>Note —</b> the response's <code className="docs-inline">rawKey</code> field is only
           ever returned on creation. Relay does not store or display full key values afterward.
         </Callout>
 
+        <h2 className="docs-h2" id="path-params">
+          Path Parameters
+        </h2>
+        <ParamsTable>
+          <ParamRow
+            name="id"
+            required={true}
+            type="integer"
+            description="The ID of the API you are creating this key for."
+          />
+        </ParamsTable>
+
         <h2 className="docs-h2" id="params">
-          Parameters
+          Body Parameters
         </h2>
         <ParamsTable>
           <ParamRow
@@ -180,17 +192,6 @@ export default async function CreateApiKeyPage() {
                 One of <code className="docs-inline">production</code>,{' '}
                 <code className="docs-inline">staging</code>,{' '}
                 <code className="docs-inline">development</code>.
-              </>
-            }
-          />
-          <ParamRow
-            name="scopes"
-            type="array"
-            description={
-              <>
-                Permission scopes, e.g.{' '}
-                <code className="docs-inline">["read:requests","write:endpoints"]</code>. Defaults
-                to full access if omitted.
               </>
             }
           />

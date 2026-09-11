@@ -20,10 +20,8 @@ export default async function RevokeKeyPage() {
         <>
           <span className="docs-tok-comment"># revoke an API key by ID</span>
           {'\n'}
-          curl -X DELETE https://api.relay.dev/v1/keys/key_8f2a1c \{'\n'}
-          {'  '}-H <span className="docs-tok-str">"Authorization: Bearer {token}"</span> \
-          {'\n'}
-          {'  '}-H <span className="docs-tok-str">"x-workspace-id: {workspaceId}"</span>
+          curl -X DELETE https://api.relay.dev/api-keys/1 \{'\n'}
+          {'  '}-H <span className="docs-tok-str">"Authorization: Bearer {token}"</span>
         </>
       ),
     },
@@ -33,13 +31,11 @@ export default async function RevokeKeyPage() {
         <>
           <span className="docs-tok-comment">{'// using the fetch API'}</span>
           {'\n'}
-          const response = await fetch('https://api.relay.dev/v1/keys/key_8f2a1c', {'{\n'}
+          const response = await fetch('https://api.relay.dev/api-keys/1', {'{\n'}
           {'  '}method: <span className="docs-tok-str">'DELETE'</span>,{'\n'}
           {'  '}headers: {'{\n'}
           {'    '}
-          <span className="docs-tok-str">'Authorization'</span>: <span className="docs-tok-str">'Bearer {token}'</span>,{'\n'}
-          {'    '}
-          <span className="docs-tok-str">'x-workspace-id'</span>: <span className="docs-tok-str">'{workspaceId}'</span>
+          <span className="docs-tok-str">'Authorization'</span>: <span className="docs-tok-str">'Bearer {token}'</span>
           {'\n'}
           {'  }'}
           {'\n'}
@@ -56,14 +52,12 @@ export default async function RevokeKeyPage() {
           import requests{'\n\n'}
           headers = {'{\n'}
           {'    '}
-          <span className="docs-tok-str">"Authorization"</span>: <span className="docs-tok-str">"Bearer {token}"</span>,{'\n'}
-          {'    '}
-          <span className="docs-tok-str">"x-workspace-id"</span>: <span className="docs-tok-str">"{workspaceId}"</span>
+          <span className="docs-tok-str">"Authorization"</span>: <span className="docs-tok-str">"Bearer {token}"</span>
           {'\n'}
           {'}'}
           {'\n\n'}
           response = requests.delete(
-          <span className="docs-tok-str">"https://api.relay.dev/v1/keys/key_8f2a1c"</span>, headers=headers)
+          <span className="docs-tok-str">"https://api.relay.dev/api-keys/1"</span>, headers=headers)
         </>
       ),
     },
@@ -77,11 +71,8 @@ export default async function RevokeKeyPage() {
           {'{'}
           {'\n'}
           {'  '}
-          <span className="docs-tok-key">"id"</span>:{' '}
-          <span className="docs-tok-str">"key_8f2a1c"</span>,{'\n'}
-          {'  '}
-          <span className="docs-tok-key">"deleted"</span>:{' '}
-          <span className="docs-tok-str">true</span>
+          <span className="docs-tok-key">"message"</span>:{' '}
+          <span className="docs-tok-str">"API key revoked successfully"</span>
           {'\n'}
           {'}'}
         </>
@@ -94,7 +85,7 @@ export default async function RevokeKeyPage() {
       <main className="docs-main">
         <div className="docs-breadcrumb">API Keys</div>
         <div className="docs-h1">Revoke an API key</div>
-        <EndpointBadge method="DELETE" path="/v1/keys/:id" />
+        <EndpointBadge method="DELETE" path="/api-keys/:id" />
 
         <div className="docs-lede">
           Permanently deletes an API key. It cannot be undone, and any subsequent requests made with this key will immediately fail with a 401 Unauthorized status.
@@ -115,7 +106,7 @@ export default async function RevokeKeyPage() {
           <ParamRow
             name="id"
             required={true}
-            type="string"
+            type="integer"
             description="The unique identifier of the API key to revoke."
           />
         </ParamsTable>

@@ -20,19 +20,19 @@ export default async function CreateApiPage() {
         <>
           <span className="docs-tok-comment"># create a new API proxy</span>
           {'\n'}
-          curl -X POST https://api.relay.dev/v1/apis \{'\n'}
+          curl -X POST https://api.relay.dev/apis \{'\n'}
           {'  '}-H <span className="docs-tok-str">"Authorization: Bearer {token}"</span> \
-          {'\n'}
-          {'  '}-H <span className="docs-tok-str">"x-workspace-id: {workspaceId}"</span> \
           {'\n'}
           {'  '}-H <span className="docs-tok-str">"Content-Type: application/json"</span> \{'\n'}
           {'  '}-d{' '}
           <span className="docs-tok-str">
             '
             {`{
+    "workspace_id": ${workspaceId},
     "name": "Payments Service",
+    "slug": "payments-service",
     "environment": "production",
-    "target_url": "https://payments.internal.net"
+    "upstream_url": "https://payments.internal.net"
   }`}
             '
           </span>
@@ -45,13 +45,11 @@ export default async function CreateApiPage() {
         <>
           <span className="docs-tok-comment">{'// using the fetch API'}</span>
           {'\n'}
-          const response = await fetch('https://api.relay.dev/v1/apis', {'{\n'}
+          const response = await fetch('https://api.relay.dev/apis', {'{\n'}
           {'  '}method: <span className="docs-tok-str">'POST'</span>,{'\n'}
           {'  '}headers: {'{\n'}
           {'    '}
           <span className="docs-tok-str">'Authorization'</span>: <span className="docs-tok-str">'Bearer {token}'</span>,{'\n'}
-          {'    '}
-          <span className="docs-tok-str">'x-workspace-id'</span>: <span className="docs-tok-str">'{workspaceId}'</span>,{'\n'}
           {'    '}
           <span className="docs-tok-str">'Content-Type'</span>:{' '}
           <span className="docs-tok-str">'application/json'</span>
@@ -59,9 +57,11 @@ export default async function CreateApiPage() {
           {'  },'}
           {'\n'}
           {'  '}body: JSON.stringify({'{\n'}
+          {'    '}workspace_id: <span className="docs-tok-str">{workspaceId}</span>,{'\n'}
           {'    '}name: <span className="docs-tok-str">'Payments Service'</span>,{'\n'}
+          {'    '}slug: <span className="docs-tok-str">'payments-service'</span>,{'\n'}
           {'    '}environment: <span className="docs-tok-str">'production'</span>,{'\n'}
-          {'    '}target_url: <span className="docs-tok-str">'https://payments.internal.net'</span>
+          {'    '}upstream_url: <span className="docs-tok-str">'https://payments.internal.net'</span>
           {'\n'}
           {'  })\\n'}
           {'});'}
@@ -79,8 +79,6 @@ export default async function CreateApiPage() {
           {'    '}
           <span className="docs-tok-str">"Authorization"</span>: <span className="docs-tok-str">"Bearer {token}"</span>,{'\n'}
           {'    '}
-          <span className="docs-tok-str">"x-workspace-id"</span>: <span className="docs-tok-str">"{workspaceId}"</span>,{'\n'}
-          {'    '}
           <span className="docs-tok-str">"Content-Type"</span>:{' '}
           <span className="docs-tok-str">"application/json"</span>
           {'\n'}
@@ -88,19 +86,25 @@ export default async function CreateApiPage() {
           {'\n\n'}
           data = {'{\n'}
           {'    '}
+          <span className="docs-tok-str">"workspace_id"</span>:{' '}
+          <span className="docs-tok-str">{workspaceId}</span>,{'\n'}
+          {'    '}
           <span className="docs-tok-str">"name"</span>:{' '}
           <span className="docs-tok-str">"Payments Service"</span>,{'\n'}
+          {'    '}
+          <span className="docs-tok-str">"slug"</span>:{' '}
+          <span className="docs-tok-str">"payments-service"</span>,{'\n'}
           {'    '}
           <span className="docs-tok-str">"environment"</span>:{' '}
           <span className="docs-tok-str">"production"</span>,{'\n'}
           {'    '}
-          <span className="docs-tok-str">"target_url"</span>:{' '}
+          <span className="docs-tok-str">"upstream_url"</span>:{' '}
           <span className="docs-tok-str">"https://payments.internal.net"</span>
           {'\n'}
           {'}'}
           {'\n\n'}
           response = requests.post(
-          <span className="docs-tok-str">"https://api.relay.dev/v1/apis"</span>, headers=headers,
+          <span className="docs-tok-str">"https://api.relay.dev/apis"</span>, headers=headers,
           json=data)
         </>
       ),
@@ -115,23 +119,34 @@ export default async function CreateApiPage() {
           {'{'}
           {'\n'}
           {'  '}
+          <span className="docs-tok-key">"api"</span>: {'{'}
+          {'\n'}
+          {'    '}
           <span className="docs-tok-key">"id"</span>:{' '}
-          <span className="docs-tok-str">"api_39fjd8"</span>,{'\n'}
-          {'  '}
+          <span className="docs-tok-str">1</span>,{'\n'}
+          {'    '}
+          <span className="docs-tok-key">"workspace_id"</span>:{' '}
+          <span className="docs-tok-str">{workspaceId}</span>,{'\n'}
+          {'    '}
           <span className="docs-tok-key">"name"</span>:{' '}
           <span className="docs-tok-str">"Payments Service"</span>,{'\n'}
-          {'  '}
+          {'    '}
+          <span className="docs-tok-key">"slug"</span>:{' '}
+          <span className="docs-tok-str">"payments-service"</span>,{'\n'}
+          {'    '}
           <span className="docs-tok-key">"environment"</span>:{' '}
           <span className="docs-tok-str">"production"</span>,{'\n'}
-          {'  '}
-          <span className="docs-tok-key">"target_url"</span>:{' '}
+          {'    '}
+          <span className="docs-tok-key">"upstream_url"</span>:{' '}
           <span className="docs-tok-str">"https://payments.internal.net"</span>,{'\n'}
-          {'  '}
+          {'    '}
           <span className="docs-tok-key">"status"</span>:{' '}
           <span className="docs-tok-str">"active"</span>,{'\n'}
-          {'  '}
+          {'    '}
           <span className="docs-tok-key">"created_at"</span>:{' '}
           <span className="docs-tok-str">"2026-09-10T12:00:00Z"</span>
+          {'\n'}
+          {'  }'}
           {'\n'}
           {'}'}
         </>
@@ -144,7 +159,7 @@ export default async function CreateApiPage() {
       <main className="docs-main">
         <div className="docs-breadcrumb">APIs &amp; Endpoints</div>
         <div className="docs-h1">Create an API</div>
-        <EndpointBadge method="POST" path="/v1/apis" />
+        <EndpointBadge method="POST" path="/apis" />
 
         <div className="docs-lede">
           Creates a new API proxy in the current workspace. Once created, Relay will automatically start proxying traffic for this API.
@@ -163,10 +178,22 @@ export default async function CreateApiPage() {
         </h2>
         <ParamsTable>
           <ParamRow
+            name="workspace_id"
+            required={true}
+            type="integer"
+            description="The ID of the workspace where this API will be created."
+          />
+          <ParamRow
             name="name"
             required={true}
             type="string"
             description='A human-readable name for this API, e.g. "Payments Service".'
+          />
+          <ParamRow
+            name="slug"
+            required={true}
+            type="string"
+            description='A unique URL-friendly identifier for routing, e.g. "payments-service".'
           />
           <ParamRow
             name="environment"
@@ -181,7 +208,7 @@ export default async function CreateApiPage() {
             }
           />
           <ParamRow
-            name="target_url"
+            name="upstream_url"
             required={true}
             type="string"
             description="The base URL of your upstream service that Relay should proxy traffic to."

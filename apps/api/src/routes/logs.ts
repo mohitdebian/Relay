@@ -30,7 +30,13 @@ router.get('/', async (req: AuthRequest, res: Response): Promise<void> => {
     return;
   }
 
-  const hasAccess = await checkWorkspaceAccess(userId, parseInt(workspaceId as string));
+  const parsedWorkspaceId = parseInt(workspaceId as string, 10);
+  if (isNaN(parsedWorkspaceId)) {
+    res.status(400).json({ error: 'Invalid workspace ID' });
+    return;
+  }
+
+  const hasAccess = await checkWorkspaceAccess(userId, parsedWorkspaceId);
   if (!hasAccess) {
     res.status(403).json({ error: 'Unauthorized for this workspace' });
     return;

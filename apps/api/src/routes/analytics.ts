@@ -33,7 +33,13 @@ router.get('/overview', async (req: AuthRequest, res: Response): Promise<void> =
     return;
   }
 
-  const hasAccess = await checkWorkspaceAccess(userId, parseInt(workspaceId as string));
+  const parsedWorkspaceId = parseInt(workspaceId as string, 10);
+  if (isNaN(parsedWorkspaceId)) {
+    res.status(400).json({ error: 'Invalid workspace ID' });
+    return;
+  }
+
+  const hasAccess = await checkWorkspaceAccess(userId, parsedWorkspaceId);
   if (!hasAccess) {
     res.status(403).json({ error: 'Unauthorized for this workspace' });
     return;
@@ -154,7 +160,14 @@ router.get('/:workspaceId/apis/:apiId', async (req: AuthRequest, res: Response):
     return;
   }
 
-  const hasAccess = await checkWorkspaceAccess(userId, parseInt(workspaceId));
+  const parsedWorkspaceId = parseInt(workspaceId, 10);
+  const parsedApiId = parseInt(apiId, 10);
+  if (isNaN(parsedWorkspaceId) || isNaN(parsedApiId)) {
+    res.status(400).json({ error: 'Invalid workspace ID or API ID' });
+    return;
+  }
+
+  const hasAccess = await checkWorkspaceAccess(userId, parsedWorkspaceId);
   if (!hasAccess) {
     res.status(403).json({ error: 'Unauthorized for this workspace' });
     return;

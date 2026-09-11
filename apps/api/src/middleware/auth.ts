@@ -88,7 +88,7 @@ export async function authMiddleware(
   };
 
   if (token.split('.').length === 3) {
-    jwt.verify(token, getKey, {}, async (err, decoded) => {
+    const handleDecodedToken = async (err: any, decoded: any) => {
       if (err) {
         res.status(401).json({ error: 'Unauthorized: Invalid token' });
         return;
@@ -103,7 +103,15 @@ export async function authMiddleware(
       }
 
       await handleAuthenticatedUser(email, subId, payload.name || email.split('@')[0]);
-    });
+    };
+
+    const decodedToken = jwt.decode(token, { complete: true }) as any;
+    if (decodedToken && decodedToken.header && decodedToken.header.kid) {
+      jwt.verify(token, getKey, {}, handleDecodedToken);
+    } else {
+      const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-me';
+      jwt.verify(token, JWT_SECRET, {}, handleDecodedToken);
+    }
   } else {
     // Check cache first
     const cached = sessionCache.get(token);

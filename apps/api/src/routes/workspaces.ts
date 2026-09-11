@@ -160,8 +160,14 @@ router.post(
 
       // Only owner or admin can invite
       const userRole = check.rows[0].role;
-      if (userRole !== 'OWNER' && userRole !== 'Admin') {
+      if (userRole.toLowerCase() !== 'owner' && userRole.toLowerCase() !== 'admin') {
         res.status(403).json({ error: 'You are not allowed to invite members' });
+        return;
+      }
+
+      // Prevent privilege escalation: only owners can invite owners
+      if (role.toLowerCase() === 'owner' && userRole.toLowerCase() !== 'owner') {
+        res.status(403).json({ error: 'Only owners can invite other owners' });
         return;
       }
 
@@ -229,7 +235,7 @@ router.delete('/:id/members/:targetUserId', async (req: AuthRequest, res: Respon
     }
 
     const role = checkResult.rows[0].role;
-    if (role !== 'OWNER' && role !== 'admin' && role !== 'Admin') {
+    if (role.toLowerCase() !== 'owner' && role.toLowerCase() !== 'admin') {
       res.status(403).json({ error: 'Only owners or admins can remove members' });
       return;
     }
@@ -286,7 +292,7 @@ router.delete('/:id', async (req: AuthRequest, res: Response) => {
     }
 
     const role = checkResult.rows[0].role;
-    if (role !== 'OWNER' && role !== 'admin') {
+    if (role.toLowerCase() !== 'owner' && role.toLowerCase() !== 'admin') {
       res.status(403).json({ error: 'Only owners or admins can delete workspaces' });
       return;
     }
@@ -318,7 +324,7 @@ router.patch('/:id', validate(updateWorkspaceSchema), async (req: AuthRequest, r
     }
 
     const role = checkResult.rows[0].role;
-    if (role !== 'OWNER' && role !== 'admin') {
+    if (role.toLowerCase() !== 'owner' && role.toLowerCase() !== 'admin') {
       res.status(403).json({ error: 'Only owners or admins can update workspaces' });
       return;
     }

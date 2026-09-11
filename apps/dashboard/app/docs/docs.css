@@ -59,6 +59,14 @@ code.docs-inline { font-family: 'JetBrains Mono', monospace; font-size: 13.5px; 
 .docs-callout.warn { border-left-color: var(--yellow); }
 .docs-callout b { font-weight: 600; }
 
+/* general table */
+.docs-table-container { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 22px; background: var(--surface); }
+.docs-table-row { display: grid; grid-template-columns: 200px 140px 1fr; gap: 12px; padding: 11px 14px; border-bottom: 1px solid var(--border); font-size: 13px; }
+.docs-table-row.header { font-size: 11px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: .04em; font-weight: 600; }
+.docs-table-row:last-child { border-bottom: none; }
+.docs-table-cell-mono { font-family: 'JetBrains Mono', monospace; font-weight: 500; }
+.docs-table-cell-muted { color: var(--text-secondary); }
+
 /* ---- right rail: pinned code samples ---- */
 .docs-side { width: 400px; flex-shrink: 0; padding: 36px 0; position: sticky; top: var(--topbar-h); height: calc(100vh - var(--topbar-h)); overflow-y: auto; }
 

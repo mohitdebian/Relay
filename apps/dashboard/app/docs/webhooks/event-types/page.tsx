@@ -61,13 +61,38 @@ export default function WebhooksEventTypesPage() {
           The following events are emitted as audit actions occur within your workspace.
         </p>
 
-        <ul className="docs-ul">
-          <li><code className="docs-inline">API_CREATED</code> - A new API proxy target was created.</li>
-          <li><code className="docs-inline">API_UPDATED</code> - An existing API's configuration was modified.</li>
-          <li><code className="docs-inline">API_DELETED</code> - An API target was removed.</li>
-          <li><code className="docs-inline">API_KEY_CREATED</code> - A new API key was generated.</li>
-          <li><code className="docs-inline">API_KEY_REVOKED</code> - An API key was revoked (soft-deleted).</li>
-        </ul>
+        <div className="docs-table-container">
+          <div className="docs-table-row header">
+            <div>Event</div>
+            <div>When</div>
+            <div>Notes</div>
+          </div>
+          <div className="docs-table-row">
+            <div className="docs-table-cell-mono">API_CREATED</div>
+            <div className="docs-table-cell-muted">API creation</div>
+            <div className="docs-table-cell-muted">A new API proxy target was created.</div>
+          </div>
+          <div className="docs-table-row">
+            <div className="docs-table-cell-mono">API_UPDATED</div>
+            <div className="docs-table-cell-muted">API modification</div>
+            <div className="docs-table-cell-muted">An existing API's configuration was modified.</div>
+          </div>
+          <div className="docs-table-row">
+            <div className="docs-table-cell-mono">API_DELETED</div>
+            <div className="docs-table-cell-muted">API deletion</div>
+            <div className="docs-table-cell-muted">An API target was removed.</div>
+          </div>
+          <div className="docs-table-row">
+            <div className="docs-table-cell-mono">API_KEY_CREATED</div>
+            <div className="docs-table-cell-muted">Key generation</div>
+            <div className="docs-table-cell-muted">A new API key was generated.</div>
+          </div>
+          <div className="docs-table-row">
+            <div className="docs-table-cell-mono">API_KEY_REVOKED</div>
+            <div className="docs-table-cell-muted">Key revocation</div>
+            <div className="docs-table-cell-muted">An API key was revoked (soft-deleted).</div>
+          </div>
+        </div>
 
       </main>
 

@@ -54,7 +54,7 @@ export default function ErrorsPage() {
           <li><code className="docs-inline">401 Unauthorized</code> - No valid API key provided, or invalid session token.</li>
           <li><code className="docs-inline">403 Forbidden</code> - The API key doesn't have permissions to perform the request (e.g. requires <code className="docs-inline">admin</code> or <code className="docs-inline">owner</code> role).</li>
           <li><code className="docs-inline">404 Not Found</code> - The requested resource doesn't exist, or you lack permissions to view it.</li>
-          <li><code className="docs-inline">409 Conflict</code> - The request conflicts with another resource (e.g. an API with this slug already exists in the workspace).</li>
+          <li><code className="docs-inline">409 Conflict</code> - The request conflicts with another resource (e.g. API with this slug already exists in the workspace).</li>
           <li><code className="docs-inline">429 Too Many Requests</code> - Too many requests hit the API too quickly.</li>
           <li><code className="docs-inline">500, 502, 503, 504 Server Errors</code> - Something went wrong on Relay's end.</li>
         </ul>

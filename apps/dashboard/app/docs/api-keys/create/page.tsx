@@ -112,17 +112,23 @@ export default async function CreateApiKeyPage() {
           <span className="docs-tok-key">"id"</span>:{' '}
           <span className="docs-tok-str">1</span>,{'\n'}
           {'    '}
+          <span className="docs-tok-key">"workspace_id"</span>:{' '}
+          <span className="docs-tok-str">1</span>,{'\n'}
+          {'    '}
+          <span className="docs-tok-key">"api_id"</span>:{' '}
+          <span className="docs-tok-str">1</span>,{'\n'}
+          {'    '}
           <span className="docs-tok-key">"name"</span>:{' '}
           <span className="docs-tok-str">"CI pipeline"</span>,{'\n'}
+          {'    '}
+          <span className="docs-tok-key">"key_prefix"</span>:{' '}
+          <span className="docs-tok-str">"relay_live_9f8..."</span>,{'\n'}
           {'    '}
           <span className="docs-tok-key">"environment"</span>:{' '}
           <span className="docs-tok-str">"production"</span>,{'\n'}
           {'    '}
           <span className="docs-tok-key">"created_at"</span>:{' '}
-          <span className="docs-tok-str">"2026-09-11T10:42:00Z"</span>,{'\n'}
-          {'    '}
-          <span className="docs-tok-key">"last_used_at"</span>:{' '}
-          <span className="docs-tok-null">null</span>
+          <span className="docs-tok-str">"2026-09-11T10:42:00Z"</span>
           {'\n'}
           {'  },'}
           {'\n'}

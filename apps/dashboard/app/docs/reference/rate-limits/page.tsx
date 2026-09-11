@@ -17,7 +17,7 @@ export default function RateLimitsPage() {
           {'\n'}
           {'  '}
           <span className="docs-tok-key">"error"</span>:{' '}
-          <span className="docs-tok-str">"Too many requests, please try again later."</span>,{'\n'}
+          <span className="docs-tok-str">"Too many requests. Please try again later."</span>,{'\n'}
           {'  '}
           <span className="docs-tok-key">"retryAfter"</span>:{' '}
           <span className="docs-tok-str">34</span>

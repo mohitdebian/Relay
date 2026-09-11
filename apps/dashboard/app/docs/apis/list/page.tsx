@@ -57,7 +57,7 @@ export default async function ListApisPage() {
           <span className="docs-tok-str">"https://httpbin.org"</span>,{'\n'}
           {'      '}
           <span className="docs-tok-key">"shared_secret"</span>:{' '}
-          <span className="docs-tok-null">null</span>,{'\n'}
+          <span className="docs-tok-str">"whsec_a1b2c3d4e5f6..."</span>,{'\n'}
           {'      '}
           <span className="docs-tok-key">"environment"</span>:{' '}
           <span className="docs-tok-str">"production"</span>,{'\n'}
@@ -69,7 +69,7 @@ export default async function ListApisPage() {
           <span className="docs-tok-str">1000</span>,{'\n'}
           {'      '}
           <span className="docs-tok-key">"rate_limit_window"</span>:{' '}
-          <span className="docs-tok-str">"1h"</span>
+          <span className="docs-tok-str">3600</span>
           {'\n'}
           {'    }'}
           {'\n  ]'}

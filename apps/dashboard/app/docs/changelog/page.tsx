@@ -89,7 +89,6 @@ export default function ChangelogPage() {
             </button>
           ))}
         </div>
-        <a href="#" className="subscribe-link">Subscribe · RSS</a>
       </div>
 
       <div className="changelog-timeline">

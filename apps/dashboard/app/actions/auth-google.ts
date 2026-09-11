@@ -6,11 +6,11 @@ function isRedirectError(error: any) {
   return error && error.message && error.message === 'NEXT_REDIRECT';
 }
 
-export async function loginWithGoogle(access_token: string) {
+export async function loginWithGoogle(id_token: string) {
   try {
     const res = await fetchAPI('/auth/google', {
       method: 'POST',
-      body: JSON.stringify({ access_token }),
+      body: JSON.stringify({ id_token }),
     });
 
     if (res.error) {

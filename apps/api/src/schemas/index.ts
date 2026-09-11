@@ -13,7 +13,7 @@ export const loginSchema = z.object({
 });
 
 export const googleAuthSchema = z.object({
-  access_token: z.string().min(1, 'Google access token is required'),
+  id_token: z.string().min(1, 'Google ID token is required'),
 });
 
 // Workspace Schemas

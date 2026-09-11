@@ -1,6 +1,6 @@
 import { Router, Response } from 'express';
 import { pool } from '../db';
-import { authMiddleware, AuthRequest } from '../middleware/auth';
+import { authMiddleware, AuthRequest, checkWorkspaceRole } from '../middleware/auth';
 import { apiRateLimit, sensitiveRateLimit } from '../utils/rate-limit';
 import { validate } from '../middleware/validate';
 import { createWebhookSchema } from '../schemas';
@@ -10,14 +10,7 @@ const router = Router();
 router.use(authMiddleware);
 router.use(apiRateLimit);
 
-// Middleware to check if user has access to the workspace
-async function checkWorkspaceAccess(userId: number, workspaceId: number): Promise<boolean> {
-  const result = await pool.query(
-    'SELECT 1 FROM workspace_members WHERE workspace_id = $1 AND user_id = $2',
-    [workspaceId, userId]
-  );
-  return result.rows.length > 0;
-}
+
 
 // GET /webhooks
 router.get('/', async (req: AuthRequest, res: Response): Promise<void> => {
@@ -34,15 +27,15 @@ router.get('/', async (req: AuthRequest, res: Response): Promise<void> => {
     return;
   }
 
-  const hasAccess = await checkWorkspaceAccess(userId, parseInt(workspaceId as string));
+  const hasAccess = await checkWorkspaceRole(userId, parseInt(workspaceId as string), ['admin', 'owner']);
   if (!hasAccess) {
-    res.status(403).json({ error: 'Unauthorized for this workspace' });
+    res.status(403).json({ error: 'Unauthorized: Requires admin or owner role' });
     return;
   }
 
   try {
     const result = await pool.query(
-      'SELECT * FROM webhooks WHERE workspace_id = $1 ORDER BY created_at DESC',
+      'SELECT id, workspace_id, url, events, created_at, updated_at FROM webhooks WHERE workspace_id = $1 ORDER BY created_at DESC',
       [workspaceId]
     );
     res.json({ webhooks: result.rows });
@@ -72,9 +65,9 @@ router.post(
       return;
     }
 
-    const hasAccess = await checkWorkspaceAccess(userId, parseInt(workspaceId as string));
+    const hasAccess = await checkWorkspaceRole(userId, parseInt(workspaceId as string), ['admin', 'owner']);
     if (!hasAccess) {
-      res.status(403).json({ error: 'Unauthorized for this workspace' });
+      res.status(403).json({ error: 'Unauthorized: Requires admin or owner role' });
       return;
     }
 

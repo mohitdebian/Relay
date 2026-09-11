@@ -19,18 +19,14 @@ router.post(
   authRateLimit,
   validate(googleAuthSchema),
   async (req: Request, res: Response): Promise<void> => {
-    const { access_token } = req.body;
+    const { id_token } = req.body;
     try {
-      const userInfoRes = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-        headers: { Authorization: `Bearer ${access_token}` },
+      const ticket = await googleClient.verifyIdToken({
+        idToken: id_token,
+        audience: GOOGLE_CLIENT_ID,
       });
 
-      if (!userInfoRes.ok) {
-        res.status(400).json({ error: 'Invalid Google token' });
-        return;
-      }
-
-      const payload = await userInfoRes.json();
+      const payload = ticket.getPayload();
       if (!payload || !payload.email) {
         res.status(400).json({ error: 'Invalid Google token payload' });
         return;
@@ -193,20 +189,37 @@ router.delete('/me', authMiddleware, async (req: AuthRequest, res: Response): Pr
   try {
     await client.query('BEGIN');
 
-    // 1. Find and delete workspaces where this user is the OWNER
-    // This will cascade and delete all associated APIs, keys, logs, etc. for these workspaces.
-    await client.query(
-      `
-      DELETE FROM workspaces 
-      WHERE id IN (
-        SELECT workspace_id FROM workspace_members WHERE user_id = $1 AND role = 'OWNER'
-      )
-    `,
+    // 1. Find workspaces where this user is the OWNER
+    const workspacesResult = await client.query(
+      `SELECT workspace_id FROM workspace_members WHERE user_id = $1 AND role = 'OWNER'`,
       [userId]
     );
+    const workspaceIds = workspacesResult.rows.map(row => row.workspace_id);
 
-    // 2. Delete the user
-    // This will cascade and delete any remaining workspace_members rows for this user (where they were not the OWNER).
+    if (workspaceIds.length > 0) {
+      // Find which of these workspaces have ONLY this user as owner
+      const ownersCountResult = await client.query(
+        `SELECT workspace_id, COUNT(user_id) as owner_count 
+         FROM workspace_members 
+         WHERE workspace_id = ANY($1) AND role = 'OWNER' 
+         GROUP BY workspace_id`,
+        [workspaceIds]
+      );
+      
+      const workspacesToDelete = ownersCountResult.rows
+        .filter(row => parseInt(row.owner_count) === 1)
+        .map(row => row.workspace_id);
+
+      if (workspacesToDelete.length > 0) {
+        // Delete workspaces where this user is the only owner (cascades)
+        await client.query(
+          `DELETE FROM workspaces WHERE id = ANY($1)`,
+          [workspacesToDelete]
+        );
+      }
+    }
+
+    // 2. Delete the user (cascades to delete remaining workspace_members rows)
     await client.query('DELETE FROM users WHERE id = $1', [userId]);
 
     await client.query('COMMIT');

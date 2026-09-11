@@ -89,7 +89,7 @@ router.get('/', async (req: AuthRequest, res: Response) => {
 
   try {
     let query = `
-      SELECT a.* 
+      SELECT a.id, a.workspace_id, a.name, a.slug, a.description, a.upstream_url, a.environment, a.rate_limit_enabled, a.rate_limit_max, a.rate_limit_window, a.status, a.created_at, a.updated_at 
       FROM apis a
       JOIN workspace_members wm ON a.workspace_id = wm.workspace_id
       WHERE wm.user_id = $1
@@ -118,7 +118,7 @@ router.get('/:id', async (req: AuthRequest, res: Response) => {
 
   try {
     const result = await pool.query(
-      `SELECT a.* 
+      `SELECT a.*, wm.role 
        FROM apis a
        JOIN workspace_members wm ON a.workspace_id = wm.workspace_id
        WHERE a.id = $1 AND wm.user_id = $2`,
@@ -129,7 +129,16 @@ router.get('/:id', async (req: AuthRequest, res: Response) => {
       res.status(404).json({ error: 'API not found or unauthorized' });
       return;
     }
-    res.json({ api: result.rows[0] });
+    
+    const api = result.rows[0];
+    const role = api.role.toLowerCase();
+    
+    if (role !== 'admin' && role !== 'owner') {
+      delete api.shared_secret;
+    }
+    delete api.role; // Don't expose the role in the API object
+
+    res.json({ api });
   } catch (error) {
     console.error('Error fetching API:', error);
     res.status(500).json({ error: 'Internal server error' });
@@ -348,11 +357,17 @@ router.get('/:id/keys', async (req: AuthRequest, res: Response) => {
 
   try {
     const accessCheck = await pool.query(
-      `SELECT a.id FROM apis a JOIN workspace_members wm ON a.workspace_id = wm.workspace_id WHERE a.id = $1 AND wm.user_id = $2`,
+      `SELECT a.id, wm.role FROM apis a JOIN workspace_members wm ON a.workspace_id = wm.workspace_id WHERE a.id = $1 AND wm.user_id = $2`,
       [id, userId]
     );
     if (accessCheck.rows.length === 0) {
       res.status(404).json({ error: 'API not found or unauthorized' });
+      return;
+    }
+
+    const { role } = accessCheck.rows[0];
+    if (role.toLowerCase() !== 'admin' && role.toLowerCase() !== 'owner') {
+      res.status(403).json({ error: 'Unauthorized: Requires admin or owner role' });
       return;
     }
 

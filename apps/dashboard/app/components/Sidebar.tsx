@@ -72,7 +72,9 @@ export default function Sidebar({
   return (
     <aside className="sidebar">
       <div className="sidebar-brand">
-        <span className="logo">RELAY_</span>
+        <Link href="/" className="logo">
+          RELAY_
+        </Link>
       </div>
       {workspaces.length > 0 && (
         <WorkspaceSwitcher workspaces={workspaces} activeWorkspaceId={activeWorkspaceId} />

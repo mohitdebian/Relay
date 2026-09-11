@@ -10,7 +10,7 @@ export function DocsSidebar() {
   return (
     <aside className="sidebar docs-sidebar">
       <div className="sidebar-brand">
-        <Link href="/docs" className="logo">
+        <Link href="/" className="logo">
           RELAY_
         </Link>
       </div>

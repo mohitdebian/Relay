@@ -1,5 +1,5 @@
-import { DocsToc } from '../../../_components/DocsToc';
-import CodeCard from '../../../_components/CodeCard';
+import { DocsToc } from '../../_components/DocsToc';
+import CodeCard from '../../_components/CodeCard';
 
 export default function GlobalRateLimitingPage() {
   const tabs = [

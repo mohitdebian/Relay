@@ -59,12 +59,11 @@ function LoginContent() {
     try {
       if (isSignup) {
         const name = formData.get('name') as string;
-        const workspace = formData.get('workspace') as string;
 
         const { error: signUpError } = await authClient.signUp.email({
           email,
           password,
-          name: name || workspace.split('-')[0],
+          name: name || email.split('@')[0],
         });
 
         if (signUpError) {
@@ -172,16 +171,7 @@ function LoginContent() {
             <form onSubmit={handleSubmit}>
               {isSignup && (
                 <>
-                  <div className="field auth-only-signup">
-                    <label>Workspace name</label>
-                    <input
-                      type="text"
-                      placeholder="acme-workspace"
-                      name="workspace"
-                      required={isSignup}
-                      disabled={isPending}
-                    />
-                  </div>
+
                   <div className="field auth-only-signup">
                     <label>Full name</label>
                     <input

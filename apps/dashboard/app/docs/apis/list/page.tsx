@@ -1,7 +1,6 @@
 import { cookies } from 'next/headers';
-import { EndpointBadge } from '../../_components/EndpointBadge';
-import { ParamsTable, ParamRow } from '../../_components/ParamsTable';
-import CodeCard from '../../_components/CodeCard';
+import { EndpointBadge } from '../../../_components/EndpointBadge';
+import CodeCard from '../../../_components/CodeCard';
 
 export default async function ListApisPage() {
   const cookieStore = await cookies();
@@ -11,7 +10,6 @@ export default async function ListApisPage() {
     cookieStore.get('better-auth.session_token')?.value ||
     '$RELAY_TOKEN';
 
-  const workspaceId = cookieStore.get('relay_active_workspace')?.value || 'wksp_your_workspace_id';
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.relay.dev';
 
   const tabs = [
@@ -19,52 +17,10 @@ export default async function ListApisPage() {
       label: 'cURL',
       code: (
         <>
-          <span className="docs-tok-comment"># list all APIs in the workspace</span>
+          <span className="docs-tok-comment"># list APIs for a workspace</span>
           {'\n'}
-          curl -X GET {apiUrl}/apis \{'\n'}
-          {'  '}-H <span className="docs-tok-str">"Authorization: Bearer {token}"</span> \
-          {'\n'}
-          {'  '}-H <span className="docs-tok-str">"x-workspace-id: {workspaceId}"</span>
-        </>
-      ),
-    },
-    {
-      label: 'JavaScript',
-      code: (
-        <>
-          <span className="docs-tok-comment">{'// using the fetch API'}</span>
-          {'\n'}
-          const response = await fetch('{apiUrl}/apis', {'{\n'}
-          {'  '}method: <span className="docs-tok-str">'GET'</span>,{'\n'}
-          {'  '}headers: {'{\n'}
-          {'    '}
-          <span className="docs-tok-str">'Authorization'</span>: <span className="docs-tok-str">'Bearer {token}'</span>,{'\n'}
-          {'    '}
-          <span className="docs-tok-str">'x-workspace-id'</span>: <span className="docs-tok-str">'{workspaceId}'</span>
-          {'\n'}
-          {'  }'}
-          {'\n'}
-          {'});'}
-        </>
-      ),
-    },
-    {
-      label: 'Python',
-      code: (
-        <>
-          <span className="docs-tok-comment"># using the requests library</span>
-          {'\n'}
-          import requests{'\n\n'}
-          headers = {'{\n'}
-          {'    '}
-          <span className="docs-tok-str">"Authorization"</span>: <span className="docs-tok-str">"Bearer {token}"</span>,{'\n'}
-          {'    '}
-          <span className="docs-tok-str">"x-workspace-id"</span>: <span className="docs-tok-str">"{workspaceId}"</span>
-          {'\n'}
-          {'}'}
-          {'\n\n'}
-          response = requests.get(
-          <span className="docs-tok-str">"{apiUrl}/apis"</span>, headers=headers)
+          curl -X GET {apiUrl}/apis?workspaceId=1 \{'\n'}
+          {'  '}-H <span className="docs-tok-str">"Authorization: Bearer {token}"</span>
         </>
       ),
     },
@@ -78,37 +34,46 @@ export default async function ListApisPage() {
           {'{'}
           {'\n'}
           {'  '}
-          <span className="docs-tok-key">"apis"</span>: {'[\n'}
-          {'    {\n'}
+          <span className="docs-tok-key">"apis"</span>: [{'\n'}
+          {'    {'}
+          {'\n'}
           {'      '}
           <span className="docs-tok-key">"id"</span>:{' '}
           <span className="docs-tok-str">1</span>,{'\n'}
           {'      '}
           <span className="docs-tok-key">"workspace_id"</span>:{' '}
-          <span className="docs-tok-str">{workspaceId}</span>,{'\n'}
+          <span className="docs-tok-str">1</span>,{'\n'}
           {'      '}
           <span className="docs-tok-key">"name"</span>:{' '}
-          <span className="docs-tok-str">"Payments Service"</span>,{'\n'}
+          <span className="docs-tok-str">"My First API"</span>,{'\n'}
           {'      '}
           <span className="docs-tok-key">"slug"</span>:{' '}
-          <span className="docs-tok-str">"payments-service"</span>,{'\n'}
+          <span className="docs-tok-str">"my-first-api"</span>,{'\n'}
+          {'      '}
+          <span className="docs-tok-key">"description"</span>:{' '}
+          <span className="docs-tok-str">"Primary production proxy"</span>,{'\n'}
+          {'      '}
+          <span className="docs-tok-key">"upstream_url"</span>:{' '}
+          <span className="docs-tok-str">"https://httpbin.org"</span>,{'\n'}
+          {'      '}
+          <span className="docs-tok-key">"shared_secret"</span>:{' '}
+          <span className="docs-tok-null">null</span>,{'\n'}
           {'      '}
           <span className="docs-tok-key">"environment"</span>:{' '}
           <span className="docs-tok-str">"production"</span>,{'\n'}
           {'      '}
-          <span className="docs-tok-key">"upstream_url"</span>:{' '}
-          <span className="docs-tok-str">"https://payments.internal.net"</span>,{'\n'}
+          <span className="docs-tok-key">"rate_limit_enabled"</span>:{' '}
+          <span className="docs-tok-null">true</span>,{'\n'}
           {'      '}
-          <span className="docs-tok-key">"status"</span>:{' '}
-          <span className="docs-tok-str">"active"</span>,{'\n'}
+          <span className="docs-tok-key">"rate_limit_max"</span>:{' '}
+          <span className="docs-tok-str">1000</span>,{'\n'}
           {'      '}
-          <span className="docs-tok-key">"created_at"</span>:{' '}
-          <span className="docs-tok-str">"2026-09-10T12:00:00Z"</span>
+          <span className="docs-tok-key">"rate_limit_window"</span>:{' '}
+          <span className="docs-tok-str">"1h"</span>
           {'\n'}
-          {'    }\n'}
-          {'  ]'}
-          {'\n'}
-          {'}'}
+          {'    }'}
+          {'\n  ]'}
+          {'\n}'}
         </>
       ),
     },
@@ -117,34 +82,33 @@ export default async function ListApisPage() {
   return (
     <>
       <main className="docs-main">
-        <div className="docs-breadcrumb">APIs &amp; Endpoints</div>
+        <div className="docs-breadcrumb">APIs & Endpoints</div>
         <div className="docs-h1">List APIs</div>
         <EndpointBadge method="GET" path="/apis" />
 
         <div className="docs-lede">
-          Returns a list of all configured APIs in the current workspace. The APIs are returned sorted by creation date, with the most recent appearing first.
+          Retrieve a list of all API targets configured in your workspace.
         </div>
 
         <h2 className="docs-h2" id="auth">
           Authentication
         </h2>
         <p className="docs-p">
-          All requests to the Relay API must include a workspace-level access token in the{' '}
-          <code className="docs-inline">Authorization</code> header.
+          Requires a workspace-level access token in the <code className="docs-inline">Authorization</code> header. 
+          The <code className="docs-inline">workspaceId</code> must be provided either as a query parameter or via the <code className="docs-inline">x-workspace-id</code> header.
         </p>
-
-
 
         <h2 className="docs-h2" id="response">
           Response
         </h2>
         <p className="docs-p muted">
-          Returns an object with an <code className="docs-inline">apis</code> property that contains an array of API objects.
+          Returns an array of API objects containing configuration and upstream mapping details.
         </p>
       </main>
 
       <aside className="docs-side">
         <CodeCard tabs={tabs} />
+
         <div className="docs-response-label">Example response · 200 OK</div>
         <CodeCard tabs={responseTabs} />
       </aside>

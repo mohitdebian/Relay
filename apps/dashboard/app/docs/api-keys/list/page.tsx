@@ -1,9 +1,9 @@
 import { cookies } from 'next/headers';
-import { EndpointBadge } from '../../_components/EndpointBadge';
-import { ParamsTable, ParamRow } from '../../_components/ParamsTable';
-import CodeCard from '../../_components/CodeCard';
+import { EndpointBadge } from '../../../_components/EndpointBadge';
+import { ParamsTable, ParamRow } from '../../../_components/ParamsTable';
+import CodeCard from '../../../_components/CodeCard';
 
-export default async function ListKeysPage() {
+export default async function ListApiKeysPage() {
   const cookieStore = await cookies();
   const token =
     cookieStore.get('__Secure-neon-auth.session_token')?.value ||
@@ -11,7 +11,6 @@ export default async function ListKeysPage() {
     cookieStore.get('better-auth.session_token')?.value ||
     '$RELAY_TOKEN';
 
-  const workspaceId = cookieStore.get('relay_active_workspace')?.value || 'wksp_your_workspace_id';
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.relay.dev';
 
   const tabs = [
@@ -19,46 +18,10 @@ export default async function ListKeysPage() {
       label: 'cURL',
       code: (
         <>
-          <span className="docs-tok-comment"># list all keys for the given API</span>
+          <span className="docs-tok-comment"># list API keys for a specific API</span>
           {'\n'}
           curl -X GET {apiUrl}/apis/1/keys \{'\n'}
           {'  '}-H <span className="docs-tok-str">"Authorization: Bearer {token}"</span>
-        </>
-      ),
-    },
-    {
-      label: 'JavaScript',
-      code: (
-        <>
-          <span className="docs-tok-comment">{'// using the fetch API'}</span>
-          {'\n'}
-          const response = await fetch('{apiUrl}/apis/1/keys', {'{\n'}
-          {'  '}method: <span className="docs-tok-str">'GET'</span>,{'\n'}
-          {'  '}headers: {'{\n'}
-          {'    '}
-          <span className="docs-tok-str">'Authorization'</span>: <span className="docs-tok-str">'Bearer {token}'</span>
-          {'\n'}
-          {'  }'}
-          {'\n'}
-          {'});'}
-        </>
-      ),
-    },
-    {
-      label: 'Python',
-      code: (
-        <>
-          <span className="docs-tok-comment"># using the requests library</span>
-          {'\n'}
-          import requests{'\n\n'}
-          headers = {'{\n'}
-          {'    '}
-          <span className="docs-tok-str">"Authorization"</span>: <span className="docs-tok-str">"Bearer {token}"</span>
-          {'\n'}
-          {'}'}
-          {'\n\n'}
-          response = requests.get(
-          <span className="docs-tok-str">"{apiUrl}/apis/1/keys"</span>, headers=headers)
         </>
       ),
     },
@@ -72,28 +35,43 @@ export default async function ListKeysPage() {
           {'{'}
           {'\n'}
           {'  '}
-          <span className="docs-tok-key">"keys"</span>: {'[\n'}
-          {'    {\n'}
+          <span className="docs-tok-key">"keys"</span>: [{'\n'}
+          {'    {'}
+          {'\n'}
           {'      '}
           <span className="docs-tok-key">"id"</span>:{' '}
+          <span className="docs-tok-str">12</span>,{'\n'}
+          {'      '}
+          <span className="docs-tok-key">"workspace_id"</span>:{' '}
+          <span className="docs-tok-str">1</span>,{'\n'}
+          {'      '}
+          <span className="docs-tok-key">"api_id"</span>:{' '}
           <span className="docs-tok-str">1</span>,{'\n'}
           {'      '}
           <span className="docs-tok-key">"name"</span>:{' '}
           <span className="docs-tok-str">"CI pipeline"</span>,{'\n'}
           {'      '}
+          <span className="docs-tok-key">"key_prefix"</span>:{' '}
+          <span className="docs-tok-str">"relay_live_9f8e7d..."</span>,{'\n'}
+          {'      '}
           <span className="docs-tok-key">"environment"</span>:{' '}
           <span className="docs-tok-str">"production"</span>,{'\n'}
           {'      '}
           <span className="docs-tok-key">"created_at"</span>:{' '}
-          <span className="docs-tok-str">"2026-09-11T10:42:00Z"</span>,{'\n'}
+          <span className="docs-tok-str">"2026-09-11T10:42:00.000Z"</span>,{'\n'}
+          {'      '}
+          <span className="docs-tok-key">"expires_at"</span>:{' '}
+          <span className="docs-tok-null">null</span>,{'\n'}
           {'      '}
           <span className="docs-tok-key">"last_used_at"</span>:{' '}
+          <span className="docs-tok-str">"2026-09-11T11:20:00.000Z"</span>,{'\n'}
+          {'      '}
+          <span className="docs-tok-key">"revoked_at"</span>:{' '}
           <span className="docs-tok-null">null</span>
           {'\n'}
-          {'    }\n'}
-          {'  ]'}
-          {'\n'}
-          {'}'}
+          {'    }'}
+          {'\n  ]'}
+          {'\n}'}
         </>
       ),
     },
@@ -107,15 +85,15 @@ export default async function ListKeysPage() {
         <EndpointBadge method="GET" path="/apis/:id/keys" />
 
         <div className="docs-lede">
-          Returns a list of all API keys for the specified API. Keys are returned sorted by creation date, with the most recent keys appearing first.
+          Retrieve a list of all API keys associated with a specific API target. 
         </div>
 
         <h2 className="docs-h2" id="auth">
           Authentication
         </h2>
         <p className="docs-p">
-          All requests to the Relay API must include a workspace-level access token in the{' '}
-          <code className="docs-inline">Authorization</code> header.
+          Requires a workspace-level access token in the <code className="docs-inline">Authorization</code> header. 
+          The actual secret value of the keys is masked; only the <code className="docs-inline">key_prefix</code> is returned.
         </p>
 
         <h2 className="docs-h2" id="path-params">
@@ -134,12 +112,13 @@ export default async function ListKeysPage() {
           Response
         </h2>
         <p className="docs-p muted">
-          Returns an object with a <code className="docs-inline">keys</code> property that contains an array of key objects. Full secrets are never returned.
+          Returns an array of key objects.
         </p>
       </main>
 
       <aside className="docs-side">
         <CodeCard tabs={tabs} />
+
         <div className="docs-response-label">Example response · 200 OK</div>
         <CodeCard tabs={responseTabs} />
       </aside>

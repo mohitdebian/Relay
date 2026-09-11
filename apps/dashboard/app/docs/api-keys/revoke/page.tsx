@@ -1,9 +1,10 @@
 import { cookies } from 'next/headers';
-import { EndpointBadge } from '../../_components/EndpointBadge';
-import { ParamsTable, ParamRow } from '../../_components/ParamsTable';
-import CodeCard from '../../_components/CodeCard';
+import { EndpointBadge } from '../../../_components/EndpointBadge';
+import { ParamsTable, ParamRow } from '../../../_components/ParamsTable';
+import { Callout } from '../../../_components/Callout';
+import CodeCard from '../../../_components/CodeCard';
 
-export default async function RevokeKeyPage() {
+export default async function RevokeApiKeyPage() {
   const cookieStore = await cookies();
   const token =
     cookieStore.get('__Secure-neon-auth.session_token')?.value ||
@@ -11,7 +12,6 @@ export default async function RevokeKeyPage() {
     cookieStore.get('better-auth.session_token')?.value ||
     '$RELAY_TOKEN';
 
-  const workspaceId = cookieStore.get('relay_active_workspace')?.value || 'wksp_your_workspace_id';
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.relay.dev';
 
   const tabs = [
@@ -19,46 +19,10 @@ export default async function RevokeKeyPage() {
       label: 'cURL',
       code: (
         <>
-          <span className="docs-tok-comment"># revoke an API key by ID</span>
+          <span className="docs-tok-comment"># revoke an API key by its unique ID</span>
           {'\n'}
-          curl -X DELETE {apiUrl}/api-keys/1 \{'\n'}
+          curl -X DELETE {apiUrl}/api-keys/12 \{'\n'}
           {'  '}-H <span className="docs-tok-str">"Authorization: Bearer {token}"</span>
-        </>
-      ),
-    },
-    {
-      label: 'JavaScript',
-      code: (
-        <>
-          <span className="docs-tok-comment">{'// using the fetch API'}</span>
-          {'\n'}
-          const response = await fetch('{apiUrl}/api-keys/1', {'{\n'}
-          {'  '}method: <span className="docs-tok-str">'DELETE'</span>,{'\n'}
-          {'  '}headers: {'{\n'}
-          {'    '}
-          <span className="docs-tok-str">'Authorization'</span>: <span className="docs-tok-str">'Bearer {token}'</span>
-          {'\n'}
-          {'  }'}
-          {'\n'}
-          {'});'}
-        </>
-      ),
-    },
-    {
-      label: 'Python',
-      code: (
-        <>
-          <span className="docs-tok-comment"># using the requests library</span>
-          {'\n'}
-          import requests{'\n\n'}
-          headers = {'{\n'}
-          {'    '}
-          <span className="docs-tok-str">"Authorization"</span>: <span className="docs-tok-str">"Bearer {token}"</span>
-          {'\n'}
-          {'}'}
-          {'\n\n'}
-          response = requests.delete(
-          <span className="docs-tok-str">"{apiUrl}/api-keys/1"</span>, headers=headers)
         </>
       ),
     },
@@ -85,22 +49,27 @@ export default async function RevokeKeyPage() {
     <>
       <main className="docs-main">
         <div className="docs-breadcrumb">API Keys</div>
-        <div className="docs-h1">Revoke an API key</div>
+        <div className="docs-h1">Revoke API key</div>
         <EndpointBadge method="DELETE" path="/api-keys/:id" />
 
         <div className="docs-lede">
-          Permanently deletes an API key. It cannot be undone, and any subsequent requests made with this key will immediately fail with a 401 Unauthorized status.
+          Immediately revoke an API key. 
         </div>
+
+        <Callout variant="warn">
+          <b>Note —</b> Revocation performs a soft-delete by setting the <code className="docs-inline">revoked_at</code> timestamp. 
+          The key will immediately be rejected by the gateway for any new incoming requests. In-flight requests are not explicitly halted.
+        </Callout>
 
         <h2 className="docs-h2" id="auth">
           Authentication
         </h2>
         <p className="docs-p">
-          All requests to the Relay API must include a workspace-level access token in the{' '}
-          <code className="docs-inline">Authorization</code> header.
+          Requires a workspace-level access token in the <code className="docs-inline">Authorization</code> header. 
+          Additionally, this endpoint requires the user to have an <code className="docs-inline">admin</code> or <code className="docs-inline">owner</code> role in the workspace.
         </p>
 
-        <h2 className="docs-h2" id="params">
+        <h2 className="docs-h2" id="path-params">
           Path Parameters
         </h2>
         <ParamsTable>
@@ -108,7 +77,7 @@ export default async function RevokeKeyPage() {
             name="id"
             required={true}
             type="integer"
-            description="The unique identifier of the API key to revoke."
+            description="The unique ID of the API key you want to revoke."
           />
         </ParamsTable>
 
@@ -116,12 +85,13 @@ export default async function RevokeKeyPage() {
           Response
         </h2>
         <p className="docs-p muted">
-          Returns an object confirming deletion.
+          Returns a success message upon revocation.
         </p>
       </main>
 
       <aside className="docs-side">
         <CodeCard tabs={tabs} />
+
         <div className="docs-response-label">Example response · 200 OK</div>
         <CodeCard tabs={responseTabs} />
       </aside>

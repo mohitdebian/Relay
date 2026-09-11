@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RELAY_ Docs — Create an API key</title>
+<title>RELAY_ Docs</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -14,7 +14,7 @@
     --green:#16A34A; --red:#DC2626; --yellow:#C88A04; --blue:#1D6FCE;
     --code-bg:#1B1B19; --code-text:#E8E8E4; --code-comment:#8A8A83;
     --code-string:#8FD19E; --code-key:#7EB6E8;
-    --radius:6px; --topbar-h:52px; --nav-w:230px; --toc-w:200px;
+    --radius:6px; --topbar-h:52px; --nav-w:230px;
   }
   *{ box-sizing:border-box; margin:0; padding:0; }
   html,body{ background:var(--bg); color:var(--text); font-family:'Inter',-apple-system,sans-serif; font-size:13px; line-height:1.6; -webkit-font-smoothing:antialiased; }
@@ -26,79 +26,110 @@
   .topbar{ height:var(--topbar-h); border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; padding:0 20px; position:sticky; top:0; background:var(--bg); z-index:20; }
   .topbar-left{ display:flex; align-items:center; gap:22px; }
   .logo{ font-family:'Silkscreen',monospace; font-weight:700; font-size:15px; }
-  .topbar-nav{ display:flex; gap:18px; font-size:12.5px; color:var(--text-secondary); }
+  .topbar-nav{ display:flex; gap:18px; font-size:13px; color:var(--text-secondary); }
   .topbar-nav a:hover{ color:var(--text); }
   .topbar-nav a.active{ color:var(--text); font-weight:500; }
   .topbar-right{ display:flex; align-items:center; gap:10px; }
-  .search-btn{ display:flex; align-items:center; gap:8px; width:240px; height:30px; padding:0 9px; border:1px solid var(--border); border-radius:var(--radius); background:var(--surface); color:var(--text-tertiary); font-size:12px; }
+  .search-btn{ display:flex; align-items:center; gap:8px; width:240px; height:30px; padding:0 9px; border:1px solid var(--border); border-radius:var(--radius); background:var(--surface); color:var(--text-tertiary); font-size:13px; }
   .search-btn .kbd{ margin-left:auto; font-family:'JetBrains Mono',monospace; font-size:10px; border:1px solid var(--border); border-radius:4px; padding:1px 5px; }
-  .btn-dash{ height:30px; padding:0 12px; border-radius:var(--radius); font-size:12px; font-weight:500; background:var(--text); color:#fff; display:flex; align-items:center; }
+  .btn-dash{ height:30px; padding:0 12px; border-radius:var(--radius); font-size:13px; font-weight:500; background:var(--text); color:#fff; display:flex; align-items:center; cursor:pointer; }
 
-  /* ---- shell: nav | content | toc ---- */
-  .shell{ display:flex; max-width:1440px; margin:0 auto; }
+  /* ---- shell ---- */
+  .shell{ display:flex; max-width:1440px; margin:0 auto; align-items:flex-start; }
 
-  .docs-nav{ width:var(--nav-w); flex-shrink:0; padding:26px 14px; position:sticky; top:var(--topbar-h); align-self:flex-start; height:calc(100vh - var(--topbar-h)); overflow-y:auto; }
+  .docs-nav{ width:var(--nav-w); flex-shrink:0; padding:26px 14px; position:sticky; top:var(--topbar-h); height:calc(100vh - var(--topbar-h)); overflow-y:auto; }
   .nav-group{ margin-bottom:16px; }
-  .nav-group-label{ font-size:10.5px; font-weight:600; color:var(--text-tertiary); letter-spacing:.06em; padding:0 10px 6px; }
-  .nav-item{ display:flex; align-items:center; height:27px; padding:0 10px; border-radius:var(--radius); color:var(--text-secondary); font-size:12.5px; cursor:pointer; }
+  .nav-group-label{ font-family:'Inter',sans-serif; font-size:10.5px; font-weight:600; color:var(--text-tertiary); letter-spacing:.06em; padding:0 10px 6px; text-transform:uppercase; }
+  .nav-item{ display:flex; align-items:center; height:29px; padding:0 10px; border-radius:var(--radius); color:var(--text-secondary); font-size:13px; cursor:pointer; }
   .nav-item:hover{ background:rgba(0,0,0,.035); color:var(--text); }
   .nav-item.active{ background:rgba(0,0,0,.05); color:var(--text); font-weight:500; }
   .nav-item.method{ display:flex; gap:7px; align-items:center; }
   .m-tag{ font-family:'JetBrains Mono',monospace; font-size:9px; font-weight:600; width:32px; flex-shrink:0; }
   .m-tag.get{ color:var(--blue); } .m-tag.post{ color:var(--green); } .m-tag.delete{ color:var(--red); }
 
-  .docs-main{ flex:1; min-width:0; padding:36px 48px; max-width:760px; }
+  .docs-main{ flex:1; min-width:0; padding:36px 48px 80px; }
 
-  .breadcrumb{ font-size:12px; color:var(--text-tertiary); margin-bottom:14px; }
+  /* ---- shared content elements ---- */
+  .breadcrumb{ font-size:13px; color:var(--text-tertiary); margin-bottom:14px; }
   .h1{ font-family:'Silkscreen',monospace; font-size:22px; font-weight:700; margin-bottom:10px; display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
-  .endpoint-badge{ display:inline-flex; align-items:center; gap:8px; font-family:'JetBrains Mono',monospace; font-size:12px; background:var(--surface); border:1px solid var(--border); border-radius:5px; padding:4px 10px; margin-bottom:22px; }
+  .endpoint-badge{ display:inline-flex; align-items:center; gap:8px; font-family:'JetBrains Mono',monospace; font-size:12.5px; background:var(--surface); border:1px solid var(--border); border-radius:5px; padding:4px 10px; margin-bottom:22px; }
   .endpoint-badge .m{ font-weight:700; }
   .endpoint-badge .m.post{ color:var(--green); }
+  .endpoint-badge .m.get{ color:var(--blue); }
+  .endpoint-badge .m.delete{ color:var(--red); }
 
-  .lede{ font-size:13.5px; color:var(--text-secondary); margin-bottom:28px; max-width:60ch; }
+  .lede{ font-size:14px; color:var(--text-secondary); margin-bottom:28px; max-width:62ch; }
 
   .h2{ font-size:15px; font-weight:600; margin:32px 0 12px; scroll-margin-top:70px; }
   .h3{ font-size:13.5px; font-weight:600; margin:22px 0 8px; scroll-margin-top:70px; }
-  .p{ font-size:13px; color:var(--text); margin-bottom:14px; max-width:62ch; }
+  .p{ font-size:13.5px; color:var(--text); margin-bottom:14px; max-width:64ch; }
   .p.muted{ color:var(--text-secondary); }
+  ul.list, ol.list{ margin:0 0 16px 20px; max-width:62ch; }
+  ul.list li, ol.list li{ font-size:13.5px; margin-bottom:7px; }
   code.inline{ font-family:'JetBrains Mono',monospace; font-size:12px; background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:1px 5px; }
 
-  /* params table */
+  /* two-column reference layout (prose + pinned code) */
+  .ref-layout{ display:flex; gap:40px; align-items:flex-start; }
+  .ref-prose{ flex:1; min-width:0; max-width:620px; }
+  .ref-code{ width:400px; flex-shrink:0; position:sticky; top:calc(var(--topbar-h) + 20px); }
+  @media (max-width:1180px){
+    .ref-layout{ flex-direction:column; }
+    .ref-code{ width:100%; position:static; }
+  }
+
+  /* params / generic data table */
   .params{ border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; margin-bottom:22px; background:var(--surface); }
-  .param-row{ display:grid; grid-template-columns:140px 90px 1fr; gap:12px; padding:11px 14px; border-bottom:1px solid var(--border); }
+  .param-row{ display:grid; grid-template-columns:150px 100px 1fr; gap:12px; padding:11px 14px; border-bottom:1px solid var(--border); }
+  .param-row.head{ background:transparent; font-size:10.5px; color:var(--text-tertiary); font-weight:600; letter-spacing:.03em; padding-top:9px; padding-bottom:9px; }
   .param-row:last-child{ border-bottom:none; }
   .param-name{ font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:500; }
   .param-req{ font-size:10px; color:var(--red); margin-left:5px; font-weight:400; }
   .param-type{ font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-tertiary); }
-  .param-desc{ font-size:12px; color:var(--text-secondary); }
+  .param-desc{ font-size:12.5px; color:var(--text-secondary); }
+
+  /* wide 4-col reference table (errors, rate limits, events) */
+  .wide-table{ border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; margin-bottom:22px; background:var(--surface); max-width:760px; }
+  .wide-row{ display:grid; grid-template-columns:170px 90px 1fr; gap:12px; padding:11px 14px; border-bottom:1px solid var(--border); align-items:baseline; }
+  .wide-row.head{ font-size:10.5px; color:var(--text-tertiary); font-weight:600; letter-spacing:.03em; padding-top:9px; padding-bottom:9px; }
+  .wide-row:last-child{ border-bottom:none; }
+  .wide-row .cmono{ font-family:'JetBrains Mono',monospace; font-size:12px; }
+  .wide-row .cmuted{ color:var(--text-secondary); font-size:12.5px; }
 
   /* callout */
-  .callout{ border:1px solid var(--border); border-left:2px solid var(--text); border-radius:0 var(--radius) var(--radius) 0; padding:11px 14px; margin-bottom:20px; font-size:12.5px; background:var(--surface); }
+  .callout{ border:1px solid var(--border); border-left:2px solid var(--text); border-radius:0 var(--radius) var(--radius) 0; padding:11px 14px; margin-bottom:20px; font-size:13px; background:var(--surface); max-width:64ch; }
   .callout.warn{ border-left-color:var(--yellow); }
+  .callout.danger{ border-left-color:var(--red); }
   .callout b{ font-weight:600; }
 
-  /* ---- right rail: pinned code samples ---- */
-  .docs-side{ width:400px; flex-shrink:0; padding:36px 0; position:sticky; top:var(--topbar-h); align-self:flex-start; height:calc(100vh - var(--topbar-h)); overflow-y:auto; }
-
+  /* code cards */
   .code-card{ background:var(--code-bg); border-radius:8px; margin-bottom:16px; overflow:hidden; }
   .code-tabs{ display:flex; gap:2px; padding:8px 10px 0; }
   .code-tab{ font-family:'JetBrains Mono',monospace; font-size:11px; color:#8A8A83; padding:5px 10px; border-radius:5px 5px 0 0; cursor:pointer; }
   .code-tab.active{ color:var(--code-text); background:rgba(255,255,255,.06); }
-  .code-body{ padding:14px; font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--code-text); white-space:pre; overflow-x:auto; position:relative; }
+  .code-body{ padding:14px; font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--code-text); white-space:pre-wrap; word-break:break-word; position:relative; }
   .code-copy{ position:absolute; top:10px; right:10px; font-family:'Inter',sans-serif; font-size:10.5px; color:#8A8A83; border:1px solid #3a3a37; border-radius:4px; padding:3px 7px; cursor:pointer; }
   .code-copy:hover{ color:var(--code-text); }
-  .tok-key{ color:var(--code-key); }
-  .tok-str{ color:var(--code-string); }
-  .tok-comment{ color:var(--code-comment); }
-
+  .tok-key{ color:var(--code-key); } .tok-str{ color:var(--code-string); } .tok-comment{ color:var(--code-comment); }
   .response-label{ font-size:10.5px; color:var(--text-tertiary); text-transform:uppercase; letter-spacing:.04em; margin:18px 0 8px; padding-left:2px; }
 
-  @media (max-width:1180px){
-    .docs-side{ display:none; }
-  }
+  .step{ display:flex; gap:14px; margin-bottom:26px; max-width:64ch; }
+  .step-num{ width:22px; height:22px; border-radius:50%; border:1px solid var(--border-strong); flex-shrink:0; display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-secondary); margin-top:1px; }
+  .step-body{ flex:1; }
+  .step-title{ font-size:14px; font-weight:600; margin-bottom:5px; }
+
+  .next-steps{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:16px; max-width:760px; }
+  .next-card{ border:1px solid var(--border); border-radius:var(--radius); background:var(--surface); padding:16px; cursor:pointer; }
+  .next-card:hover{ border-color:var(--border-strong); }
+  .next-card .t{ font-size:13px; font-weight:600; margin-bottom:6px; }
+  .next-card .d{ font-size:12px; color:var(--text-secondary); }
+
+  .doc-view{ display:none; }
+  .doc-view.visible{ display:block; }
+
   @media (max-width:860px){
     .docs-nav{ display:none; }
     .docs-main{ padding:28px 20px; }
+    .next-steps{ grid-template-columns:1fr; }
   }
 </style>
 </head>
@@ -108,10 +139,10 @@
   <div class="topbar-left">
     <div class="logo">RELAY_</div>
     <nav class="topbar-nav">
-      <a>Docs</a>
-      <a class="active">API Reference</a>
+      <a class="active">Docs</a>
+      <a>API Reference</a>
       <a>Guides</a>
-      <a>Changelog</a>
+      <a onclick="alert('See relay_changelog.html')">Changelog</a>
     </nav>
   </div>
   <div class="topbar-right">
@@ -123,86 +154,178 @@
 <div class="shell">
   <nav class="docs-nav">
     <div class="nav-group">
-      <div class="nav-group-label">GETTING STARTED</div>
-      <div class="nav-item">Introduction</div>
-      <div class="nav-item">Quickstart</div>
-      <div class="nav-item">Authentication</div>
-      <div class="nav-item">Environments</div>
+      <div class="nav-group-label">Getting Started</div>
+      <div class="nav-item active" id="nav-introduction" onclick="showDoc('introduction')">Introduction</div>
+      <div class="nav-item" id="nav-quickstart" onclick="showDoc('quickstart')">Quickstart</div>
+      <div class="nav-item" id="nav-authentication" onclick="showDoc('authentication')">Authentication</div>
+      <div class="nav-item" id="nav-environments" onclick="showDoc('environments')">Environments</div>
     </div>
     <div class="nav-group">
-      <div class="nav-group-label">API KEYS</div>
-      <div class="nav-item method active"><span class="m-tag post">POST</span>Create a key</div>
-      <div class="nav-item method"><span class="m-tag get">GET</span>List keys</div>
-      <div class="nav-item method"><span class="m-tag delete">DEL</span>Revoke a key</div>
+      <div class="nav-group-label">API Keys</div>
+      <div class="nav-item method" id="nav-keys-create" onclick="showDoc('keys-create')"><span class="m-tag post">POST</span>Create API key</div>
+      <div class="nav-item method" id="nav-keys-list" onclick="showDoc('keys-list')"><span class="m-tag get">GET</span>List API keys</div>
+      <div class="nav-item method" id="nav-keys-revoke" onclick="showDoc('keys-revoke')"><span class="m-tag delete">DEL</span>Revoke API key</div>
     </div>
     <div class="nav-group">
-      <div class="nav-group-label">APIS &amp; ENDPOINTS</div>
-      <div class="nav-item method"><span class="m-tag get">GET</span>List APIs</div>
-      <div class="nav-item method"><span class="m-tag post">POST</span>Create an API</div>
-      <div class="nav-item method"><span class="m-tag get">GET</span>Get endpoint stats</div>
+      <div class="nav-group-label">APIs &amp; Endpoints</div>
+      <div class="nav-item method" id="nav-apis-list" onclick="showDoc('apis-list')"><span class="m-tag get">GET</span>List APIs</div>
+      <div class="nav-item method" id="nav-apis-create" onclick="showDoc('apis-create')"><span class="m-tag post">POST</span>Create API Route</div>
     </div>
     <div class="nav-group">
-      <div class="nav-group-label">WEBHOOKS</div>
-      <div class="nav-item">Overview</div>
-      <div class="nav-item">Event types</div>
-      <div class="nav-item">Verifying signatures</div>
+      <div class="nav-group-label">Webhooks</div>
+      <div class="nav-item" id="nav-webhooks-overview" onclick="showDoc('webhooks-overview')">Overview</div>
+      <div class="nav-item" id="nav-webhooks-events" onclick="showDoc('webhooks-events')">Event types</div>
+      <div class="nav-item" id="nav-webhooks-signing" onclick="showDoc('webhooks-signing')">Verifying signatures</div>
     </div>
     <div class="nav-group">
-      <div class="nav-group-label">REFERENCE</div>
-      <div class="nav-item">Rate limits</div>
-      <div class="nav-item">Errors</div>
-      <div class="nav-item">SDKs &amp; libraries</div>
+      <div class="nav-group-label">Reference</div>
+      <div class="nav-item" id="nav-rate-limits" onclick="showDoc('rate-limits')">Rate limits</div>
+      <div class="nav-item" id="nav-errors" onclick="showDoc('errors')">Errors</div>
+      <div class="nav-item" id="nav-sdks" onclick="showDoc('sdks')">SDKs &amp; libraries</div>
     </div>
   </nav>
 
   <main class="docs-main">
-    <div class="breadcrumb">API Keys</div>
-    <div class="h1">Create an API key</div>
-    <div class="endpoint-badge"><span class="m post">POST</span><span>/v1/keys</span></div>
 
-    <div class="lede">Creates a new API key scoped to a single environment. Keys are shown in full exactly once — store the returned <code class="inline">secret</code> immediately.</div>
+    <!-- ================= INTRODUCTION ================= -->
+    <section class="doc-view visible" id="doc-introduction">
+      <div class="breadcrumb">Getting Started</div>
+      <div class="h1">INTRODUCTION</div>
+      <div class="lede">Relay is a developer-first API gateway and management platform. It sits between your clients and your backend services, providing instant routing, rate limiting, authentication, and observability without complex configuration.</div>
 
-    <div class="h2" id="auth">Authentication</div>
-    <div class="p">All requests to the Relay API must include a workspace-level access token in the <code class="inline">Authorization</code> header. This endpoint cannot be called with a scoped API key — only a workspace owner or admin token.</div>
+      <div class="h2">Why Relay?</div>
+      <div class="p">Building APIs is easy, but operating them in production is hard. Relay handles the operational layer so you can focus on your actual service. Routing traffic through Relay gets you:</div>
+      <ul class="list">
+        <li><b>Automatic observability</b> — every request is logged, timed, and analyzed without adding instrumentation to your own code.</li>
+        <li><b>Zero-config rate limiting</b> — protect upstream services from abuse instantly, with rules you can change without a deploy.</li>
+        <li><b>API key management</b> — issue, scope, and revoke keys without writing auth code.</li>
+      </ul>
 
-    <div class="callout warn"><b>Note —</b> the response's <code class="inline">secret</code> field is only ever returned on creation. Relay does not store or display full key values afterward.</div>
+      <div class="h2">How it works</div>
+      <div class="p">When you create an API in Relay, you configure a <code class="inline">target_url</code> pointing at your backend. Relay assigns a public endpoint and transparently proxies traffic to that target while executing middleware — authentication, rate limiting, logging — at the edge, before your backend ever sees the request.</div>
+      <div class="p">Every API belongs to exactly one environment (<code class="inline">production</code>, <code class="inline">staging</code>, or <code class="inline">development</code>), and every API key is scoped to exactly one environment. This keeps traffic, keys, and logs cleanly separated as you move from local testing to production.</div>
 
-    <div class="h2" id="params">Parameters</div>
-    <div class="params">
-      <div class="param-row">
-        <div class="param-name">name<span class="param-req">required</span></div>
-        <div class="param-type">string</div>
-        <div class="param-desc">A human-readable label for this key, e.g. "CI pipeline".</div>
+      <div class="h2">Next steps</div>
+      <div class="next-steps">
+        <div class="next-card" onclick="showDoc('quickstart')"><div class="t">Quickstart</div><div class="d">Deploy your first API behind Relay in under five minutes.</div></div>
+        <div class="next-card" onclick="showDoc('authentication')"><div class="t">Authentication</div><div class="d">Learn how Relay API requests are authenticated.</div></div>
+        <div class="next-card" onclick="showDoc('environments')"><div class="t">Environments</div><div class="d">Understand how production, staging, and dev are isolated.</div></div>
       </div>
-      <div class="param-row">
-        <div class="param-name">environment<span class="param-req">required</span></div>
-        <div class="param-type">string</div>
-        <div class="param-desc">One of <code class="inline">production</code>, <code class="inline">staging</code>, <code class="inline">development</code>.</div>
-      </div>
-      <div class="param-row">
-        <div class="param-name">scopes</div>
-        <div class="param-type">array</div>
-        <div class="param-desc">Permission scopes, e.g. <code class="inline">["read:requests","write:endpoints"]</code>. Defaults to full access if omitted.</div>
-      </div>
-      <div class="param-row">
-        <div class="param-name">expires_at</div>
-        <div class="param-type">string · ISO 8601</div>
-        <div class="param-desc">Optional expiration timestamp. Keys never expire by default.</div>
-      </div>
-    </div>
+    </section>
 
-    <div class="h2" id="response">Response</div>
-    <div class="p muted">Returns the created key object, including the plaintext secret (shown once).</div>
-  </main>
+    <!-- ================= QUICKSTART ================= -->
+    <section class="doc-view" id="doc-quickstart">
+      <div class="breadcrumb">Getting Started</div>
+      <div class="h1">QUICKSTART</div>
+      <div class="lede">Go from zero to a monitored, authenticated API in under five minutes.</div>
 
-  <aside class="docs-side">
-    <div class="code-card">
-      <div class="code-tabs">
-        <div class="code-tab active">cURL</div>
-        <div class="code-tab">JavaScript</div>
-        <div class="code-tab">Python</div>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Create an API</div>
+          <div class="p">In the dashboard, click <b>+ New API</b> and point it at your backend's base URL. This example proxies a public test API.</div>
+          <div class="code-card"><div class="code-body"><span class="code-copy">Copy</span><span class="tok-comment"># via the API — or use the dashboard "+ New API" button</span>
+curl -X POST https://api.relay.dev/v1/apis \
+  -H <span class="tok-str">"Authorization: Bearer $RELAY_TOKEN"</span> \
+  -d <span class="tok-str">'{"name":"Quickstart API","environment":"development","target_url":"https://jsonplaceholder.typicode.com"}'</span></div></div>
+        </div>
       </div>
-      <div class="code-body"><span class="code-copy">Copy</span><span class="tok-comment"># create a production key</span>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Generate an API key</div>
+          <div class="p">Keys authenticate requests made <i>through</i> Relay to your API — separate from the workspace token used to manage Relay itself.</div>
+          <div class="code-card"><div class="code-body"><span class="code-copy">Copy</span>curl -X POST https://api.relay.dev/v1/keys \
+  -H <span class="tok-str">"Authorization: Bearer $RELAY_TOKEN"</span> \
+  -d <span class="tok-str">'{"name":"Quickstart key","environment":"development"}'</span></div></div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Send your first request</div>
+          <div class="p">Requests to your Relay-issued endpoint using the key from step 2 will now show up in <b>Overview → Recent activity</b> in real time.</div>
+          <div class="code-card"><div class="code-body"><span class="code-copy">Copy</span>curl https://quickstart-api.relay.dev/posts/1 \
+  -H <span class="tok-str">"Authorization: Bearer sk_dev_..."</span></div></div>
+        </div>
+      </div>
+
+      <div class="callout">Full parameter reference for each step: <a href="#" onclick="showDoc('apis-create');return false;" class="mono" style="text-decoration:underline;">Create API Route</a> · <a href="#" onclick="showDoc('keys-create');return false;" class="mono" style="text-decoration:underline;">Create API key</a>.</div>
+    </section>
+
+    <!-- ================= AUTHENTICATION ================= -->
+    <section class="doc-view" id="doc-authentication">
+      <div class="breadcrumb">Getting Started</div>
+      <div class="h1">AUTHENTICATION</div>
+      <div class="lede">There are two distinct authentication contexts in Relay — don't confuse them.</div>
+
+      <div class="h2">Managing Relay (workspace tokens)</div>
+      <div class="p">Requests to the Relay management API (creating APIs, keys, webhooks, etc.) require a workspace-level access token in the <code class="inline">Authorization</code> header:</div>
+      <div class="code-card"><div class="code-body"><span class="code-copy">Copy</span>Authorization: Bearer <span class="tok-str">relay_admin_&lt;token&gt;</span></div></div>
+      <div class="p">Workspace tokens are generated in <b>Settings → General</b> and are scoped to the entire workspace, not a single environment. They cannot be used to authenticate proxied requests to your own APIs.</div>
+
+      <div class="h2">Calling your APIs through Relay (API keys)</div>
+      <div class="p">Requests that go <i>through</i> Relay to your backend use an API key, scoped to a single environment, passed the same way:</div>
+      <div class="code-card"><div class="code-body"><span class="code-copy">Copy</span>Authorization: Bearer <span class="tok-str">sk_live_&lt;secret&gt;</span></div></div>
+
+      <div class="h2">Error responses</div>
+      <div class="p">A missing, malformed, or revoked token on either surface returns:</div>
+      <div class="code-card"><div class="code-body"><span class="code-copy">Copy</span>HTTP/1.1 401 Unauthorized
+
+{
+  <span class="tok-key">"error"</span>: <span class="tok-str">"unauthorized"</span>,
+  <span class="tok-key">"message"</span>: <span class="tok-str">"Missing or invalid authentication token."</span>
+}</div></div>
+
+      <div class="callout warn"><b>Note —</b> API keys and workspace tokens are not interchangeable. Using a workspace token to call a proxied API endpoint (or vice versa) returns the same 401 above.</div>
+    </section>
+
+    <!-- ================= ENVIRONMENTS ================= -->
+    <section class="doc-view" id="doc-environments">
+      <div class="breadcrumb">Getting Started</div>
+      <div class="h1">ENVIRONMENTS</div>
+      <div class="lede">Every API and every key belongs to exactly one environment. Environments are isolated — they don't share traffic, keys, or logs.</div>
+
+      <div class="wide-table">
+        <div class="wide-row head"><span>ENVIRONMENT</span><span>TYPICAL USE</span><span>NOTES</span></div>
+        <div class="wide-row"><span class="cmono">production</span><span class="cmuted">Live traffic</span><span class="cmuted">Counted toward plan usage and billing.</span></div>
+        <div class="wide-row"><span class="cmono">staging</span><span class="cmuted">Pre-release testing</span><span class="cmuted">Same rate-limit defaults as production; separate key/log namespace.</span></div>
+        <div class="wide-row"><span class="cmono">development</span><span class="cmuted">Local/CI testing</span><span class="cmuted">Higher default rate limits for iteration speed.</span></div>
+      </div>
+
+      <div class="h2">Switching environments</div>
+      <div class="p">The environment switcher in the dashboard topbar changes which environment's data you're viewing — it does not move or copy resources between environments. To run the same API in two environments, create it twice with the same <code class="inline">target_url</code> and a different <code class="inline">environment</code> value.</div>
+    </section>
+
+    <!-- ================= KEYS: CREATE ================= -->
+    <section class="doc-view" id="doc-keys-create">
+      <div class="ref-layout">
+        <div class="ref-prose">
+          <div class="breadcrumb">API Keys</div>
+          <div class="h1">CREATE AN API KEY</div>
+          <div class="endpoint-badge"><span class="m post">POST</span><span>/v1/keys</span></div>
+          <div class="lede">Creates a new API key scoped to a single environment. Keys are shown in full exactly once — store the returned <code class="inline">secret</code> immediately.</div>
+
+          <div class="callout warn"><b>Note —</b> the response's <code class="inline">secret</code> field is only ever returned on creation. Relay does not store or display full key values afterward.</div>
+
+          <div class="h2">Parameters</div>
+          <div class="params">
+            <div class="param-row"><div class="param-name">name<span class="param-req">required</span></div><div class="param-type">string</div><div class="param-desc">A human-readable label, e.g. "CI pipeline".</div></div>
+            <div class="param-row"><div class="param-name">environment<span class="param-req">required</span></div><div class="param-type">string</div><div class="param-desc">One of <code class="inline">production</code>, <code class="inline">staging</code>, <code class="inline">development</code>.</div></div>
+            <div class="param-row"><div class="param-name">scopes</div><div class="param-type">array</div><div class="param-desc">Permission scopes, e.g. <code class="inline">["read:requests","write:endpoints"]</code>. Defaults to full access if omitted.</div></div>
+            <div class="param-row"><div class="param-name">expires_at</div><div class="param-type">string · ISO 8601</div><div class="param-desc">Optional expiration timestamp. Keys never expire by default.</div></div>
+          </div>
+
+          <div class="h2">Response</div>
+          <div class="p muted">Returns the created key object, including the plaintext secret (shown once).</div>
+        </div>
+
+        <div class="ref-code">
+          <div class="code-card">
+            <div class="code-tabs"><div class="code-tab active">cURL</div><div class="code-tab">JavaScript</div><div class="code-tab">Python</div></div>
+            <div class="code-body"><span class="code-copy">Copy</span><span class="tok-comment"># create a production key</span>
 curl -X POST https://api.relay.dev/v1/keys \
   -H <span class="tok-str">"Authorization: Bearer $RELAY_TOKEN"</span> \
   -H <span class="tok-str">"Content-Type: application/json"</span> \
@@ -210,21 +333,313 @@ curl -X POST https://api.relay.dev/v1/keys \
     "name": "CI pipeline",
     "environment": "production"
   }'</span></div>
-    </div>
-
-    <div class="response-label">Example response · 201 Created</div>
-    <div class="code-card">
-      <div class="code-body">{
+          </div>
+          <div class="response-label">Example response · 201 Created</div>
+          <div class="code-card"><div class="code-body">{
   <span class="tok-key">"id"</span>: <span class="tok-str">"key_8f2a1c"</span>,
   <span class="tok-key">"name"</span>: <span class="tok-str">"CI pipeline"</span>,
   <span class="tok-key">"environment"</span>: <span class="tok-str">"production"</span>,
   <span class="tok-key">"secret"</span>: <span class="tok-str">"sk_live_9f8e7d6c5b4a..."</span>,
   <span class="tok-key">"created_at"</span>: <span class="tok-str">"2026-09-11T10:42:00Z"</span>,
   <span class="tok-key">"last_used_at"</span>: <span class="tok-key">null</span>
-}</div>
-    </div>
-  </aside>
+}</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= KEYS: LIST ================= -->
+    <section class="doc-view" id="doc-keys-list">
+      <div class="ref-layout">
+        <div class="ref-prose">
+          <div class="breadcrumb">API Keys</div>
+          <div class="h1">LIST API KEYS</div>
+          <div class="endpoint-badge"><span class="m get">GET</span><span>/v1/keys</span></div>
+          <div class="lede">Returns all API keys in the current workspace. Secrets are always masked in list responses.</div>
+
+          <div class="h2">Query parameters</div>
+          <div class="params">
+            <div class="param-row"><div class="param-name">environment</div><div class="param-type">string</div><div class="param-desc">Filter to a single environment.</div></div>
+            <div class="param-row"><div class="param-name">limit</div><div class="param-type">integer</div><div class="param-desc">Max results per page. Default 20, max 100.</div></div>
+            <div class="param-row"><div class="param-name">cursor</div><div class="param-type">string</div><div class="param-desc">Pagination cursor from a previous response's <code class="inline">next_cursor</code>.</div></div>
+          </div>
+
+          <div class="callout"><b>Note —</b> the <code class="inline">secret</code> field here is always masked (e.g. <code class="inline">sk_live_c3e7...</code>). Full secrets are never returned outside of the initial creation response.</div>
+        </div>
+
+        <div class="ref-code">
+          <div class="code-card">
+            <div class="code-tabs"><div class="code-tab active">cURL</div><div class="code-tab">JavaScript</div><div class="code-tab">Python</div></div>
+            <div class="code-body"><span class="code-copy">Copy</span>curl https://api.relay.dev/v1/keys?environment=production \
+  -H <span class="tok-str">"Authorization: Bearer $RELAY_TOKEN"</span></div>
+          </div>
+          <div class="response-label">Example response · 200 OK</div>
+          <div class="code-card"><div class="code-body">{
+  <span class="tok-key">"data"</span>: [
+    {
+      <span class="tok-key">"id"</span>: <span class="tok-str">"key_8f2a1c"</span>,
+      <span class="tok-key">"name"</span>: <span class="tok-str">"Production"</span>,
+      <span class="tok-key">"environment"</span>: <span class="tok-str">"production"</span>,
+      <span class="tok-key">"secret"</span>: <span class="tok-str">"sk_live_c3e7..."</span>,
+      <span class="tok-key">"last_used_at"</span>: <span class="tok-str">"2026-09-11T08:13:29Z"</span>
+    }
+  ],
+  <span class="tok-key">"next_cursor"</span>: <span class="tok-key">null</span>
+}</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= KEYS: REVOKE ================= -->
+    <section class="doc-view" id="doc-keys-revoke">
+      <div class="ref-layout">
+        <div class="ref-prose">
+          <div class="breadcrumb">API Keys</div>
+          <div class="h1">REVOKE AN API KEY</div>
+          <div class="endpoint-badge"><span class="m delete">DELETE</span><span>/v1/keys/:id</span></div>
+          <div class="lede">Immediately and permanently revokes a key. This cannot be undone.</div>
+
+          <div class="h2">Path parameters</div>
+          <div class="params">
+            <div class="param-row"><div class="param-name">id<span class="param-req">required</span></div><div class="param-type">string</div><div class="param-desc">The key's ID, e.g. <code class="inline">key_8f2a1c</code>.</div></div>
+          </div>
+
+          <div class="callout danger"><b>In-flight requests —</b> requests already in progress when a key is revoked are not interrupted, but any new request authenticated with that key is rejected immediately with a 401.</div>
+
+          <div class="h2">Response</div>
+          <div class="p muted">Returns <code class="inline">204 No Content</code> on success. Revoking an already-revoked or nonexistent key returns a 404 (see <a href="#" onclick="showDoc('errors');return false;" style="text-decoration:underline;">Errors</a>).</div>
+        </div>
+
+        <div class="ref-code">
+          <div class="code-card">
+            <div class="code-tabs"><div class="code-tab active">cURL</div></div>
+            <div class="code-body"><span class="code-copy">Copy</span>curl -X DELETE https://api.relay.dev/v1/keys/key_8f2a1c \
+  -H <span class="tok-str">"Authorization: Bearer $RELAY_TOKEN"</span></div>
+          </div>
+          <div class="response-label">Response · 204 No Content</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= APIS: LIST ================= -->
+    <section class="doc-view" id="doc-apis-list">
+      <div class="ref-layout">
+        <div class="ref-prose">
+          <div class="breadcrumb">APIs &amp; Endpoints</div>
+          <div class="h1">LIST APIS</div>
+          <div class="endpoint-badge"><span class="m get">GET</span><span>/v1/apis</span></div>
+          <div class="lede">Returns every API registered in the current workspace, across all environments unless filtered.</div>
+
+          <div class="h2">Query parameters</div>
+          <div class="params">
+            <div class="param-row"><div class="param-name">environment</div><div class="param-type">string</div><div class="param-desc">Filter to a single environment.</div></div>
+            <div class="param-row"><div class="param-name">status</div><div class="param-type">string</div><div class="param-desc">One of <code class="inline">healthy</code>, <code class="inline">degraded</code>, <code class="inline">down</code>.</div></div>
+          </div>
+        </div>
+
+        <div class="ref-code">
+          <div class="code-card">
+            <div class="code-tabs"><div class="code-tab active">cURL</div></div>
+            <div class="code-body"><span class="code-copy">Copy</span>curl https://api.relay.dev/v1/apis \
+  -H <span class="tok-str">"Authorization: Bearer $RELAY_TOKEN"</span></div>
+          </div>
+          <div class="response-label">Example response · 200 OK</div>
+          <div class="code-card"><div class="code-body">{
+  <span class="tok-key">"data"</span>: [
+    {
+      <span class="tok-key">"id"</span>: <span class="tok-str">"api_4c1a"</span>,
+      <span class="tok-key">"name"</span>: <span class="tok-str">"User API"</span>,
+      <span class="tok-key">"environment"</span>: <span class="tok-str">"production"</span>,
+      <span class="tok-key">"target_url"</span>: <span class="tok-str">"https://internal.acme.com/users"</span>,
+      <span class="tok-key">"status"</span>: <span class="tok-str">"healthy"</span>,
+      <span class="tok-key">"created_at"</span>: <span class="tok-str">"2026-06-02T09:00:00Z"</span>
+    }
+  ]
+}</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= APIS: CREATE ================= -->
+    <section class="doc-view" id="doc-apis-create">
+      <div class="ref-layout">
+        <div class="ref-prose">
+          <div class="breadcrumb">APIs &amp; Endpoints</div>
+          <div class="h1">CREATE AN API</div>
+          <div class="endpoint-badge"><span class="m post">POST</span><span>/v1/apis</span></div>
+          <div class="lede">Registers a new API proxy in the current workspace. Once created, Relay immediately begins routing traffic sent to its assigned endpoint.</div>
+
+          <div class="h2">Parameters</div>
+          <div class="params">
+            <div class="param-row"><div class="param-name">name<span class="param-req">required</span></div><div class="param-type">string</div><div class="param-desc">A human-readable name, e.g. "Payments Service".</div></div>
+            <div class="param-row"><div class="param-name">environment<span class="param-req">required</span></div><div class="param-type">string</div><div class="param-desc">One of <code class="inline">production</code>, <code class="inline">staging</code>, <code class="inline">development</code>.</div></div>
+            <div class="param-row"><div class="param-name">target_url<span class="param-req">required</span></div><div class="param-type">string</div><div class="param-desc">The base URL of your upstream service that Relay should proxy traffic to.</div></div>
+          </div>
+
+          <div class="h2">Response</div>
+          <div class="p muted">Returns the created API object with status <code class="inline">"active"</code>.</div>
+        </div>
+
+        <div class="ref-code">
+          <div class="code-card">
+            <div class="code-tabs"><div class="code-tab active">cURL</div></div>
+            <div class="code-body"><span class="code-copy">Copy</span><span class="tok-comment"># create a new API proxy</span>
+curl -X POST https://api.relay.dev/v1/apis \
+  -H <span class="tok-str">"Authorization: Bearer $RELAY_TOKEN"</span> \
+  -d <span class="tok-str">'{
+    "name": "Payments Service",
+    "environment": "production",
+    "target_url": "https://payments.internal.net"
+  }'</span></div>
+          </div>
+          <div class="response-label">Example response · 201 Created</div>
+          <div class="code-card"><div class="code-body">{
+  <span class="tok-key">"id"</span>: <span class="tok-str">"api_39fjd8"</span>,
+  <span class="tok-key">"name"</span>: <span class="tok-str">"Payments Service"</span>,
+  <span class="tok-key">"environment"</span>: <span class="tok-str">"production"</span>,
+  <span class="tok-key">"target_url"</span>: <span class="tok-str">"https://payments.internal.net"</span>,
+  <span class="tok-key">"status"</span>: <span class="tok-str">"active"</span>
+}</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= WEBHOOKS: OVERVIEW ================= -->
+    <section class="doc-view" id="doc-webhooks-overview">
+      <div class="breadcrumb">Webhooks</div>
+      <div class="h1">WEBHOOKS</div>
+      <div class="lede">Webhooks let Relay notify your systems in real time when something happens — a request fails, a key is created, an API's health status changes.</div>
+
+      <div class="h2">Delivery behavior</div>
+      <div class="p">Each delivery is a <code class="inline">POST</code> with a JSON body and a <code class="inline">Content-Type: application/json</code> header. A delivery is considered successful on any 2xx response within 10 seconds.</div>
+      <div class="p">Failed deliveries automatically retry with exponential backoff, up to 5 attempts over 3 hours, after which the delivery is marked permanently failed and visible in the dashboard's Webhooks page.</div>
+
+      <div class="h2">Getting started</div>
+      <ol class="list">
+        <li>Go to <b>Access → Webhooks</b> in the dashboard and add an endpoint URL.</li>
+        <li>Select which <a href="#" onclick="showDoc('webhooks-events');return false;" style="text-decoration:underline;">event types</a> to subscribe to.</li>
+        <li>Implement <a href="#" onclick="showDoc('webhooks-signing');return false;" style="text-decoration:underline;">signature verification</a> before trusting a payload.</li>
+      </ol>
+    </section>
+
+    <!-- ================= WEBHOOKS: EVENT TYPES ================= -->
+    <section class="doc-view" id="doc-webhooks-events">
+      <div class="breadcrumb">Webhooks</div>
+      <div class="h1">EVENT TYPES</div>
+      <div class="lede">Every event Relay can deliver to a subscribed webhook.</div>
+
+      <div class="wide-table">
+        <div class="wide-row head"><span>EVENT</span><span>WHEN</span><span>NOTES</span></div>
+        <div class="wide-row"><span class="cmono">api.request.failed</span><span class="cmuted">5xx response</span><span class="cmuted">Includes status code and latency.</span></div>
+        <div class="wide-row"><span class="cmono">api.status.changed</span><span class="cmuted">Health transitions</span><span class="cmuted">e.g. healthy → degraded.</span></div>
+        <div class="wide-row"><span class="cmono">key.created</span><span class="cmuted">Key creation</span><span class="cmuted">Never includes the secret.</span></div>
+        <div class="wide-row"><span class="cmono">key.revoked</span><span class="cmuted">Key revocation</span><span class="cmuted">—</span></div>
+        <div class="wide-row"><span class="cmono">rate_limit.exceeded</span><span class="cmuted">429 issued</span><span class="cmuted">Includes the rule that triggered it.</span></div>
+      </div>
+
+      <div class="h2">Example payload — <code class="inline">api.status.changed</code></div>
+      <div class="code-card"><div class="code-body">{
+  <span class="tok-key">"event"</span>: <span class="tok-str">"api.status.changed"</span>,
+  <span class="tok-key">"data"</span>: {
+    <span class="tok-key">"api_id"</span>: <span class="tok-str">"api_4c1a"</span>,
+    <span class="tok-key">"from"</span>: <span class="tok-str">"healthy"</span>,
+    <span class="tok-key">"to"</span>: <span class="tok-str">"degraded"</span>
+  },
+  <span class="tok-key">"created_at"</span>: <span class="tok-str">"2026-09-11T10:39:04Z"</span>
+}</div></div>
+    </section>
+
+    <!-- ================= WEBHOOKS: SIGNING ================= -->
+    <section class="doc-view" id="doc-webhooks-signing">
+      <div class="breadcrumb">Webhooks</div>
+      <div class="h1">VERIFYING SIGNATURES</div>
+      <div class="lede">Always verify a webhook's signature before trusting its payload — anyone can send a POST to your endpoint URL.</div>
+
+      <div class="h2">How it works</div>
+      <div class="p">Every delivery includes a <code class="inline">Relay-Signature</code> header: an HMAC-SHA256 hash of the raw request body, signed with your webhook's signing secret (shown once when the webhook is created).</div>
+
+      <div class="h2">Verification example (Node.js)</div>
+      <div class="code-card"><div class="code-body"><span class="code-copy">Copy</span><span class="tok-comment">const crypto = require('crypto');</span>
+
+function isValid(rawBody, signature, secret) {
+  const expected = crypto
+    .createHmac(<span class="tok-str">'sha256'</span>, secret)
+    .update(rawBody)
+    .digest(<span class="tok-str">'hex'</span>);
+  return crypto.timingSafeEqual(
+    Buffer.from(expected),
+    Buffer.from(signature)
+  );
+}</div></div>
+
+      <div class="callout warn"><b>Important —</b> compute the HMAC over the raw request body, before JSON parsing. Re-serializing the parsed object will produce a different signature and always fail verification.</div>
+    </section>
+
+    <!-- ================= REFERENCE: RATE LIMITS ================= -->
+    <section class="doc-view" id="doc-rate-limits">
+      <div class="breadcrumb">Reference</div>
+      <div class="h1">RATE LIMITS</div>
+      <div class="lede">Default limits per scope. Configure your own in <b>Governance → Rate Limits</b>.</div>
+
+      <div class="wide-table">
+        <div class="wide-row head"><span>SCOPE</span><span>DEFAULT</span><span>ACTION</span></div>
+        <div class="wide-row"><span class="cmono">Global</span><span class="cmuted">2000 req/min</span><span class="cmuted">Throttle</span></div>
+        <div class="wide-row"><span class="cmono">Per API</span><span class="cmuted">1000 req/min</span><span class="cmuted">Throttle</span></div>
+        <div class="wide-row"><span class="cmono">Per API key (unauth.)</span><span class="cmuted">60 req/min</span><span class="cmuted">Reject (429)</span></div>
+      </div>
+
+      <div class="h2">Response headers</div>
+      <div class="p">Every proxied response includes current quota state:</div>
+      <div class="code-card"><div class="code-body">X-RateLimit-Limit: 1000
+X-RateLimit-Remaining: 942
+X-RateLimit-Reset: 1757581200</div></div>
+
+      <div class="h2">Exceeding a limit</div>
+      <div class="code-card"><div class="code-body">HTTP/1.1 429 Too Many Requests
+
+{
+  <span class="tok-key">"error"</span>: <span class="tok-str">"rate_limit_exceeded"</span>,
+  <span class="tok-key">"message"</span>: <span class="tok-str">"Rate limit exceeded for this API."</span>,
+  <span class="tok-key">"retry_after"</span>: <span class="tok-key">14</span>
+}</div></div>
+    </section>
+
+    <!-- ================= REFERENCE: ERRORS ================= -->
+    <section class="doc-view" id="doc-errors">
+      <div class="breadcrumb">Reference</div>
+      <div class="h1">ERRORS</div>
+      <div class="lede">All errors return a JSON body with the same shape: <code class="inline">{ "error": string, "message": string }</code>.</div>
+
+      <div class="wide-table">
+        <div class="wide-row head"><span>CODE</span><span>STATUS</span><span>MEANING</span></div>
+        <div class="wide-row"><span class="cmono">unauthorized</span><span class="cmuted">401</span><span class="cmuted">Missing or invalid token.</span></div>
+        <div class="wide-row"><span class="cmono">invalid_environment</span><span class="cmuted">422</span><span class="cmuted"><code class="inline">environment</code> is not one of the allowed values.</span></div>
+        <div class="wide-row"><span class="cmono">key_not_found</span><span class="cmuted">404</span><span class="cmuted">The referenced key ID doesn't exist or was already revoked.</span></div>
+        <div class="wide-row"><span class="cmono">target_url_unreachable</span><span class="cmuted">502</span><span class="cmuted">Relay couldn't reach the configured upstream.</span></div>
+        <div class="wide-row"><span class="cmono">rate_limit_exceeded</span><span class="cmuted">429</span><span class="cmuted">See <a href="#" onclick="showDoc('rate-limits');return false;" style="text-decoration:underline;">Rate limits</a>.</span></div>
+      </div>
+    </section>
+
+    <!-- ================= REFERENCE: SDKS ================= -->
+    <section class="doc-view" id="doc-sdks">
+      <div class="breadcrumb">Reference</div>
+      <div class="h1">SDKS &amp; LIBRARIES</div>
+      <div class="lede">Official SDKs are not yet available.</div>
+      <div class="p">The REST API can be called directly using the examples throughout this reference — every endpoint works with a plain HTTP client in any language. Official SDKs will be listed here once published; in the meantime, community clients are not verified or endorsed.</div>
+    </section>
+
+  </main>
 </div>
+
+<script>
+  function showDoc(id){
+    document.querySelectorAll('.doc-view').forEach(v=>v.classList.remove('visible'));
+    document.getElementById('doc-'+id).classList.add('visible');
+    document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+    const nav = document.getElementById('nav-'+id);
+    if(nav) nav.classList.add('active');
+    window.scrollTo(0,0);
+  }
+</script>
 
 </body>
 </html>

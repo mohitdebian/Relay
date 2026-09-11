@@ -13,7 +13,7 @@
   --yellow: #C88A04;
   --yellow-dim: #FBF3DE;
   --blue: #1D6FCE;
-  --sidebar-w: 216px;
+  --sidebar-w: 250px;
   --topbar-h: 52px;
   --radius: 6px;
 }
@@ -33,7 +33,7 @@ button { font-family: inherit; }
 .logo { font-family: 'Silkscreen', monospace; font-weight: 700; font-size: 30px; }
 .sidebar-nav { padding: 14px 10px 24px; flex: 1; }
 .nav-group { margin-bottom: 18px; }
-.nav-group-label { font-family: 'Silkscreen', monospace; font-size: 18px; font-weight: 400; color: var(--text-secondary); letter-spacing: 0.02em; padding: 0 10px 6px; }
+.nav-group-label { font-family: 'Silkscreen', monospace; font-size: 18px; font-weight: 400; color: var(--text-secondary); letter-spacing: 0.02em; padding: 0 10px 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .nav-item { display: flex; align-items: center; height: 29px; padding: 0 10px; margin-bottom: 2px; border-radius: var(--radius); color: var(--text-secondary); font-size: 13px; cursor: pointer; transition: background .1s ease, color .1s ease; }
 .nav-item:hover { background: rgba(0,0,0,.035); color: var(--text); }
 .nav-item.active { background: rgba(0,0,0,.05); color: var(--text); font-weight: 500; }

@@ -109,8 +109,8 @@ export async function authMiddleware(
     if (decodedToken && decodedToken.header && decodedToken.header.kid) {
       jwt.verify(token, getKey, {}, handleDecodedToken);
     } else {
-      const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-me';
-      jwt.verify(token, JWT_SECRET, {}, handleDecodedToken);
+      res.status(401).json({ error: 'Unauthorized: Invalid token format' });
+      return;
     }
   } else {
     // Check cache first

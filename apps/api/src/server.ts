@@ -8,7 +8,7 @@ import { logger } from './utils/logger';
 import { pool } from './db';
 import { initDb } from './db/init';
 import { redis } from './utils/redis';
-import authRoutes from './routes/auth';
+
 import workspacesRoutes from './routes/workspaces';
 import apisRoutes from './routes/apis';
 import apiKeysRoutes from './routes/api-keys';
@@ -29,7 +29,7 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
-app.use('/auth', authRoutes);
+
 app.use('/workspaces', workspacesRoutes);
 app.use('/workspaces', auditRoutes); // Mounts on /workspaces/:id/audit-logs
 app.use('/apis', apisRoutes);

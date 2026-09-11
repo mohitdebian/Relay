@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers';
-import { EndpointBadge } from '../../../_components/EndpointBadge';
-import CodeCard from '../../../_components/CodeCard';
+import { EndpointBadge } from '../../_components/EndpointBadge';
+import CodeCard from '../../_components/CodeCard';
 
 export default async function ListApisPage() {
   const cookieStore = await cookies();

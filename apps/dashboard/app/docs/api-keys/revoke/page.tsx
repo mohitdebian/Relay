@@ -1,8 +1,8 @@
 import { cookies } from 'next/headers';
-import { EndpointBadge } from '../../../_components/EndpointBadge';
-import { ParamsTable, ParamRow } from '../../../_components/ParamsTable';
-import { Callout } from '../../../_components/Callout';
-import CodeCard from '../../../_components/CodeCard';
+import { EndpointBadge } from '../../_components/EndpointBadge';
+import { ParamsTable, ParamRow } from '../../_components/ParamsTable';
+import { Callout } from '../../_components/Callout';
+import CodeCard from '../../_components/CodeCard';
 
 export default async function RevokeApiKeyPage() {
   const cookieStore = await cookies();

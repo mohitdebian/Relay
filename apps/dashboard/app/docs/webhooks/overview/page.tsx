@@ -1,4 +1,4 @@
-import CodeCard from '../../../_components/CodeCard';
+import CodeCard from '../../_components/CodeCard';
 
 export default function WebhooksOverviewPage() {
   const payloadTabs = [

@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers';
-import { EndpointBadge } from '../../../_components/EndpointBadge';
-import { ParamsTable, ParamRow } from '../../../_components/ParamsTable';
-import CodeCard from '../../../_components/CodeCard';
+import { EndpointBadge } from '../../_components/EndpointBadge';
+import { ParamsTable, ParamRow } from '../../_components/ParamsTable';
+import CodeCard from '../../_components/CodeCard';
 
 export default async function ListApiKeysPage() {
   const cookieStore = await cookies();

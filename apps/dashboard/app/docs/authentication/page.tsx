@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers';
-import CodeCard from '../../_components/CodeCard';
-import { Callout } from '../../_components/Callout';
+import CodeCard from '../_components/CodeCard';
+import { Callout } from '../_components/Callout';
 
 export default async function AuthenticationPage() {
   const cookieStore = await cookies();
@@ -54,7 +54,7 @@ export default async function AuthenticationPage() {
           Learn how to authenticate requests to the Relay Management API.
         </div>
 
-        <Callout variant="info">
+        <Callout variant="neutral">
           <b>Note —</b> This page covers authentication for the <b>Management API</b> (creating APIs, generating keys, etc.). It does <b>not</b> cover how client requests authenticate through the Relay Gateway to your upstream services (which use API keys).
         </Callout>
 

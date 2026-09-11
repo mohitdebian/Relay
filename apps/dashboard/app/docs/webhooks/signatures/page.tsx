@@ -1,4 +1,4 @@
-import { Callout } from '../../../_components/Callout';
+import { Callout } from '../../_components/Callout';
 
 export default function WebhooksSignaturesPage() {
   return (

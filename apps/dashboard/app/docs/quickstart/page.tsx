@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers';
-import CodeCard from '../../_components/CodeCard';
+import CodeCard from '../_components/CodeCard';
 
 export default async function QuickstartPage() {
   const cookieStore = await cookies();

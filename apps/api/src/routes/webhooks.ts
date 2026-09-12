@@ -1,4 +1,5 @@
 import { Router, Response } from 'express';
+import crypto from 'crypto';
 import { pool } from '../db';
 import { authMiddleware, AuthRequest, checkWorkspaceRole } from '../middleware/auth';
 import { apiRateLimit, sensitiveRateLimit } from '../utils/rate-limit';
@@ -9,8 +10,6 @@ const router = Router();
 
 router.use(authMiddleware);
 router.use(apiRateLimit);
-
-
 
 // GET /webhooks
 router.get('/', async (req: AuthRequest, res: Response): Promise<void> => {
@@ -27,7 +26,10 @@ router.get('/', async (req: AuthRequest, res: Response): Promise<void> => {
     return;
   }
 
-  const hasAccess = await checkWorkspaceRole(userId, parseInt(workspaceId as string), ['admin', 'owner']);
+  const hasAccess = await checkWorkspaceRole(userId, parseInt(workspaceId as string), [
+    'admin',
+    'owner',
+  ]);
   if (!hasAccess) {
     res.status(403).json({ error: 'Unauthorized: Requires admin or owner role' });
     return;
@@ -65,14 +67,16 @@ router.post(
       return;
     }
 
-    const hasAccess = await checkWorkspaceRole(userId, parseInt(workspaceId as string), ['admin', 'owner']);
+    const hasAccess = await checkWorkspaceRole(userId, parseInt(workspaceId as string), [
+      'admin',
+      'owner',
+    ]);
     if (!hasAccess) {
       res.status(403).json({ error: 'Unauthorized: Requires admin or owner role' });
       return;
     }
 
     try {
-      const crypto = require('crypto');
       const secret = crypto.randomBytes(32).toString('hex');
 
       const result = await pool.query(

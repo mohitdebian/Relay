@@ -71,8 +71,13 @@ router.get('/', async (req: AuthRequest, res: Response): Promise<void> => {
         minute: '2-digit',
         second: '2-digit',
       }),
-      method: row.method || 'GET', 
-      path: row.path !== null && row.path !== undefined && row.path !== '' ? row.path : (row.path === '' ? '/' : row.upstream_url),
+      method: row.method || 'GET',
+      path:
+        row.path !== null && row.path !== undefined && row.path !== ''
+          ? row.path
+          : row.path === ''
+            ? '/'
+            : row.upstream_url,
       status: row.status_code,
       latency: `${row.latency_ms}ms`,
       api: row.api_name,

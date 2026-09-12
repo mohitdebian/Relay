@@ -110,7 +110,8 @@ router.get('/overview', async (req: AuthRequest, res: Response): Promise<void> =
 
     const currentReq = parseInt(currentOverviewResult.rows[0].total_requests) || 0;
     const prevReq = parseInt(previousOverviewResult.rows[0].total_requests) || 0;
-    const reqDelta = prevReq === 0 ? (currentReq > 0 ? 100 : 0) : ((currentReq - prevReq) / prevReq) * 100;
+    const reqDelta =
+      prevReq === 0 ? (currentReq > 0 ? 100 : 0) : ((currentReq - prevReq) / prevReq) * 100;
 
     const currentErrors = parseInt(currentOverviewResult.rows[0].total_errors) || 0;
     const prevErrors = parseInt(previousOverviewResult.rows[0].total_errors) || 0;
@@ -120,7 +121,8 @@ router.get('/overview', async (req: AuthRequest, res: Response): Promise<void> =
 
     const currentLat = parseFloat(currentOverviewResult.rows[0].average_latency) || 0;
     const prevLat = parseFloat(previousOverviewResult.rows[0].average_latency) || 0;
-    const latDelta = prevLat === 0 ? (currentLat > 0 ? 100 : 0) : ((currentLat - prevLat) / prevLat) * 100;
+    const latDelta =
+      prevLat === 0 ? (currentLat > 0 ? 100 : 0) : ((currentLat - prevLat) / prevLat) * 100;
 
     res.json({
       overview: {

@@ -129,10 +129,10 @@ router.get('/:id', async (req: AuthRequest, res: Response) => {
       res.status(404).json({ error: 'API not found or unauthorized' });
       return;
     }
-    
+
     const api = result.rows[0];
     const role = api.role.toLowerCase();
-    
+
     if (role !== 'admin' && role !== 'owner') {
       delete api.shared_secret;
     }

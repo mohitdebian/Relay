@@ -29,7 +29,6 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
-
 app.use('/workspaces', workspacesRoutes);
 app.use('/workspaces', auditRoutes); // Mounts on /workspaces/:id/audit-logs
 app.use('/apis', apisRoutes);

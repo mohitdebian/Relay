@@ -5,7 +5,14 @@ export default async function ApiDetailPage({ params }: { params: Promise<{ id: 
   const { id } = await params;
 
   const { api } = await fetchAPI(`/apis/${id}`);
-  const { keys } = await fetchAPI(`/apis/${id}/keys`);
+
+  let keys: any[] = [];
+  try {
+    const keysRes = await fetchAPI(`/apis/${id}/keys`);
+    if (keysRes.keys) keys = keysRes.keys;
+  } catch (e) {
+    console.error('Failed to fetch keys', e);
+  }
 
   // Analytics requires workspace_id, we can get it from the API details
   let analytics = null;

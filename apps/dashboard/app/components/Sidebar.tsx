@@ -11,8 +11,6 @@ const navGroups = [
     items: [
       { name: 'Overview', href: '/overview' },
       { name: 'APIs', href: '/apis' },
-      { name: 'Endpoints', href: '/endpoints' },
-      { name: 'Domains', href: '/domains' },
     ],
   },
   {
@@ -23,7 +21,6 @@ const navGroups = [
     label: 'ACCESS',
     items: [
       { name: 'API Keys', href: '/keys' },
-      { name: 'Policies', href: '/policies' },
       { name: 'Webhooks', href: '/webhooks' },
     ],
   },
@@ -37,7 +34,10 @@ const navGroups = [
   },
   {
     label: 'SETTINGS',
-    items: [{ name: 'General', href: '/settings' }],
+    items: [
+      { name: 'General', href: '/settings' },
+      { name: 'Workspace Keys', href: '/settings/keys' },
+    ],
   },
   {
     label: 'RESOURCES',

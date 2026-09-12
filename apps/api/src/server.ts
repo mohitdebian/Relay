@@ -12,6 +12,7 @@ import { redis } from './utils/redis';
 import workspacesRoutes from './routes/workspaces';
 import apisRoutes from './routes/apis';
 import apiKeysRoutes from './routes/api-keys';
+import workspaceKeysRoutes from './routes/workspace-keys';
 import analyticsRoutes from './routes/analytics';
 import auditRoutes from './routes/audit';
 import webhooksRoutes from './routes/webhooks';
@@ -33,6 +34,7 @@ app.use('/workspaces', workspacesRoutes);
 app.use('/workspaces', auditRoutes); // Mounts on /workspaces/:id/audit-logs
 app.use('/apis', apisRoutes);
 app.use('/api-keys', apiKeysRoutes);
+app.use('/workspace-keys', workspaceKeysRoutes);
 app.use('/analytics', analyticsRoutes);
 app.use('/webhooks', webhooksRoutes);
 app.use('/logs', logsRoutes);

@@ -1,5 +1,23 @@
+import { getApisAction } from '@/app/actions/api';
+import RateLimitsClient from './RateLimitsClient';
 import Typewriter from '@/app/components/Typewriter';
-export default function RateLimitsPage() {
+
+export default async function RateLimitsPage() {
+  const result = await getApisAction();
+
+  if (!result.success || !result.apis) {
+    return (
+      <div className="section">
+        <div className="panel">
+          <div className="modal-warning">
+            <span>⚠</span>
+            <span>Failed to load APIs.</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="page-head">
@@ -7,15 +25,10 @@ export default function RateLimitsPage() {
           <div className="page-title">
             <Typewriter text="RATE LIMITS" />
           </div>
-          <div className="page-sub">0 active rules</div>
-        </div>
-        <button className="btn btn-primary">+ New rule</button>
-      </div>
-      <div className="panel">
-        <div style={{ padding: '16px', color: 'var(--text-secondary)' }}>
-          Rate limits feature is in beta. Configure rate limits on individual APIs.
+          <div className="page-sub">Configure traffic controls for your APIs</div>
         </div>
       </div>
+      <RateLimitsClient initialApis={result.apis} />
     </>
   );
 }

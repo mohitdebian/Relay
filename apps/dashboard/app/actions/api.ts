@@ -109,3 +109,29 @@ export async function deleteApiAction(apiId: number) {
     return { success: false, error: error.message };
   }
 }
+
+export async function updateApiAction(
+  apiId: number,
+  data: {
+    rate_limit_enabled?: boolean;
+    rate_limit_max?: number;
+    rate_limit_window?: number;
+  }
+) {
+  try {
+    const res = await fetchAPI(`/apis/${apiId}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    });
+
+    revalidatePath('/rate-limits');
+    revalidatePath('/apis');
+    revalidatePath('/overview');
+
+    return { success: true, api: res.api };
+  } catch (error: any) {
+    if (isRedirectError(error)) throw error;
+    console.error('Failed to update API:', error);
+    return { success: false, error: error.message };
+  }
+}

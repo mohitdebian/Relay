@@ -3,6 +3,7 @@ import { fetchAPI } from '../lib/api';
 import OnboardingForm from './OnboardingForm';
 
 export default async function OnboardingPage() {
+  let fetchError = null;
   try {
     // Check if user already has a workspace
     const wsRes = await fetchAPI('/workspaces');
@@ -11,6 +12,25 @@ export default async function OnboardingPage() {
     }
   } catch (err: any) {
     if (err?.message === 'NEXT_REDIRECT') throw err;
+    fetchError = err?.message || 'Failed to connect to API';
+  }
+
+  if (fetchError) {
+    return (
+      <>
+        <div className="bg-grid"></div>
+        <div className="auth-shell">
+          <div className="auth-box">
+            <div className="auth-logo pixel">RELAY</div>
+            <div className="panel auth-panel" style={{ textAlign: 'center' }}>
+              <h2 style={{ marginBottom: '1rem' }}>Connection Error</h2>
+              <p style={{ color: 'var(--text-secondary)' }}>Unable to connect to the Relay API server.</p>
+              <p style={{ color: 'var(--accent-red)', marginTop: '1rem', fontSize: '13px' }}>{fetchError}</p>
+            </div>
+          </div>
+        </div>
+      </>
+    );
   }
 
   return (

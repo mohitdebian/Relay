@@ -6,10 +6,26 @@ import { fetchAPI } from '../lib/api';
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const cookieStore = await cookies();
+  let fetchError = null;
   const { workspaces } = await fetchAPI('/workspaces').catch((error) => {
     console.error('DashboardLayout fetchAPI error:', error);
-    return { workspaces: [] };
+    fetchError = error.message;
+    return { workspaces: null };
   });
+
+  if (fetchError) {
+    return (
+      <div className="shell">
+        <div className="main-col" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem', justifyContent: 'center', alignItems: 'center', height: '100vh', textAlign: 'center' }}>
+          <div className="panel" style={{ maxWidth: '400px' }}>
+            <h2 style={{ marginBottom: '1rem' }}>Connection Error</h2>
+            <p style={{ color: 'var(--text-secondary)' }}>Unable to connect to the Relay API server.</p>
+            <p style={{ color: 'var(--accent-red)', marginTop: '1rem', fontSize: '13px' }}>{fetchError}</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (!workspaces || workspaces.length === 0) {
     redirect('/onboarding');

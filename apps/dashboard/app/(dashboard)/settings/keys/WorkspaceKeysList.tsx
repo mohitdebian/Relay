@@ -149,12 +149,6 @@ export default function WorkspaceKeysList({
               &nbsp;&nbsp;{process.env.NEXT_PUBLIC_API_URL || 'https://relay-g0ia.onrender.com'}/apis
             </pre>
           </div>
-          <div className="modal-warning" style={{ marginTop: '16px', display: 'flex', alignItems: 'flex-start' }}>
-            <span>ℹ️</span>
-            <span>
-              If you are testing against your free Render instance, the first request may take up to 50 seconds if the instance has spun down from inactivity.
-            </span>
-          </div>
         </div>
       </div>
 

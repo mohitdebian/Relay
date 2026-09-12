@@ -13,8 +13,26 @@ export default async function LandingPage() {
     redirect('/overview');
   }
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'Relay',
+    operatingSystem: 'Any',
+    applicationCategory: 'DeveloperApplication',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+    },
+    description: 'Route, secure, and monitor every API your team ships. One dashboard for gateways, keys, rate limits, and traffic.',
+  };
+
   return (
     <div className="landing-body">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* ============ NAV ============ */}
       <nav className="nav">
         <div className="wrap">

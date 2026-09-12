@@ -59,7 +59,7 @@ export const metadata: Metadata = {
 export const dynamic = 'force-dynamic';
 
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import { Analytics } from "@vercel/analytics/next";
+import { Analytics } from '@vercel/analytics/next';
 import { CSPostHogProvider } from './providers';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

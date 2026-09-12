@@ -88,7 +88,14 @@ export default function RateLimitsPage() {
             <code className="mono" style={{ color: 'var(--text)', fontWeight: 500 }}>
               X-RateLimit-Limit
             </code>
-            <p style={{ margin: '8px 0 0 0', color: 'var(--text-secondary)', fontSize: '14px', lineHeight: '1.5' }}>
+            <p
+              style={{
+                margin: '8px 0 0 0',
+                color: 'var(--text-secondary)',
+                fontSize: '14px',
+                lineHeight: '1.5',
+              }}
+            >
               The maximum number of requests allowed in the current window.
             </p>
           </div>
@@ -96,7 +103,14 @@ export default function RateLimitsPage() {
             <code className="mono" style={{ color: 'var(--text)', fontWeight: 500 }}>
               X-RateLimit-Remaining
             </code>
-            <p style={{ margin: '8px 0 0 0', color: 'var(--text-secondary)', fontSize: '14px', lineHeight: '1.5' }}>
+            <p
+              style={{
+                margin: '8px 0 0 0',
+                color: 'var(--text-secondary)',
+                fontSize: '14px',
+                lineHeight: '1.5',
+              }}
+            >
               The number of requests remaining in the current window.
             </p>
           </div>
@@ -104,7 +118,14 @@ export default function RateLimitsPage() {
             <code className="mono" style={{ color: 'var(--text)', fontWeight: 500 }}>
               X-RateLimit-Reset
             </code>
-            <p style={{ margin: '8px 0 0 0', color: 'var(--text-secondary)', fontSize: '14px', lineHeight: '1.5' }}>
+            <p
+              style={{
+                margin: '8px 0 0 0',
+                color: 'var(--text-secondary)',
+                fontSize: '14px',
+                lineHeight: '1.5',
+              }}
+            >
               The Unix timestamp when the current window expires and limits are reset.
             </p>
           </div>

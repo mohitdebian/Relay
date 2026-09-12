@@ -52,7 +52,7 @@ export default function ApiDetailClient({
       upstream_url: baseUrl,
       description,
     });
-    
+
     if (res.success) {
       setSaved(true);
       router.refresh();
@@ -390,14 +390,23 @@ export default function ApiDetailClient({
           </div>
           <div className="field">
             <label>Base URL</label>
-            <input type="text" value={baseUrl} onChange={(e) => setBaseUrl(e.target.value)} className="mono" />
+            <input
+              type="text"
+              value={baseUrl}
+              onChange={(e) => setBaseUrl(e.target.value)}
+              className="mono"
+            />
           </div>
           <div className="field">
             <label>Description</label>
-            <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
+            <input
+              type="text"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
           </div>
-          <button 
-            className="btn btn-primary" 
+          <button
+            className="btn btn-primary"
             style={{ marginTop: '4px' }}
             onClick={handleSaveSettings}
             disabled={isSaving}

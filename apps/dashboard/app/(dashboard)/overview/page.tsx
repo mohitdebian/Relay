@@ -65,6 +65,7 @@ export default async function OverviewPage() {
       return apiDate > latest ? apiDate : latest;
     }, new Date(0));
 
+    // eslint-disable-next-line
     const diff = Date.now() - latestUpdate.getTime();
     const minutes = Math.floor(diff / 60000);
     const hours = Math.floor(minutes / 60);

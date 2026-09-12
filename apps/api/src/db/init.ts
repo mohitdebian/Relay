@@ -57,6 +57,17 @@ export async function initDb() {
         revoked_at TIMESTAMP
       );
 
+      CREATE TABLE IF NOT EXISTS workspace_api_keys (
+        id SERIAL PRIMARY KEY,
+        workspace_id INTEGER REFERENCES workspaces(id) ON DELETE CASCADE,
+        name VARCHAR(255) NOT NULL,
+        key_hash VARCHAR(255) UNIQUE NOT NULL,
+        key_prefix VARCHAR(50) NOT NULL,
+        last_used_at TIMESTAMP,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        revoked_at TIMESTAMP
+      );
+
       CREATE TABLE IF NOT EXISTS api_request_logs (
         id SERIAL PRIMARY KEY,
         api_id INTEGER REFERENCES apis(id) ON DELETE CASCADE,

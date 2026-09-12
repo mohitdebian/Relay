@@ -16,7 +16,7 @@ export default function WebhooksSignaturesPage() {
           {'  '}<span className="docs-tok-key">return</span> crypto.<span className="docs-tok-str">timingSafeEqual</span>({'\n'}
           {'    '}Buffer.<span className="docs-tok-str">from</span>(expected),{'\n'}
           {'    '}Buffer.<span className="docs-tok-str">from</span>(signature){'\n'}
-          {'  });\n'}
+          {'  );\n'}
           {'}'}
         </>
       ),

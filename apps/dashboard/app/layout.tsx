@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     siteName: 'RELAY_',
     images: [
       {
-        url: '/og-image.png',
+        url: '/og-image.jpg',
         width: 1200,
         height: 630,
         alt: 'RELAY_ API Infrastructure',
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     title: 'RELAY_ | API Infrastructure',
     description: 'One dashboard for gateways, keys, rate limits, and traffic.',
     creator: '@relay',
-    images: ['/og-image.png'],
+    images: ['/og-image.jpg'],
   },
   robots: {
     index: true,

@@ -12,7 +12,8 @@ export default async function WorkspaceKeysPage() {
   }
 
   const activeWorkspaceId = cookieStore.get('relay_active_workspace')?.value;
-  const workspace = workspaces.find((w: any) => w.id.toString() === activeWorkspaceId) || workspaces[0];
+  const workspace =
+    workspaces.find((w: any) => w.id.toString() === activeWorkspaceId) || workspaces[0];
 
   let keys = [];
   try {

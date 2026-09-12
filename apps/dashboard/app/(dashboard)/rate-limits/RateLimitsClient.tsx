@@ -42,9 +42,20 @@ export default function RateLimitsClient({ initialApis }: { initialApis: Api[] }
     <div className="rate-limits-container">
       {apis.map((api) => (
         <div key={api.id} className="panel api-limit-card" style={{ marginBottom: '24px' }}>
-          <div className="api-limit-header" style={{ padding: '20px 24px', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div
+            className="api-limit-header"
+            style={{
+              padding: '20px 24px',
+              borderBottom: '1px solid var(--border)',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
             <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '4px' }}>
+              <div
+                style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '4px' }}
+              >
                 <h3 style={{ fontSize: '18px', fontWeight: 600 }}>{api.name}</h3>
                 <span className="badge">{api.environment}</span>
               </div>
@@ -55,9 +66,9 @@ export default function RateLimitsClient({ initialApis }: { initialApis: Api[] }
                 {api.rate_limit_enabled ? 'Active' : 'Disabled'}
               </span>
               <label className="switch">
-                <input 
-                  type="checkbox" 
-                  checked={api.rate_limit_enabled} 
+                <input
+                  type="checkbox"
+                  checked={api.rate_limit_enabled}
                   onChange={(e) => handleUpdate(api.id, 'rate_limit_enabled', e.target.checked)}
                 />
                 <span className="slider round"></span>
@@ -65,8 +76,22 @@ export default function RateLimitsClient({ initialApis }: { initialApis: Api[] }
             </div>
           </div>
 
-          <div className="api-limit-body" style={{ padding: '24px', display: 'flex', gap: '24px', flexWrap: 'wrap', opacity: api.rate_limit_enabled ? 1 : 0.5, pointerEvents: api.rate_limit_enabled ? 'auto' : 'none', transition: 'opacity 0.2s ease' }}>
-            <div className="field" style={{ flex: '1', minWidth: '200px', maxWidth: 'none', marginBottom: 0 }}>
+          <div
+            className="api-limit-body"
+            style={{
+              padding: '24px',
+              display: 'flex',
+              gap: '24px',
+              flexWrap: 'wrap',
+              opacity: api.rate_limit_enabled ? 1 : 0.5,
+              pointerEvents: api.rate_limit_enabled ? 'auto' : 'none',
+              transition: 'opacity 0.2s ease',
+            }}
+          >
+            <div
+              className="field"
+              style={{ flex: '1', minWidth: '200px', maxWidth: 'none', marginBottom: 0 }}
+            >
               <label>Max Requests</label>
               <div style={{ position: 'relative' }}>
                 <input
@@ -76,12 +101,26 @@ export default function RateLimitsClient({ initialApis }: { initialApis: Api[] }
                   onChange={(e) => handleUpdate(api.id, 'rate_limit_max', e.target.value)}
                   placeholder="e.g. 100"
                 />
-                <span style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-tertiary)', fontSize: '13px' }}>reqs</span>
+                <span
+                  style={{
+                    position: 'absolute',
+                    right: '12px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    color: 'var(--text-tertiary)',
+                    fontSize: '13px',
+                  }}
+                >
+                  reqs
+                </span>
               </div>
               <div className="hint">Maximum requests allowed within the time window.</div>
             </div>
 
-            <div className="field" style={{ flex: '1', minWidth: '200px', maxWidth: 'none', marginBottom: 0 }}>
+            <div
+              className="field"
+              style={{ flex: '1', minWidth: '200px', maxWidth: 'none', marginBottom: 0 }}
+            >
               <label>Time Window</label>
               <div style={{ position: 'relative' }}>
                 <input
@@ -91,13 +130,26 @@ export default function RateLimitsClient({ initialApis }: { initialApis: Api[] }
                   onChange={(e) => handleUpdate(api.id, 'rate_limit_window', e.target.value)}
                   placeholder="e.g. 60"
                 />
-                <span style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-tertiary)', fontSize: '13px' }}>secs</span>
+                <span
+                  style={{
+                    position: 'absolute',
+                    right: '12px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    color: 'var(--text-tertiary)',
+                    fontSize: '13px',
+                  }}
+                >
+                  secs
+                </span>
               </div>
               <div className="hint">Duration in seconds for the rate limit window.</div>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'flex-start', paddingTop: '22px', gap: '12px' }}>
-              <button 
+            <div
+              style={{ display: 'flex', alignItems: 'flex-start', paddingTop: '22px', gap: '12px' }}
+            >
+              <button
                 className="btn btn-primary"
                 style={{ height: '32px' }}
                 onClick={() => handleSave(api)}
@@ -114,11 +166,18 @@ export default function RateLimitsClient({ initialApis }: { initialApis: Api[] }
           </div>
         </div>
       ))}
-      
+
       {apis.length === 0 && (
-        <div className="panel" style={{ padding: '40px', textAlign: 'center', color: 'var(--text-secondary)' }}>
+        <div
+          className="panel"
+          style={{ padding: '40px', textAlign: 'center', color: 'var(--text-secondary)' }}
+        >
           <div style={{ fontSize: '24px', marginBottom: '12px' }}>🎛️</div>
-          <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text)', marginBottom: '4px' }}>No APIs configured</h3>
+          <h3
+            style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text)', marginBottom: '4px' }}
+          >
+            No APIs configured
+          </h3>
           <p>Get started by creating a new API in your workspace to manage its rate limits.</p>
         </div>
       )}

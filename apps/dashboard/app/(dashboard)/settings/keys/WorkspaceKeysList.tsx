@@ -138,15 +138,32 @@ export default function WorkspaceKeysList({
         </div>
         <div className="panel" style={{ padding: '24px' }}>
           <p style={{ color: 'var(--text-secondary)', marginBottom: '16px', lineHeight: '1.5' }}>
-            Personal Access Tokens allow you to authenticate with the Relay Management API. Pass the token in the <code>Authorization</code> header as a Bearer token.
+            Personal Access Tokens allow you to authenticate with the Relay Management API. Pass the
+            token in the <code>Authorization</code> header as a Bearer token.
           </p>
           <div className="code-block" style={{ padding: '16px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-              <span className="c-secondary mono" style={{ fontSize: '12px', textTransform: 'uppercase' }}>cURL Example</span>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: '12px',
+              }}
+            >
+              <span
+                className="c-secondary mono"
+                style={{ fontSize: '12px', textTransform: 'uppercase' }}
+              >
+                cURL Example
+              </span>
             </div>
-            <pre className="mono" style={{ color: 'var(--text)', margin: 0, whiteSpace: 'pre-wrap', fontSize: '13px' }}>
-              curl -H "Authorization: Bearer relay_ws_YOUR_TOKEN" \<br/>
-              &nbsp;&nbsp;{process.env.NEXT_PUBLIC_API_URL || 'https://relay-g0ia.onrender.com'}/apis
+            <pre
+              className="mono"
+              style={{ color: 'var(--text)', margin: 0, whiteSpace: 'pre-wrap', fontSize: '13px' }}
+            >
+              curl -H "Authorization: Bearer relay_ws_YOUR_TOKEN" \<br />
+              &nbsp;&nbsp;{process.env.NEXT_PUBLIC_API_URL || 'https://relay-g0ia.onrender.com'}
+              /apis
             </pre>
           </div>
         </div>
@@ -174,8 +191,8 @@ export default function WorkspaceKeysList({
               <div className="modal-warning" style={{ marginTop: '16px' }}>
                 <span>⚠</span>
                 <span>
-                  Personal access tokens have full administrative access to your workspace. Treat them like
-                  passwords.
+                  Personal access tokens have full administrative access to your workspace. Treat
+                  them like passwords.
                 </span>
               </div>
               {error && (

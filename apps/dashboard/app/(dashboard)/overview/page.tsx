@@ -64,15 +64,16 @@ export default async function OverviewPage() {
       const apiDate = new Date(api.updated_at || api.created_at);
       return apiDate > latest ? apiDate : latest;
     }, new Date(0));
-    
+
     const diff = Date.now() - latestUpdate.getTime();
     const minutes = Math.floor(diff / 60000);
     const hours = Math.floor(minutes / 60);
     const days = Math.floor(hours / 24);
-    
+
     if (days > 0) lastUpdatedText = `last updated ${days} day${days === 1 ? '' : 's'} ago`;
     else if (hours > 0) lastUpdatedText = `last updated ${hours} hour${hours === 1 ? '' : 's'} ago`;
-    else if (minutes > 0) lastUpdatedText = `last updated ${minutes} minute${minutes === 1 ? '' : 's'} ago`;
+    else if (minutes > 0)
+      lastUpdatedText = `last updated ${minutes} minute${minutes === 1 ? '' : 's'} ago`;
     else lastUpdatedText = 'last updated just now';
   } else {
     lastUpdatedText = 'no APIs yet';
@@ -85,7 +86,9 @@ export default async function OverviewPage() {
           <div className="page-title">
             <Typewriter text="OVERVIEW" />
           </div>
-          <div className="page-sub">{apis.length} {apis.length === 1 ? 'API' : 'APIs'} · {lastUpdatedText}</div>
+          <div className="page-sub">
+            {apis.length} {apis.length === 1 ? 'API' : 'APIs'} · {lastUpdatedText}
+          </div>
         </div>
         <NewApiButton />
       </div>

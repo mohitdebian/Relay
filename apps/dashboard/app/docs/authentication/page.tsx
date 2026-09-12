@@ -81,10 +81,13 @@ export default async function AuthenticationPage() {
           Personal Access Tokens
         </h2>
         <p className="docs-p">
-          For programmatic access to the Management API (e.g. from CI/CD pipelines or scripts), you can generate a Personal Access Token in your workspace settings.
+          For programmatic access to the Management API (e.g. from CI/CD pipelines or scripts), you
+          can generate a Personal Access Token in your workspace settings.
         </p>
         <p className="docs-p">
-          These tokens act as long-lived Bearer tokens and grant full administrative access to your workspace. Treat them securely. Pass them in the <code className="docs-inline">Authorization</code> header just like a standard JWT token.
+          These tokens act as long-lived Bearer tokens and grant full administrative access to your
+          workspace. Treat them securely. Pass them in the{' '}
+          <code className="docs-inline">Authorization</code> header just like a standard JWT token.
         </p>
 
         <div style={{ marginTop: '24px', marginBottom: '32px' }}>

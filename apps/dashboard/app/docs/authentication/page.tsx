@@ -61,10 +61,10 @@ export default async function AuthenticationPage() {
         </Callout>
 
         <h2 className="docs-h2" id="bearer-tokens">
-          Bearer Tokens
+          User Bearer Tokens
         </h2>
         <p className="docs-p">
-          Requests to the Relay Management API are authenticated using a{' '}
+          Browser requests to the Relay Management API are authenticated using a{' '}
           <code className="docs-inline">Bearer</code> token provided in the{' '}
           <code className="docs-inline">Authorization</code> header. The token is a JWT (JSON Web
           Token) issued by the authentication provider (e.g., Neon Auth).
@@ -77,8 +77,18 @@ export default async function AuthenticationPage() {
           <code className="docs-inline">?workspaceId=...</code>.
         </p>
 
+        <h2 className="docs-h2" id="personal-access-tokens">
+          Personal Access Tokens
+        </h2>
+        <p className="docs-p">
+          For programmatic access to the Management API (e.g. from CI/CD pipelines or scripts), you can generate a Personal Access Token in your workspace settings.
+        </p>
+        <p className="docs-p">
+          These tokens act as long-lived Bearer tokens and grant full administrative access to your workspace. Treat them securely. Pass them in the <code className="docs-inline">Authorization</code> header just like a standard JWT token.
+        </p>
+
         <div style={{ marginTop: '24px', marginBottom: '32px' }}>
-          <div className="docs-response-label">Example request</div>
+          <div className="docs-response-label">Example request with Personal Access Token</div>
           <CodeCard tabs={requestTabs} />
         </div>
 

@@ -31,7 +31,8 @@ export function rateLimit(config: RateLimitConfig) {
     // Identify client: use authenticated user ID if available, then real IP from proxy headers, then direct IP
     const forwardedFor = req.headers['x-forwarded-for'];
     const realIp = typeof forwardedFor === 'string' ? forwardedFor.split(',')[0].trim() : null;
-    const clientId = (req as any).user?.id || realIp || req.ip || req.socket.remoteAddress || 'unknown';
+    const clientId =
+      (req as any).user?.id || realIp || req.ip || req.socket.remoteAddress || 'unknown';
     const key = `${keyPrefix}:${clientId}`;
 
     try {

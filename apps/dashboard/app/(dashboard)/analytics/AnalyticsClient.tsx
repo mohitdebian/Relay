@@ -3,7 +3,32 @@
 import React, { useState, useMemo } from 'react';
 import { FilterDropdown } from '@/app/components/FilterDropdown';
 
-export default function AnalyticsClient({ analytics }: { analytics: any }) {
+interface EndpointData {
+  path: string;
+  requests: number;
+  errors: number;
+  latency: string;
+}
+
+interface KeyData {
+  name: string;
+  requests: number;
+  cost: string;
+}
+
+interface AnalyticsOverview {
+  totalRequests: number;
+  totalErrors: number;
+  averageLatencyMs: number;
+}
+
+interface AnalyticsData {
+  overview?: AnalyticsOverview;
+  byEndpoint?: EndpointData[];
+  byKey?: KeyData[];
+}
+
+export default function AnalyticsClient({ analytics }: { analytics: AnalyticsData | null }) {
   const [apiFilter, setApiFilter] = useState('all');
   const [keyFilter, setKeyFilter] = useState('all');
   const [endpointFilter, setEndpointFilter] = useState('all');
@@ -11,24 +36,23 @@ export default function AnalyticsClient({ analytics }: { analytics: any }) {
   const [statusFilter, setStatusFilter] = useState('all');
   const [timeFilter, setTimeFilter] = useState('all_time');
 
-  const initialByEndpoint = analytics?.byEndpoint || [];
-  const initialByKey = analytics?.byKey || [];
-
   const filteredByEndpoint = useMemo(() => {
-    return initialByEndpoint.filter((e: any) => {
+    const byEndpoint = analytics?.byEndpoint || [];
+    return byEndpoint.filter((e) => {
       if (endpointFilter !== 'all' && !e.path.includes(endpointFilter)) return false;
       if (statusFilter === 'error' && e.errors === 0) return false;
       if (statusFilter === 'success' && e.errors > 0) return false;
       return true;
     });
-  }, [initialByEndpoint, endpointFilter, statusFilter]);
+  }, [analytics, endpointFilter, statusFilter]);
 
   const filteredByKey = useMemo(() => {
-    return initialByKey.filter((k: any) => {
+    const byKey = analytics?.byKey || [];
+    return byKey.filter((k) => {
       if (keyFilter !== 'all' && !k.name.includes(keyFilter)) return false;
       return true;
     });
-  }, [initialByKey, keyFilter]);
+  }, [analytics, keyFilter]);
 
   const totalRequests = analytics?.overview?.totalRequests || 0;
   const successRate =
@@ -133,7 +157,7 @@ export default function AnalyticsClient({ analytics }: { analytics: any }) {
               No traffic recorded matching filters.<span className="cursor-blink"></span>
             </div>
           )}
-          {filteredByEndpoint.map((e: any) => (
+          {filteredByEndpoint.map((e) => (
             <div
               key={e.path}
               className="row"
@@ -163,7 +187,7 @@ export default function AnalyticsClient({ analytics }: { analytics: any }) {
               No API keys matching filters.<span className="cursor-blink"></span>
             </div>
           )}
-          {filteredByKey.map((k: any) => (
+          {filteredByKey.map((k) => (
             <div key={k.name} className="row" style={{ gridTemplateColumns: '1.6fr .8fr .8fr' }}>
               <span className="c-strong">{k.name}</span>
               <span className="c-mono">{k.requests} requests</span>

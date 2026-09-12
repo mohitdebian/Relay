@@ -1,10 +1,17 @@
 import Typewriter from '@/app/components/Typewriter';
-const isRedirectError = (e: any) => e && e.digest && e.digest.startsWith('NEXT_REDIRECT');
 import { getWorkspaceAnalyticsAction } from '@/app/actions/analytics';
 import AnalyticsClient from './AnalyticsClient';
 
+const isRedirectError = (e: unknown): boolean => {
+  if (typeof e === 'object' && e !== null && 'digest' in e) {
+    const err = e as { digest: string };
+    return typeof err.digest === 'string' && err.digest.startsWith('NEXT_REDIRECT');
+  }
+  return false;
+};
+
 export default async function AnalyticsPage() {
-  const { analytics } = await getWorkspaceAnalyticsAction().catch((e) => {
+  const { analytics } = await getWorkspaceAnalyticsAction().catch((e: unknown) => {
     if (isRedirectError(e)) throw e;
     return { analytics: null };
   });

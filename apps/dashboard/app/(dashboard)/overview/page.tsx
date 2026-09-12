@@ -31,7 +31,10 @@ export default async function OverviewPage() {
 
   if (analyticsOverview) {
     if (analyticsOverview.totalRequests > 0) {
-      successRate = ((analyticsOverview.totalRequests - analyticsOverview.totalErrors) / analyticsOverview.totalRequests) * 100;
+      successRate =
+        ((analyticsOverview.totalRequests - analyticsOverview.totalErrors) /
+          analyticsOverview.totalRequests) *
+        100;
       if (successRate >= 99) successRateColor = 'green';
       else if (successRate >= 95) successRateColor = 'yellow';
       else successRateColor = 'red';
@@ -97,7 +100,9 @@ export default async function OverviewPage() {
             {!analyticsOverview ? (
               'N/A'
             ) : lowVolume ? (
-              <span className="c-secondary">{analyticsOverview.totalErrors} of {analyticsOverview.totalRequests} failed</span>
+              <span className="c-secondary">
+                {analyticsOverview.totalErrors} of {analyticsOverview.totalRequests} failed
+              </span>
             ) : analyticsOverview.successRateDelta !== undefined ? (
               <span className={analyticsOverview.successRateDelta >= 0 ? 'green' : 'red'}>
                 {analyticsOverview.successRateDelta > 0 ? '+' : ''}

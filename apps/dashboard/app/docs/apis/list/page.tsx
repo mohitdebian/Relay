@@ -38,8 +38,7 @@ export default async function ListApisPage() {
           {'    {'}
           {'\n'}
           {'      '}
-          <span className="docs-tok-key">"id"</span>:{' '}
-          <span className="docs-tok-str">1</span>,{'\n'}
+          <span className="docs-tok-key">"id"</span>: <span className="docs-tok-str">1</span>,{'\n'}
           {'      '}
           <span className="docs-tok-key">"workspace_id"</span>:{' '}
           <span className="docs-tok-str">1</span>,{'\n'}
@@ -94,8 +93,10 @@ export default async function ListApisPage() {
           Authentication
         </h2>
         <p className="docs-p">
-          Requires a workspace-level access token in the <code className="docs-inline">Authorization</code> header. 
-          The <code className="docs-inline">workspaceId</code> must be provided either as a query parameter or via the <code className="docs-inline">x-workspace-id</code> header.
+          Requires a workspace-level access token in the{' '}
+          <code className="docs-inline">Authorization</code> header. The{' '}
+          <code className="docs-inline">workspaceId</code> must be provided either as a query
+          parameter or via the <code className="docs-inline">x-workspace-id</code> header.
         </p>
 
         <h2 className="docs-h2" id="response">

@@ -9,11 +9,20 @@ export const metadata: Metadata = {
     default: 'RELAY_ | Route, secure, and monitor every API',
     template: '%s | RELAY_',
   },
-  description: 'API infrastructure for teams shipping fast — routing, auth, and observability in one place.',
-  keywords: ['API gateway', 'API management', 'rate limiting', 'developer platform', 'webhooks', 'zero-downtime migrations'],
+  description:
+    'API infrastructure for teams shipping fast — routing, auth, and observability in one place.',
+  keywords: [
+    'API gateway',
+    'API management',
+    'rate limiting',
+    'developer platform',
+    'webhooks',
+    'zero-downtime migrations',
+  ],
   openGraph: {
     title: 'RELAY_ | Route, secure, and monitor every API',
-    description: 'One dashboard for gateways, keys, rate limits, and traffic — so your team spends less time gluing infrastructure together and more time shipping.',
+    description:
+      'One dashboard for gateways, keys, rate limits, and traffic — so your team spends less time gluing infrastructure together and more time shipping.',
     url: SITE_URL,
     siteName: 'RELAY_',
     images: [

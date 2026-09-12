@@ -10,12 +10,21 @@ export function DocsTopbar() {
     <header className="topbar">
       <div className="topbar-left">
         <nav className="topbar-nav">
-          <Link href="/docs" className={pathname === '/docs' ? 'active' : ''}>Docs</Link>
-          <Link href="/docs/api-keys/create" className={isActive('/docs/api-keys') || isActive('/docs/apis')}>
+          <Link href="/docs" className={pathname === '/docs' ? 'active' : ''}>
+            Docs
+          </Link>
+          <Link
+            href="/docs/api-keys/create"
+            className={isActive('/docs/api-keys') || isActive('/docs/apis')}
+          >
             API Reference
           </Link>
-          <Link href="/docs/guides" className={isActive('/docs/guides')}>Guides</Link>
-          <Link href="/docs/changelog" className={isActive('/docs/changelog')}>Changelog</Link>
+          <Link href="/docs/guides" className={isActive('/docs/guides')}>
+            Guides
+          </Link>
+          <Link href="/docs/changelog" className={isActive('/docs/changelog')}>
+            Changelog
+          </Link>
         </nav>
       </div>
       <div className="topbar-right">

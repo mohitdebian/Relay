@@ -171,7 +171,6 @@ function LoginContent() {
             <form onSubmit={handleSubmit}>
               {isSignup && (
                 <>
-
                   <div className="field auth-only-signup">
                     <label>Full name</label>
                     <input

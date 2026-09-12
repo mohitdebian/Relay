@@ -14,12 +14,12 @@ interface WorkspaceKey {
   revoked_at: string | null;
 }
 
-export default function WorkspaceKeysList({ 
-  keys, 
-  workspaceId 
-}: { 
-  keys: WorkspaceKey[], 
-  workspaceId: number 
+export default function WorkspaceKeysList({
+  keys,
+  workspaceId,
+}: {
+  keys: WorkspaceKey[];
+  workspaceId: number;
 }) {
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState<1 | 2>(1);
@@ -68,7 +68,11 @@ export default function WorkspaceKeysList({
   };
 
   const handleRevoke = async (id: number) => {
-    if (confirm('Are you sure you want to revoke this key? Any scripts using it will immediately fail.')) {
+    if (
+      confirm(
+        'Are you sure you want to revoke this key? Any scripts using it will immediately fail.'
+      )
+    ) {
       await revokeWorkspaceKeyAction(id);
     }
   };
@@ -90,15 +94,21 @@ export default function WorkspaceKeysList({
       <div className="section">
         <div className="panel">
           {keys.map((k) => (
-            <div key={k.id} className="row" style={{ gridTemplateColumns: '1.5fr 1fr 1fr auto', alignItems: 'center' }}>
+            <div
+              key={k.id}
+              className="row"
+              style={{ gridTemplateColumns: '1.5fr 1fr 1fr auto', alignItems: 'center' }}
+            >
               <div className="c-strong">{k.name}</div>
               <div className="c-secondary mono">{k.key_prefix}</div>
               <div className="c-secondary">
-                {k.last_used_at ? `Last used ${new Date(k.last_used_at).toLocaleDateString()}` : 'Never used'}
+                {k.last_used_at
+                  ? `Last used ${new Date(k.last_used_at).toLocaleDateString()}`
+                  : 'Never used'}
               </div>
               <div>
-                <button 
-                  className="btn btn-secondary" 
+                <button
+                  className="btn btn-secondary"
                   style={{ padding: '4px 8px', fontSize: '12px' }}
                   onClick={() => handleRevoke(k.id)}
                 >
@@ -117,7 +127,11 @@ export default function WorkspaceKeysList({
         </div>
       </div>
 
-      <Modal open={open} onClose={handleClose} title={step === 1 ? 'Create Workspace Key' : 'Key created'}>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        title={step === 1 ? 'Create Workspace Key' : 'Key created'}
+      >
         {step === 1 && (
           <form onSubmit={submitCreateKey}>
             <div className="modal-body">
@@ -134,10 +148,20 @@ export default function WorkspaceKeysList({
               </div>
               <div className="modal-warning" style={{ marginTop: '16px' }}>
                 <span>⚠</span>
-                <span>Workspace keys have full administrative access to your workspace. Treat them like passwords.</span>
+                <span>
+                  Workspace keys have full administrative access to your workspace. Treat them like
+                  passwords.
+                </span>
               </div>
               {error && (
-                <div className="modal-warning" style={{ marginTop: '16px', color: 'var(--red-400)', borderColor: 'var(--red-900)' }}>
+                <div
+                  className="modal-warning"
+                  style={{
+                    marginTop: '16px',
+                    color: 'var(--red-400)',
+                    borderColor: 'var(--red-900)',
+                  }}
+                >
                   <span>⚠</span>
                   <span>{error}</span>
                 </div>
@@ -152,11 +176,7 @@ export default function WorkspaceKeysList({
               >
                 Cancel
               </button>
-              <button
-                type="submit"
-                className="btn btn-primary"
-                disabled={isSubmitting || !name}
-              >
+              <button type="submit" className="btn btn-primary" disabled={isSubmitting || !name}>
                 {isSubmitting ? 'Creating...' : 'Create Key'}
               </button>
             </div>
@@ -189,7 +209,8 @@ export default function WorkspaceKeysList({
               <div className="modal-warning">
                 <span>⚠</span>
                 <span>
-                  This key is shown only once. Store it securely — you won't be able to view it again.
+                  This key is shown only once. Store it securely — you won't be able to view it
+                  again.
                 </span>
               </div>
             </div>

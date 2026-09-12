@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import crypto from 'crypto';
 import { pool } from '../db';
 import jwt from 'jsonwebtoken';
 import jwksClient from 'jwks-rsa';
@@ -126,9 +127,8 @@ export async function authMiddleware(
 
     if (token.startsWith('relay_ws_')) {
       try {
-        const crypto = require('crypto');
         const keyHash = crypto.createHash('sha256').update(token).digest('hex');
-        
+
         const dbClient = await pool.connect();
         try {
           const result = await dbClient.query(
@@ -142,7 +142,7 @@ export async function authMiddleware(
           }
 
           const keyInfo = result.rows[0];
-          
+
           // Impersonate a workspace admin/owner so existing route logic works seamlessly
           const ownerResult = await dbClient.query(
             "SELECT user_id FROM workspace_members WHERE workspace_id = $1 AND role IN ('owner', 'admin') LIMIT 1",
@@ -155,18 +155,19 @@ export async function authMiddleware(
           }
 
           // Update last used asynchronously
-          dbClient.query(
-            'UPDATE workspace_api_keys SET last_used_at = CURRENT_TIMESTAMP WHERE id = $1',
-            [keyInfo.id]
-          ).catch(e => console.error('Failed to update last_used_at for workspace key:', e));
+          dbClient
+            .query('UPDATE workspace_api_keys SET last_used_at = CURRENT_TIMESTAMP WHERE id = $1', [
+              keyInfo.id,
+            ])
+            .catch((e) => console.error('Failed to update last_used_at for workspace key:', e));
 
-          req.user = { 
-            id: ownerResult.rows[0].user_id, 
-            email: `workspace_key_${keyInfo.id}@relay.internal` 
+          req.user = {
+            id: ownerResult.rows[0].user_id,
+            email: `workspace_key_${keyInfo.id}@relay.internal`,
           };
           req.workspaceId = keyInfo.workspace_id;
           (req as any).isWorkspaceKey = true;
-          
+
           next();
           return;
         } finally {

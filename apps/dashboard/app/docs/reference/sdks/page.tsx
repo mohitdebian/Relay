@@ -13,24 +13,30 @@ export default function SDKsPage() {
           Official SDKs
         </h2>
         <p className="docs-p">
-          We are currently focusing on stabilizing the core Relay Gateway and Management API. As a result, <b>there are currently no official Relay SDKs available</b> for languages like Node.js, Python, or Go.
+          We are currently focusing on stabilizing the core Relay Gateway and Management API. As a
+          result, <b>there are currently no official Relay SDKs available</b> for languages like
+          Node.js, Python, or Go.
         </p>
 
         <h2 className="docs-h2" id="using-rest">
           Using the REST API
         </h2>
         <p className="docs-p">
-          Relay is built API-first. Everything you can do in the dashboard can be done via our REST API. Until official SDKs are released, you can interact with Relay using standard HTTP clients built into your language or framework of choice.
+          Relay is built API-first. Everything you can do in the dashboard can be done via our REST
+          API. Until official SDKs are released, you can interact with Relay using standard HTTP
+          clients built into your language or framework of choice.
         </p>
         <p className="docs-p">
-          See the code snippets on the right side of any API endpoint page (like <a href="/docs/api-keys/create" className="docs-link">Create API key</a>) for examples using <code className="docs-inline">fetch</code> in JavaScript and <code className="docs-inline">requests</code> in Python.
+          See the code snippets on the right side of any API endpoint page (like{' '}
+          <a href="/docs/api-keys/create" className="docs-link">
+            Create API key
+          </a>
+          ) for examples using <code className="docs-inline">fetch</code> in JavaScript and{' '}
+          <code className="docs-inline">requests</code> in Python.
         </p>
-
       </main>
 
-      <aside className="docs-side">
-        {/* Prose-only page without right rail */}
-      </aside>
+      <aside className="docs-side">{/* Prose-only page without right rail */}</aside>
     </>
   );
 }

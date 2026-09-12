@@ -21,8 +21,7 @@ export default async function CreateApiPage() {
           <span className="docs-tok-comment"># create a new API proxy target</span>
           {'\n'}
           curl -X POST {apiUrl}/apis \{'\n'}
-          {'  '}-H <span className="docs-tok-str">"Authorization: Bearer {token}"</span> \
-          {'\n'}
+          {'  '}-H <span className="docs-tok-str">"Authorization: Bearer {token}"</span> \{'\n'}
           {'  '}-H <span className="docs-tok-str">"Content-Type: application/json"</span> \{'\n'}
           {'  '}-d{' '}
           <span className="docs-tok-str">
@@ -55,8 +54,7 @@ export default async function CreateApiPage() {
           <span className="docs-tok-key">"api"</span>: {'{'}
           {'\n'}
           {'    '}
-          <span className="docs-tok-key">"id"</span>:{' '}
-          <span className="docs-tok-str">1</span>,{'\n'}
+          <span className="docs-tok-key">"id"</span>: <span className="docs-tok-str">1</span>,{'\n'}
           {'    '}
           <span className="docs-tok-key">"workspace_id"</span>:{' '}
           <span className="docs-tok-str">1</span>,{'\n'}
@@ -102,15 +100,14 @@ export default async function CreateApiPage() {
         <div className="docs-h1">Create an API</div>
         <EndpointBadge method="POST" path="/apis" />
 
-        <div className="docs-lede">
-          Register a new upstream service as a proxy target in Relay.
-        </div>
+        <div className="docs-lede">Register a new upstream service as a proxy target in Relay.</div>
 
         <h2 className="docs-h2" id="auth">
           Authentication
         </h2>
         <p className="docs-p">
-          Requires a workspace-level access token in the <code className="docs-inline">Authorization</code> header.
+          Requires a workspace-level access token in the{' '}
+          <code className="docs-inline">Authorization</code> header.
         </p>
 
         <h2 className="docs-h2" id="params">
@@ -127,7 +124,7 @@ export default async function CreateApiPage() {
             name="name"
             required={true}
             type="string"
-            description='A human-readable label for this API.'
+            description="A human-readable label for this API."
           />
           <ParamRow
             name="slug"
@@ -147,7 +144,9 @@ export default async function CreateApiPage() {
             type="string"
             description={
               <>
-                Defaults to <code className="docs-inline">production</code>. Can also be <code className="docs-inline">staging</code> or <code className="docs-inline">development</code>.
+                Defaults to <code className="docs-inline">production</code>. Can also be{' '}
+                <code className="docs-inline">staging</code> or{' '}
+                <code className="docs-inline">development</code>.
               </>
             }
           />
@@ -180,9 +179,7 @@ export default async function CreateApiPage() {
         <h2 className="docs-h2" id="response">
           Response
         </h2>
-        <p className="docs-p muted">
-          Returns the created API object.
-        </p>
+        <p className="docs-p muted">Returns the created API object.</p>
       </main>
 
       <aside className="docs-side">

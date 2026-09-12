@@ -52,21 +52,23 @@ export default async function RevokeApiKeyPage() {
         <div className="docs-h1">Revoke API key</div>
         <EndpointBadge method="DELETE" path="/api-keys/:id" />
 
-        <div className="docs-lede">
-          Immediately revoke an API key. 
-        </div>
+        <div className="docs-lede">Immediately revoke an API key.</div>
 
         <Callout variant="warn">
-          <b>Note —</b> Revocation performs a soft-delete by setting the <code className="docs-inline">revoked_at</code> timestamp. 
-          The key will immediately be rejected by the gateway for any new incoming requests. In-flight requests are not explicitly halted.
+          <b>Note —</b> Revocation performs a soft-delete by setting the{' '}
+          <code className="docs-inline">revoked_at</code> timestamp. The key will immediately be
+          rejected by the gateway for any new incoming requests. In-flight requests are not
+          explicitly halted.
         </Callout>
 
         <h2 className="docs-h2" id="auth">
           Authentication
         </h2>
         <p className="docs-p">
-          Requires a workspace-level access token in the <code className="docs-inline">Authorization</code> header. 
-          Additionally, this endpoint requires the user to have an <code className="docs-inline">admin</code> or <code className="docs-inline">owner</code> role in the workspace.
+          Requires a workspace-level access token in the{' '}
+          <code className="docs-inline">Authorization</code> header. Additionally, this endpoint
+          requires the user to have an <code className="docs-inline">admin</code> or{' '}
+          <code className="docs-inline">owner</code> role in the workspace.
         </p>
 
         <h2 className="docs-h2" id="path-params">
@@ -84,9 +86,7 @@ export default async function RevokeApiKeyPage() {
         <h2 className="docs-h2" id="response">
           Response
         </h2>
-        <p className="docs-p muted">
-          Returns a success message upon revocation.
-        </p>
+        <p className="docs-p muted">Returns a success message upon revocation.</p>
       </main>
 
       <aside className="docs-side">

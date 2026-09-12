@@ -18,7 +18,7 @@ export default function RateLimitsClient({ initialApis }: { initialApis: Api[] }
   const [savingId, setSavingId] = useState<number | null>(null);
 
   const handleUpdate = (apiId: number, field: keyof Api, value: any) => {
-    setApis(apis.map(api => api.id === apiId ? { ...api, [field]: value } : api));
+    setApis(apis.map((api) => (api.id === apiId ? { ...api, [field]: value } : api)));
   };
 
   const handleSave = async (api: Api) => {
@@ -36,24 +36,60 @@ export default function RateLimitsClient({ initialApis }: { initialApis: Api[] }
 
   return (
     <div className="section">
-      <div className="panel" style={{ display: 'flex', flexDirection: 'column', gap: '1px', background: 'var(--border)' }}>
-        {apis.map(api => (
+      <div
+        className="panel"
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '1px',
+          background: 'var(--border)',
+        }}
+      >
+        {apis.map((api) => (
           <div key={api.id} style={{ background: 'var(--bg-panel)', padding: '24px' }}>
-            <div className="row" style={{ alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '16px' }}>
+            <div
+              className="row"
+              style={{
+                alignItems: 'flex-start',
+                justifyContent: 'space-between',
+                marginBottom: '16px',
+              }}
+            >
               <div>
-                <div className="c-strong" style={{ fontSize: '16px' }}>{api.name}</div>
-                <div className="c-secondary mono" style={{ fontSize: '12px', marginTop: '4px' }}>{api.slug}</div>
+                <div className="c-strong" style={{ fontSize: '16px' }}>
+                  {api.name}
+                </div>
+                <div className="c-secondary mono" style={{ fontSize: '12px', marginTop: '4px' }}>
+                  {api.slug}
+                </div>
               </div>
               <div className="tag">{api.environment}</div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr auto', gap: '24px', alignItems: 'end' }}>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr 1fr auto',
+                gap: '24px',
+                alignItems: 'end',
+              }}
+            >
               <div className="field">
                 <label>Status</label>
                 <div style={{ display: 'flex', alignItems: 'center', height: '40px' }}>
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', margin: 0, textTransform: 'none', color: 'var(--text-primary)' }}>
-                    <input 
-                      type="checkbox" 
+                  <label
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      cursor: 'pointer',
+                      margin: 0,
+                      textTransform: 'none',
+                      color: 'var(--text-primary)',
+                    }}
+                  >
+                    <input
+                      type="checkbox"
                       checked={api.rate_limit_enabled}
                       onChange={(e) => handleUpdate(api.id, 'rate_limit_enabled', e.target.checked)}
                       style={{ width: '16px', height: '16px' }}
@@ -62,11 +98,11 @@ export default function RateLimitsClient({ initialApis }: { initialApis: Api[] }
                   </label>
                 </div>
               </div>
-              
+
               <div className="field">
                 <label>Max Requests</label>
-                <input 
-                  type="number" 
+                <input
+                  type="number"
                   min="1"
                   disabled={!api.rate_limit_enabled}
                   value={api.rate_limit_max}
@@ -77,8 +113,8 @@ export default function RateLimitsClient({ initialApis }: { initialApis: Api[] }
 
               <div className="field">
                 <label>Window (seconds)</label>
-                <input 
-                  type="number" 
+                <input
+                  type="number"
                   min="1"
                   disabled={!api.rate_limit_enabled}
                   value={api.rate_limit_window}
@@ -88,7 +124,7 @@ export default function RateLimitsClient({ initialApis }: { initialApis: Api[] }
               </div>
 
               <div style={{ paddingBottom: '2px' }}>
-                <button 
+                <button
                   className="btn btn-primary"
                   onClick={() => handleSave(api)}
                   disabled={savingId === api.id}
@@ -100,7 +136,14 @@ export default function RateLimitsClient({ initialApis }: { initialApis: Api[] }
           </div>
         ))}
         {apis.length === 0 && (
-          <div style={{ background: 'var(--bg-panel)', padding: '32px', textAlign: 'center', color: 'var(--text-secondary)' }}>
+          <div
+            style={{
+              background: 'var(--bg-panel)',
+              padding: '32px',
+              textAlign: 'center',
+              color: 'var(--text-secondary)',
+            }}
+          >
             No APIs found. Create an API first to configure rate limits.
           </div>
         )}

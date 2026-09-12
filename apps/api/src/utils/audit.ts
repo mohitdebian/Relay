@@ -19,9 +19,10 @@ export async function logAuditAction(
     // After logging the action, dispatch webhooks asynchronously
     // We don't await this so it doesn't block the request
     pool
-      .query(`SELECT url, secret, events FROM webhooks WHERE workspace_id = $1 AND status = 'active'`, [
-        workspaceId,
-      ])
+      .query(
+        `SELECT url, secret, events FROM webhooks WHERE workspace_id = $1 AND status = 'active'`,
+        [workspaceId]
+      )
       .then((result) => {
         for (const webhook of result.rows) {
           // webhooks.events is a JSON array of strings

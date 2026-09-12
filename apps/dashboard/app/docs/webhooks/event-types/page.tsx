@@ -15,8 +15,8 @@ export default function WebhooksEventTypesPage() {
           <span className="docs-tok-key">"payload"</span>: {'{'}
           {'\n'}
           {'    '}
-          <span className="docs-tok-key">"actorId"</span>:{' '}
-          <span className="docs-tok-str">42</span>,{'\n'}
+          <span className="docs-tok-key">"actorId"</span>: <span className="docs-tok-str">42</span>,
+          {'\n'}
           {'    '}
           <span className="docs-tok-key">"resourceType"</span>:{' '}
           <span className="docs-tok-str">"api_key"</span>,{'\n'}
@@ -27,8 +27,7 @@ export default function WebhooksEventTypesPage() {
           <span className="docs-tok-key">"metadata"</span>: {'{'}
           {'\n'}
           {'      '}
-          <span className="docs-tok-key">"api_id"</span>:{' '}
-          <span className="docs-tok-str">1</span>
+          <span className="docs-tok-key">"api_id"</span>: <span className="docs-tok-str">1</span>
           {'\n'}
           {'    }'}
           {'\n'}
@@ -75,7 +74,9 @@ export default function WebhooksEventTypesPage() {
           <div className="docs-table-row">
             <div className="docs-table-cell-mono">API_UPDATED</div>
             <div className="docs-table-cell-muted">API modification</div>
-            <div className="docs-table-cell-muted">An existing API's configuration was modified.</div>
+            <div className="docs-table-cell-muted">
+              An existing API's configuration was modified.
+            </div>
           </div>
           <div className="docs-table-row">
             <div className="docs-table-cell-mono">API_DELETED</div>
@@ -93,7 +94,6 @@ export default function WebhooksEventTypesPage() {
             <div className="docs-table-cell-muted">An API key was revoked (soft-deleted).</div>
           </div>
         </div>
-
       </main>
 
       <aside className="docs-side">

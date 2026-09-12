@@ -18,9 +18,7 @@ export default function DocsLayout({ children }: { children: ReactNode }) {
       <DocsSidebar />
       <div className="main-col">
         <DocsTopbar />
-        <div className="docs-content-layout">
-          {children}
-        </div>
+        <div className="docs-content-layout">{children}</div>
       </div>
     </div>
   );

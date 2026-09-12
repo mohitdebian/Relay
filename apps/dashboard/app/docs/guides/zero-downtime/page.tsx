@@ -7,24 +7,23 @@ export default function ZeroDowntimePage() {
         <div className="docs-breadcrumb">Guides</div>
         <h1 className="docs-h1">Zero-Downtime Database Migrations</h1>
 
-        <p className="docs-lede">
-          Use Relay environments to cut over databases with no downtime.
-        </p>
+        <p className="docs-lede">Use Relay environments to cut over databases with no downtime.</p>
 
         <h2 className="docs-h2" id="advanced-patterns">
           Advanced Patterns
         </h2>
         <p className="docs-p">
           Database migrations can be risky and often require maintenance windows. By leveraging
-          Relay's environment routing, you can seamlessly cut over to a new database without downtime.
+          Relay's environment routing, you can seamlessly cut over to a new database without
+          downtime.
         </p>
 
         <h3 className="docs-h3" id="step-1">
           1. Deploy backend v2
         </h3>
         <p className="docs-p">
-          Deploy a new version of your backend (v2) on a new server. This new backend should
-          connect directly to your new database instance.
+          Deploy a new version of your backend (v2) on a new server. This new backend should connect
+          directly to your new database instance.
         </p>
 
         <h3 className="docs-h3" id="step-2">

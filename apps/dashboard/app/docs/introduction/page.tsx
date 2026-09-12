@@ -9,9 +9,9 @@ export default function IntroductionPage() {
         <h1 className="docs-h1">Introduction</h1>
 
         <p className="docs-lede">
-          Relay is a developer-first API gateway and management platform. It sits between your clients
-          and your backend services, providing instant routing, rate limiting, authentication, and
-          observability without any complex configuration.
+          Relay is a developer-first API gateway and management platform. It sits between your
+          clients and your backend services, providing instant routing, rate limiting,
+          authentication, and observability without any complex configuration.
         </p>
 
         <h2 className="docs-h2" id="why-relay">
@@ -39,7 +39,8 @@ export default function IntroductionPage() {
             instantly.
           </li>
           <li style={{ marginBottom: '6px' }}>
-            <strong>API key management:</strong> Issue and revoke keys without writing any auth code.
+            <strong>API key management:</strong> Issue and revoke keys without writing any auth
+            code.
           </li>
         </ul>
 
@@ -47,20 +48,20 @@ export default function IntroductionPage() {
           How it works
         </h2>
         <p className="docs-p">
-          When you create an API in Relay, you are given a unique Gateway URL
-          (or you can attach a custom domain). You configure a target backend URL, and Relay
-          transparently proxies traffic to that backend while executing middleware (auth, rate limits,
-          logging) at the edge.
+          When you create an API in Relay, you are given a unique Gateway URL (or you can attach a
+          custom domain). You configure a target backend URL, and Relay transparently proxies
+          traffic to that backend while executing middleware (auth, rate limits, logging) at the
+          edge.
         </p>
 
         <h3 className="docs-h3" id="next-steps">
           Next steps
         </h3>
         <p className="docs-p">
-          Ready to get started? Check out the guides below to deploy your first API behind Relay
-          in under five minutes.
+          Ready to get started? Check out the guides below to deploy your first API behind Relay in
+          under five minutes.
         </p>
-        
+
         <div className="docs-grid">
           <DocsCard
             title="Quickstart"

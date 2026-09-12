@@ -15,8 +15,8 @@ export default function WebhooksOverviewPage() {
           <span className="docs-tok-key">"payload"</span>: {'{'}
           {'\n'}
           {'    '}
-          <span className="docs-tok-key">"actorId"</span>:{' '}
-          <span className="docs-tok-str">1</span>,{'\n'}
+          <span className="docs-tok-key">"actorId"</span>: <span className="docs-tok-str">1</span>,
+          {'\n'}
           {'    '}
           <span className="docs-tok-key">"resourceType"</span>:{' '}
           <span className="docs-tok-str">"api"</span>,{'\n'}
@@ -50,22 +50,25 @@ export default function WebhooksOverviewPage() {
         <div className="docs-breadcrumb">Webhooks</div>
         <div className="docs-h1">Overview</div>
 
-        <div className="docs-lede">
-          Listen for events occurring in your workspace in real-time.
-        </div>
+        <div className="docs-lede">Listen for events occurring in your workspace in real-time.</div>
 
         <h2 className="docs-h2" id="how-they-work">
           How They Work
         </h2>
         <p className="docs-p">
-          Webhooks allow you to build or set up integrations that subscribe to certain events in Relay. When one of those events is triggered, we'll send a HTTP POST payload to the webhook's configured URL. 
+          Webhooks allow you to build or set up integrations that subscribe to certain events in
+          Relay. When one of those events is triggered, we'll send a HTTP POST payload to the
+          webhook's configured URL.
         </p>
 
         <h2 className="docs-h2" id="payload-structure">
           Payload Structure
         </h2>
         <p className="docs-p">
-          Every webhook delivery includes a standard envelope. The <code className="docs-inline">event</code> field indicates what happened, and the <code className="docs-inline">payload</code> contains the specifics of the resource that was affected.
+          Every webhook delivery includes a standard envelope. The{' '}
+          <code className="docs-inline">event</code> field indicates what happened, and the{' '}
+          <code className="docs-inline">payload</code> contains the specifics of the resource that
+          was affected.
         </p>
 
         <div style={{ marginTop: '24px', marginBottom: '32px' }}>
@@ -77,14 +80,12 @@ export default function WebhooksOverviewPage() {
           Retry Logic
         </h2>
         <p className="docs-p">
-          If your server returns a non-200 HTTP status code, Relay will automatically retry the delivery up to 5 times. 
-          We use an exponential backoff strategy starting at a 2000ms delay.
+          If your server returns a non-200 HTTP status code, Relay will automatically retry the
+          delivery up to 5 times. We use an exponential backoff strategy starting at a 2000ms delay.
         </p>
       </main>
 
-      <aside className="docs-side">
-        {/* Prose-only page without right rail */}
-      </aside>
+      <aside className="docs-side">{/* Prose-only page without right rail */}</aside>
     </>
   );
 }

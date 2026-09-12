@@ -39,14 +39,14 @@ export default async function ListApiKeysPage() {
           {'    {'}
           {'\n'}
           {'      '}
-          <span className="docs-tok-key">"id"</span>:{' '}
-          <span className="docs-tok-str">12</span>,{'\n'}
+          <span className="docs-tok-key">"id"</span>: <span className="docs-tok-str">12</span>,
+          {'\n'}
           {'      '}
           <span className="docs-tok-key">"workspace_id"</span>:{' '}
           <span className="docs-tok-str">1</span>,{'\n'}
           {'      '}
-          <span className="docs-tok-key">"api_id"</span>:{' '}
-          <span className="docs-tok-str">1</span>,{'\n'}
+          <span className="docs-tok-key">"api_id"</span>: <span className="docs-tok-str">1</span>,
+          {'\n'}
           {'      '}
           <span className="docs-tok-key">"name"</span>:{' '}
           <span className="docs-tok-str">"CI pipeline"</span>,{'\n'}
@@ -85,15 +85,16 @@ export default async function ListApiKeysPage() {
         <EndpointBadge method="GET" path="/apis/:id/keys" />
 
         <div className="docs-lede">
-          Retrieve a list of all API keys associated with a specific API target. 
+          Retrieve a list of all API keys associated with a specific API target.
         </div>
 
         <h2 className="docs-h2" id="auth">
           Authentication
         </h2>
         <p className="docs-p">
-          Requires a workspace-level access token in the <code className="docs-inline">Authorization</code> header. 
-          The actual secret value of the keys is masked; only the <code className="docs-inline">key_prefix</code> is returned.
+          Requires a workspace-level access token in the{' '}
+          <code className="docs-inline">Authorization</code> header. The actual secret value of the
+          keys is masked; only the <code className="docs-inline">key_prefix</code> is returned.
         </p>
 
         <h2 className="docs-h2" id="path-params">
@@ -111,9 +112,7 @@ export default async function ListApiKeysPage() {
         <h2 className="docs-h2" id="response">
           Response
         </h2>
-        <p className="docs-p muted">
-          Returns an array of key objects.
-        </p>
+        <p className="docs-p muted">Returns an array of key objects.</p>
       </main>
 
       <aside className="docs-side">

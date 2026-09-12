@@ -24,7 +24,8 @@ export default async function LandingPage() {
       price: '0',
       priceCurrency: 'USD',
     },
-    description: 'Route, secure, and monitor every API your team ships. One dashboard for gateways, keys, rate limits, and traffic.',
+    description:
+      'Route, secure, and monitor every API your team ships. One dashboard for gateways, keys, rate limits, and traffic.',
   };
 
   return (

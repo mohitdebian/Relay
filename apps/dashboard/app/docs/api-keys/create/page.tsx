@@ -23,8 +23,7 @@ export default async function CreateApiKeyPage() {
           <span className="docs-tok-comment"># create a production key</span>
           {'\n'}
           curl -X POST {apiUrl}/apis/1/keys \{'\n'}
-          {'  '}-H <span className="docs-tok-str">"Authorization: Bearer {token}"</span> \
-          {'\n'}
+          {'  '}-H <span className="docs-tok-str">"Authorization: Bearer {token}"</span> \{'\n'}
           {'  '}-H <span className="docs-tok-str">"Content-Type: application/json"</span> \{'\n'}
           {'  '}-d{' '}
           <span className="docs-tok-str">
@@ -48,7 +47,8 @@ export default async function CreateApiKeyPage() {
           {'  '}method: <span className="docs-tok-str">'POST'</span>,{'\n'}
           {'  '}headers: {'{\n'}
           {'    '}
-          <span className="docs-tok-str">'Authorization'</span>: <span className="docs-tok-str">'Bearer {token}'</span>,{'\n'}
+          <span className="docs-tok-str">'Authorization'</span>:{' '}
+          <span className="docs-tok-str">'Bearer {token}'</span>,{'\n'}
           {'    '}
           <span className="docs-tok-str">'Content-Type'</span>:{' '}
           <span className="docs-tok-str">'application/json'</span>
@@ -73,7 +73,8 @@ export default async function CreateApiKeyPage() {
           import requests{'\n\n'}
           headers = {'{\n'}
           {'    '}
-          <span className="docs-tok-str">"Authorization"</span>: <span className="docs-tok-str">"Bearer {token}"</span>,{'\n'}
+          <span className="docs-tok-str">"Authorization"</span>:{' '}
+          <span className="docs-tok-str">"Bearer {token}"</span>,{'\n'}
           {'    '}
           <span className="docs-tok-str">"Content-Type"</span>:{' '}
           <span className="docs-tok-str">"application/json"</span>
@@ -91,8 +92,7 @@ export default async function CreateApiKeyPage() {
           {'}'}
           {'\n\n'}
           response = requests.post(
-          <span className="docs-tok-str">"{apiUrl}/apis/1/keys"</span>, headers=headers,
-          json=data)
+          <span className="docs-tok-str">"{apiUrl}/apis/1/keys"</span>, headers=headers, json=data)
         </>
       ),
     },
@@ -109,14 +109,13 @@ export default async function CreateApiKeyPage() {
           <span className="docs-tok-key">"apiKey"</span>: {'{'}
           {'\n'}
           {'    '}
-          <span className="docs-tok-key">"id"</span>:{' '}
-          <span className="docs-tok-str">1</span>,{'\n'}
+          <span className="docs-tok-key">"id"</span>: <span className="docs-tok-str">1</span>,{'\n'}
           {'    '}
           <span className="docs-tok-key">"workspace_id"</span>:{' '}
           <span className="docs-tok-str">1</span>,{'\n'}
           {'    '}
-          <span className="docs-tok-key">"api_id"</span>:{' '}
-          <span className="docs-tok-str">1</span>,{'\n'}
+          <span className="docs-tok-key">"api_id"</span>: <span className="docs-tok-str">1</span>,
+          {'\n'}
           {'    '}
           <span className="docs-tok-key">"name"</span>:{' '}
           <span className="docs-tok-str">"CI pipeline"</span>,{'\n'}
@@ -196,7 +195,8 @@ export default async function CreateApiKeyPage() {
             type="string"
             description={
               <>
-                Defaults to <code className="docs-inline">production</code>. One of <code className="docs-inline">production</code>,{' '}
+                Defaults to <code className="docs-inline">production</code>. One of{' '}
+                <code className="docs-inline">production</code>,{' '}
                 <code className="docs-inline">staging</code>,{' '}
                 <code className="docs-inline">development</code>.
               </>

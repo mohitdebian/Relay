@@ -30,7 +30,7 @@ export const webhookWorker = new Worker(
         payload: data,
         timestamp: new Date().toISOString(),
       });
-      
+
       const signature = crypto.createHmac('sha256', secret).update(payloadString).digest('base64');
 
       const response = await fetch(url, {
@@ -38,7 +38,7 @@ export const webhookWorker = new Worker(
         headers: {
           'Content-Type': 'application/json',
           'User-Agent': 'Relay-Webhook-Dispatcher/1.0',
-          'x-relay-signature': signature
+          'x-relay-signature': signature,
         },
         body: payloadString,
       });

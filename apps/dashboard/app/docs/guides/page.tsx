@@ -9,8 +9,8 @@ export default function GuidesPage() {
         <h1 className="docs-h1">Guides & Tutorials</h1>
 
         <p className="docs-lede">
-          Step-by-step guides to help you integrate Relay with your favorite frameworks, 
-          platforms, and architectures. Discover advanced patterns and best practices.
+          Step-by-step guides to help you integrate Relay with your favorite frameworks, platforms,
+          and architectures. Discover advanced patterns and best practices.
         </p>
 
         <h2 className="docs-h2" id="frameworks">
@@ -41,9 +41,7 @@ export default function GuidesPage() {
         <h2 className="docs-h2" id="advanced-patterns">
           Advanced Patterns
         </h2>
-        <p className="docs-p">
-          Go beyond the basics with architectural deep-dives.
-        </p>
+        <p className="docs-p">Go beyond the basics with architectural deep-dives.</p>
 
         <div className="docs-grid">
           <DocsCard

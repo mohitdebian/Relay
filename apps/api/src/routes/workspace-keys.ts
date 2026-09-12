@@ -18,7 +18,7 @@ function generateWorkspaceKey(): { rawKey: string; keyHash: string; keyPrefix: s
   const token = crypto.randomBytes(32).toString('hex');
   const prefix = 'relay_ws_';
   const rawKey = `${prefix}${token}`;
-  
+
   // Prefix is typically the first part of the token, useful for identification in the UI
   const keyPrefix = rawKey.substring(0, 15) + '...';
   const keyHash = crypto.createHash('sha256').update(rawKey).digest('hex');
@@ -28,7 +28,9 @@ function generateWorkspaceKey(): { rawKey: string; keyHash: string; keyPrefix: s
 
 // GET /workspace-keys
 router.get('/', async (req: AuthRequest, res: Response) => {
-  const workspaceId = req.query.workspaceId ? parseInt(req.query.workspaceId as string, 10) : req.workspaceId;
+  const workspaceId = req.query.workspaceId
+    ? parseInt(req.query.workspaceId as string, 10)
+    : req.workspaceId;
   const userId = req.user?.id;
 
   if (!workspaceId || !userId) {
@@ -86,7 +88,14 @@ router.post('/', validate(createWorkspaceKeySchema), async (req: AuthRequest, re
 
     const apiKeyMetadata = insertResult.rows[0];
 
-    await logAuditAction(workspaceId, userId, 'WORKSPACE_KEY_CREATED', 'workspace_api_key', apiKeyMetadata.id, { name });
+    await logAuditAction(
+      workspaceId,
+      userId,
+      'WORKSPACE_KEY_CREATED',
+      'workspace_api_key',
+      apiKeyMetadata.id,
+      { name }
+    );
 
     res.status(201).json({
       key: apiKeyMetadata,
@@ -109,8 +118,11 @@ router.delete('/:id', async (req: AuthRequest, res: Response) => {
   }
 
   try {
-    const keyCheck = await pool.query('SELECT workspace_id, name FROM workspace_api_keys WHERE id = $1', [id]);
-    
+    const keyCheck = await pool.query(
+      'SELECT workspace_id, name FROM workspace_api_keys WHERE id = $1',
+      [id]
+    );
+
     if (keyCheck.rows.length === 0) {
       res.status(404).json({ error: 'Workspace key not found' });
       return;
@@ -118,14 +130,23 @@ router.delete('/:id', async (req: AuthRequest, res: Response) => {
 
     const workspaceId = keyCheck.rows[0].workspace_id;
     const hasAccess = await checkWorkspaceRole(userId, workspaceId, ['owner', 'admin']);
-    
+
     if (!hasAccess) {
       res.status(403).json({ error: 'Unauthorized: Requires admin or owner role' });
       return;
     }
 
-    await pool.query(`UPDATE workspace_api_keys SET revoked_at = CURRENT_TIMESTAMP WHERE id = $1`, [id]);
-    await logAuditAction(workspaceId, userId, 'WORKSPACE_KEY_REVOKED', 'workspace_api_key', parseInt(id), { name: keyCheck.rows[0].name });
+    await pool.query(`UPDATE workspace_api_keys SET revoked_at = CURRENT_TIMESTAMP WHERE id = $1`, [
+      id,
+    ]);
+    await logAuditAction(
+      workspaceId,
+      userId,
+      'WORKSPACE_KEY_REVOKED',
+      'workspace_api_key',
+      parseInt(id),
+      { name: keyCheck.rows[0].name }
+    );
 
     res.json({ message: 'Workspace key revoked successfully' });
   } catch (error) {

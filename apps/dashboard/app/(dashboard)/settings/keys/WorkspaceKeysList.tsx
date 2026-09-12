@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Typewriter from '@/app/components/Typewriter';
 import Modal from '@/app/components/Modal';
+import { ConfirmModal } from '@/app/components/modals/ConfirmModal';
 import { createWorkspaceKeyAction, revokeWorkspaceKeyAction } from '@/app/actions/workspaceKeys';
 
 interface WorkspaceKey {
@@ -28,6 +29,8 @@ export default function WorkspaceKeysList({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [createdData, setCreatedData] = useState<{ rawKey: string } | null>(null);
+  const [revokeKeyId, setRevokeKeyId] = useState<number | null>(null);
+  const [isRevoking, setIsRevoking] = useState(false);
 
   const handleClose = () => {
     setOpen(false);
@@ -67,14 +70,16 @@ export default function WorkspaceKeysList({
     });
   };
 
-  const handleRevoke = async (id: number) => {
-    if (
-      confirm(
-        'Are you sure you want to revoke this key? Any scripts using it will immediately fail.'
-      )
-    ) {
-      await revokeWorkspaceKeyAction(id);
-    }
+  const handleRevoke = (id: number) => {
+    setRevokeKeyId(id);
+  };
+
+  const confirmRevoke = async () => {
+    if (revokeKeyId === null) return;
+    setIsRevoking(true);
+    await revokeWorkspaceKeyAction(revokeKeyId);
+    setIsRevoking(false);
+    setRevokeKeyId(null);
   };
 
   return (
@@ -222,6 +227,17 @@ export default function WorkspaceKeysList({
           </div>
         )}
       </Modal>
+
+      <ConfirmModal
+        open={revokeKeyId !== null}
+        onClose={() => setRevokeKeyId(null)}
+        onConfirm={confirmRevoke}
+        title="Revoke Token"
+        message="Are you sure you want to revoke this personal access token? Any scripts using it will immediately fail."
+        confirmText="Revoke"
+        isDestructive={true}
+        isLoading={isRevoking}
+      />
     </>
   );
 }

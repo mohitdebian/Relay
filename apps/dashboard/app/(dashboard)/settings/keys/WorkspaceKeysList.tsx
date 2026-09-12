@@ -31,6 +31,7 @@ export default function WorkspaceKeysList({
   const [createdData, setCreatedData] = useState<{ rawKey: string } | null>(null);
   const [revokeKeyId, setRevokeKeyId] = useState<number | null>(null);
   const [isRevoking, setIsRevoking] = useState(false);
+  const [copiedCurl, setCopiedCurl] = useState(false);
 
   const handleClose = () => {
     setOpen(false);
@@ -156,6 +157,18 @@ export default function WorkspaceKeysList({
               >
                 cURL Example
               </span>
+              <button
+                className="btn btn-secondary"
+                style={{ fontSize: '12px', padding: '4px 8px' }}
+                onClick={() => {
+                  const curlText = `curl -H "Authorization: Bearer relay_ws_YOUR_TOKEN" \\\n  ${process.env.NEXT_PUBLIC_API_URL || 'https://relay-g0ia.onrender.com'}/apis`;
+                  navigator.clipboard.writeText(curlText);
+                  setCopiedCurl(true);
+                  setTimeout(() => setCopiedCurl(false), 2000);
+                }}
+              >
+                {copiedCurl ? 'Copied!' : 'Copy'}
+              </button>
             </div>
             <pre
               className="mono"

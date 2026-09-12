@@ -146,8 +146,14 @@ export default function WorkspaceKeysList({
             </div>
             <pre className="mono" style={{ color: 'var(--green)', margin: 0, whiteSpace: 'pre-wrap', fontSize: '13px' }}>
               curl -H "Authorization: Bearer relay_ws_YOUR_TOKEN" \<br/>
-              &nbsp;&nbsp;https://your-relay-api-url.com/apis
+              &nbsp;&nbsp;{process.env.NEXT_PUBLIC_API_URL || 'https://relay-g0ia.onrender.com'}/apis
             </pre>
+          </div>
+          <div className="modal-warning" style={{ marginTop: '16px', display: 'flex', alignItems: 'flex-start' }}>
+            <span>ℹ️</span>
+            <span>
+              If you are testing against your free Render instance, the first request may take up to 50 seconds if the instance has spun down from inactivity.
+            </span>
           </div>
         </div>
       </div>

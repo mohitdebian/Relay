@@ -145,7 +145,7 @@ export async function authMiddleware(
 
           // Impersonate a workspace admin/owner so existing route logic works seamlessly
           const ownerResult = await dbClient.query(
-            "SELECT user_id FROM workspace_members WHERE workspace_id = $1 AND role IN ('owner', 'admin') LIMIT 1",
+            "SELECT user_id FROM workspace_members WHERE workspace_id = $1 AND LOWER(role) IN ('owner', 'admin') LIMIT 1",
             [keyInfo.workspace_id]
           );
 

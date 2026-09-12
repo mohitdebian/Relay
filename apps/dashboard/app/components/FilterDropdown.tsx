@@ -32,24 +32,20 @@ export function FilterDropdown({ label, value, onChange, options }: FilterDropdo
 
   return (
     <div style={{ position: 'relative' }} ref={containerRef}>
-      <div 
-        className="filter-chip" 
-        onClick={() => setIsOpen(!isOpen)}
-        style={{ cursor: 'pointer' }}
-      >
+      <div className="filter-chip" onClick={() => setIsOpen(!isOpen)} style={{ cursor: 'pointer' }}>
         {value === 'all' ? label : selectedOption?.label} <span className="chev">▾</span>
       </div>
 
       {isOpen && (
-        <div 
-          className="cd-panel" 
-          style={{ 
-            position: 'absolute', 
-            top: 'calc(100% + 4px)', 
-            left: 0, 
-            zIndex: 100, 
+        <div
+          className="cd-panel"
+          style={{
+            position: 'absolute',
+            top: 'calc(100% + 4px)',
+            left: 0,
+            zIndex: 100,
             width: 'max-content',
-            minWidth: '150px' 
+            minWidth: '150px',
           }}
         >
           {options.map((option) => {

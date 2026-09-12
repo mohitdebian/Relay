@@ -13,7 +13,7 @@ export default function ApisClient({ initialApis }: { initialApis: any[] }) {
     return initialApis.filter((api) => {
       const apiEnv = (api.environment || '').toLowerCase();
       if (envFilter !== 'all' && apiEnv !== envFilter.toLowerCase()) return false;
-      
+
       // Since all APIs seem to be REST v1 for now, we'll dummy out type filter unless needed.
       if (typeFilter !== 'all' && typeFilter !== 'rest') return false;
 
@@ -47,23 +47,23 @@ export default function ApisClient({ initialApis }: { initialApis: any[] }) {
   return (
     <>
       <div className="filter-bar">
-        <FilterDropdown 
-          label="Environment" 
-          value={envFilter} 
-          onChange={setEnvFilter} 
-          options={envOptions} 
+        <FilterDropdown
+          label="Environment"
+          value={envFilter}
+          onChange={setEnvFilter}
+          options={envOptions}
         />
-        <FilterDropdown 
-          label="Type" 
-          value={typeFilter} 
-          onChange={setTypeFilter} 
-          options={typeOptions} 
+        <FilterDropdown
+          label="Type"
+          value={typeFilter}
+          onChange={setTypeFilter}
+          options={typeOptions}
         />
-        <FilterDropdown 
-          label="Status" 
-          value={statusFilter} 
-          onChange={setStatusFilter} 
-          options={statusOptions} 
+        <FilterDropdown
+          label="Status"
+          value={statusFilter}
+          onChange={setStatusFilter}
+          options={statusOptions}
         />
       </div>
 

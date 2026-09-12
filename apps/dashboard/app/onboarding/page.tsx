@@ -24,8 +24,12 @@ export default async function OnboardingPage() {
             <div className="auth-logo pixel">RELAY</div>
             <div className="panel auth-panel" style={{ textAlign: 'center' }}>
               <h2 style={{ marginBottom: '1rem' }}>Connection Error</h2>
-              <p style={{ color: 'var(--text-secondary)' }}>Unable to connect to the Relay API server.</p>
-              <p style={{ color: 'var(--accent-red)', marginTop: '1rem', fontSize: '13px' }}>{fetchError}</p>
+              <p style={{ color: 'var(--text-secondary)' }}>
+                Unable to connect to the Relay API server.
+              </p>
+              <p style={{ color: 'var(--accent-red)', marginTop: '1rem', fontSize: '13px' }}>
+                {fetchError}
+              </p>
             </div>
           </div>
         </div>

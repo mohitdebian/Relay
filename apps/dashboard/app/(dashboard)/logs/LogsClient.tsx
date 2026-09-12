@@ -14,7 +14,8 @@ export default function LogsClient({ initialLogs }: { initialLogs: any[] }) {
       if (apiFilter !== 'all' && !log.path.includes(apiFilter)) return false;
 
       // Method Filter
-      if (methodFilter !== 'all' && log.method.toUpperCase() !== methodFilter.toUpperCase()) return false;
+      if (methodFilter !== 'all' && log.method.toUpperCase() !== methodFilter.toUpperCase())
+        return false;
 
       // Status Filter
       if (statusFilter !== 'all') {
@@ -51,23 +52,23 @@ export default function LogsClient({ initialLogs }: { initialLogs: any[] }) {
   return (
     <>
       <div className="filter-bar">
-        <FilterDropdown 
-          label="API" 
-          value={apiFilter} 
-          onChange={setApiFilter} 
-          options={apiOptions} 
+        <FilterDropdown
+          label="API"
+          value={apiFilter}
+          onChange={setApiFilter}
+          options={apiOptions}
         />
-        <FilterDropdown 
-          label="Method" 
-          value={methodFilter} 
-          onChange={setMethodFilter} 
-          options={methodOptions} 
+        <FilterDropdown
+          label="Method"
+          value={methodFilter}
+          onChange={setMethodFilter}
+          options={methodOptions}
         />
-        <FilterDropdown 
-          label="Status" 
-          value={statusFilter} 
-          onChange={setStatusFilter} 
-          options={statusOptions} 
+        <FilterDropdown
+          label="Status"
+          value={statusFilter}
+          onChange={setStatusFilter}
+          options={statusOptions}
         />
       </div>
 
@@ -85,7 +86,7 @@ export default function LogsClient({ initialLogs }: { initialLogs: any[] }) {
             No logs found matching filters.
           </div>
         )}
-        
+
         {filteredLogs.map((log, i) => (
           <div
             key={i}

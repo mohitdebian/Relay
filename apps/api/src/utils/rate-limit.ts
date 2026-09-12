@@ -28,8 +28,10 @@ export function rateLimit(config: RateLimitConfig) {
   const windowSeconds = Math.ceil(windowMs / 1000);
 
   return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    // Identify client: use authenticated user ID if available, otherwise IP
-    const clientId = (req as any).user?.id || req.ip || req.socket.remoteAddress || 'unknown';
+    // Identify client: use authenticated user ID if available, then real IP from proxy headers, then direct IP
+    const forwardedFor = req.headers['x-forwarded-for'];
+    const realIp = typeof forwardedFor === 'string' ? forwardedFor.split(',')[0].trim() : null;
+    const clientId = (req as any).user?.id || realIp || req.ip || req.socket.remoteAddress || 'unknown';
     const key = `${keyPrefix}:${clientId}`;
 
     try {
@@ -84,7 +86,7 @@ export const authRateLimit = rateLimit({
 /** Standard limit for general API routes */
 export const apiRateLimit = rateLimit({
   windowMs: 60 * 1000, // 1 minute
-  maxRequests: 100, // 100 requests per minute
+  maxRequests: 500, // 500 requests per minute (generous for SSR dashboards)
   keyPrefix: 'rl:api',
   message: 'API rate limit exceeded. Please slow down.',
 });

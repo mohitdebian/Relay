@@ -34,47 +34,73 @@ export default function AnalyticsClient({ analytics }: { analytics: any }) {
   const successRate =
     totalRequests === 0
       ? 'N/A'
-      : (((totalRequests - (analytics?.overview?.totalErrors || 0)) / totalRequests) * 100).toFixed(2) + '%';
+      : (((totalRequests - (analytics?.overview?.totalErrors || 0)) / totalRequests) * 100).toFixed(
+          2
+        ) + '%';
   const avgLatency = analytics?.overview?.averageLatencyMs || 0;
 
   return (
     <>
       <div className="filter-bar">
-        <FilterDropdown 
-          label="API" 
-          value={apiFilter} 
-          onChange={setApiFilter} 
-          options={[{ label: 'All APIs', value: 'all' }, { label: 'Auth API', value: 'auth' }]} 
+        <FilterDropdown
+          label="API"
+          value={apiFilter}
+          onChange={setApiFilter}
+          options={[
+            { label: 'All APIs', value: 'all' },
+            { label: 'Auth API', value: 'auth' },
+          ]}
         />
-        <FilterDropdown 
-          label="API Key" 
-          value={keyFilter} 
-          onChange={setKeyFilter} 
-          options={[{ label: 'All Keys', value: 'all' }, { label: 'Production', value: 'prod' }, { label: 'Test', value: 'test' }]} 
+        <FilterDropdown
+          label="API Key"
+          value={keyFilter}
+          onChange={setKeyFilter}
+          options={[
+            { label: 'All Keys', value: 'all' },
+            { label: 'Production', value: 'prod' },
+            { label: 'Test', value: 'test' },
+          ]}
         />
-        <FilterDropdown 
-          label="Endpoint" 
-          value={endpointFilter} 
-          onChange={setEndpointFilter} 
-          options={[{ label: 'All Endpoints', value: 'all' }, { label: '/api/v1/auth', value: 'auth' }, { label: '/api/v1/users', value: 'users' }]} 
+        <FilterDropdown
+          label="Endpoint"
+          value={endpointFilter}
+          onChange={setEndpointFilter}
+          options={[
+            { label: 'All Endpoints', value: 'all' },
+            { label: '/api/v1/auth', value: 'auth' },
+            { label: '/api/v1/users', value: 'users' },
+          ]}
         />
-        <FilterDropdown 
-          label="Environment" 
-          value={envFilter} 
-          onChange={setEnvFilter} 
-          options={[{ label: 'All Environments', value: 'all' }, { label: 'Production', value: 'production' }, { label: 'Staging', value: 'staging' }]} 
+        <FilterDropdown
+          label="Environment"
+          value={envFilter}
+          onChange={setEnvFilter}
+          options={[
+            { label: 'All Environments', value: 'all' },
+            { label: 'Production', value: 'production' },
+            { label: 'Staging', value: 'staging' },
+          ]}
         />
-        <FilterDropdown 
-          label="Status" 
-          value={statusFilter} 
-          onChange={setStatusFilter} 
-          options={[{ label: 'All Statuses', value: 'all' }, { label: 'Success', value: 'success' }, { label: 'With Errors', value: 'error' }]} 
+        <FilterDropdown
+          label="Status"
+          value={statusFilter}
+          onChange={setStatusFilter}
+          options={[
+            { label: 'All Statuses', value: 'all' },
+            { label: 'Success', value: 'success' },
+            { label: 'With Errors', value: 'error' },
+          ]}
         />
-        <FilterDropdown 
-          label="Time" 
-          value={timeFilter} 
-          onChange={setTimeFilter} 
-          options={[{ label: 'All Time', value: 'all_time' }, { label: 'Last 24h', value: '24h' }, { label: 'Last 7d', value: '7d' }, { label: 'Last 30d', value: '30d' }]} 
+        <FilterDropdown
+          label="Time"
+          value={timeFilter}
+          onChange={setTimeFilter}
+          options={[
+            { label: 'All Time', value: 'all_time' },
+            { label: 'Last 24h', value: '24h' },
+            { label: 'Last 7d', value: '7d' },
+            { label: 'Last 30d', value: '30d' },
+          ]}
         />
       </div>
 

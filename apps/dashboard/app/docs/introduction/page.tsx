@@ -47,10 +47,10 @@ export default function IntroductionPage() {
           How it works
         </h2>
         <p className="docs-p">
-          When you create an API in Relay, you are given a unique{' '}
-          <code className="docs-inline">relay.dev</code> subdomain (or you can attach a custom
-          domain). You configure a target backend URL, and Relay transparently proxies traffic to that
-          backend while executing middleware (auth, rate limits, logging) at the edge.
+          When you create an API in Relay, you are given a unique Gateway URL
+          (or you can attach a custom domain). You configure a target backend URL, and Relay
+          transparently proxies traffic to that backend while executing middleware (auth, rate limits,
+          logging) at the edge.
         </p>
 
         <h3 className="docs-h3" id="next-steps">

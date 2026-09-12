@@ -77,7 +77,7 @@ export default function SettingsForm({ workspace }: { workspace: Workspace | nul
             className="mono"
             required
           />
-          <div className="hint">relay.dev/{workspace?.slug || 'acme-workspace'}</div>
+          <div className="hint">relayapicloud.vercel.app/{workspace?.slug || 'acme-workspace'}</div>
         </div>
 
         <div className="field">

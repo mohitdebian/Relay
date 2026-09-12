@@ -72,7 +72,7 @@ export default async function QuickstartPage() {
         <>
           <span className="docs-tok-comment"># Send a request through the Relay Gateway</span>
           {'\n'}
-          curl -X GET https://gateway.relay.dev/v1/my-first-api/anything \{'\n'}
+          curl -X GET {apiUrl}/v1/my-first-api/anything \{'\n'}
           {'  '}-H <span className="docs-tok-str">"Authorization: Bearer relay_live_YOUR_RAW_KEY"</span>
         </>
       ),

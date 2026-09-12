@@ -59,6 +59,7 @@ export const metadata: Metadata = {
 export const dynamic = 'force-dynamic';
 
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import { Analytics } from "@vercel/analytics/next";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || 'dummy-client-id';
@@ -75,6 +76,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <GoogleOAuthProvider clientId={clientId}>{children}</GoogleOAuthProvider>
+        <Analytics />
       </body>
     </html>
   );

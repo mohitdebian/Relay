@@ -82,7 +82,7 @@ export default function WorkspaceKeysList({
       <div className="page-head">
         <div>
           <div className="page-title">
-            <Typewriter text="WORKSPACE KEYS" />
+            <Typewriter text="PERSONAL ACCESS TOKENS" />
           </div>
           <div className="page-sub">Manage programmatic access to this workspace</div>
         </div>
@@ -120,7 +120,7 @@ export default function WorkspaceKeysList({
           {keys.length === 0 && (
             <div className="row" style={{ padding: '16px' }}>
               <span className="c-secondary">
-                No workspace keys generated.<span className="cursor-blink"></span>
+                No personal access tokens generated.<span className="cursor-blink"></span>
               </span>
             </div>
           )}
@@ -149,7 +149,7 @@ export default function WorkspaceKeysList({
               <div className="modal-warning" style={{ marginTop: '16px' }}>
                 <span>⚠</span>
                 <span>
-                  Workspace keys have full administrative access to your workspace. Treat them like
+                  Personal access tokens have full administrative access to your workspace. Treat them like
                   passwords.
                 </span>
               </div>

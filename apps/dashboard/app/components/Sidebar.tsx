@@ -36,7 +36,7 @@ const navGroups = [
     label: 'SETTINGS',
     items: [
       { name: 'General', href: '/settings' },
-      { name: 'Workspace Keys', href: '/settings/keys' },
+      { name: 'Personal Access Tokens', href: '/settings/keys' },
     ],
   },
   {

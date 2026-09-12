@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: ['/', '/docs'],
       disallow: ['/overview', '/keys', '/logs', '/settings', '/webhooks', '/apis', '/api/'],
     },
-    sitemap: 'https://relay.sh/sitemap.xml',
+    sitemap: 'https://relayapicloud.vercel.app/sitemap.xml',
   };
 }

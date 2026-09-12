@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://relay.sh';
+  const baseUrl = 'https://relayapicloud.vercel.app';
 
   return [
     {

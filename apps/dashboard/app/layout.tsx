@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://relay.sh'),
+  metadataBase: new URL('https://relayapicloud.vercel.app'),
   title: {
     default: 'RELAY_ | Route, secure, and monitor every API',
     template: '%s | RELAY_',
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'RELAY_ | Route, secure, and monitor every API',
     description: 'One dashboard for gateways, keys, rate limits, and traffic — so your team spends less time gluing infrastructure together and more time shipping.',
-    url: 'https://relay.sh',
+    url: 'https://relayapicloud.vercel.app',
     siteName: 'RELAY_',
     images: [
       {

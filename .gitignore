@@ -5,3 +5,6 @@ dist/
 .neon
 .env.local
 gateway/gateway
+
+# Demo page for screenshots
+apps/dashboard/app/(dashboard)/demo

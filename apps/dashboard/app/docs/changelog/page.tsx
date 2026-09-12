@@ -20,6 +20,28 @@ interface ChangelogEntry {
 
 const entries: ChangelogEntry[] = [
   {
+    version: 'v2.5.0',
+    date: '2026-09-12',
+    title: 'DX Improvements & API Formatting',
+    changes: [
+      {
+        type: 'ADDED',
+        area: 'Dashboard',
+        text: 'Added a handy "Copy" button to the cURL example in the Workspace API Keys page.',
+      },
+      {
+        type: 'IMPROVED',
+        area: 'Dashboard',
+        text: 'Redesigned the rate limit documentation headers with a beautiful block-style layout.',
+      },
+      {
+        type: 'IMPROVED',
+        area: 'API',
+        text: 'The Management API now formats all JSON responses beautifully by default for easier terminal debugging.',
+      },
+    ],
+  },
+  {
     version: 'v2.4.0',
     date: '2026-09-11',
     title: 'Advanced Rate Limiting',

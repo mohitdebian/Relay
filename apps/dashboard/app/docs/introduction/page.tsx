@@ -65,17 +65,17 @@ export default function IntroductionPage() {
           <DocsCard
             title="Quickstart"
             description="Deploy your first API behind Relay in under five minutes."
-            href="/docs/introduction"
+            href="/docs/quickstart"
           />
           <DocsCard
             title="Authentication"
             description="Learn how to secure your APIs and issue tokens."
-            href="/docs/introduction"
+            href="/docs/authentication"
           />
           <DocsCard
             title="Environments"
             description="Manage configuration across dev, staging, and prod."
-            href="/docs/introduction"
+            href="/docs/environments"
           />
         </div>
       </main>

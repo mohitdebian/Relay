@@ -2,6 +2,8 @@ import { Queue, Worker, Job } from 'bullmq';
 import { redis } from '../utils/redis';
 import { logger } from '../utils/logger';
 
+import crypto from 'crypto';
+
 // Create a queue using the existing Redis connection
 export const webhookQueue = new Queue('webhook-queue', {
   connection: redis,
@@ -9,6 +11,7 @@ export const webhookQueue = new Queue('webhook-queue', {
 
 interface WebhookPayload {
   url: string;
+  secret: string;
   event: string;
   data: any;
 }
@@ -17,22 +20,27 @@ interface WebhookPayload {
 export const webhookWorker = new Worker(
   'webhook-queue',
   async (job: Job<WebhookPayload>) => {
-    const { url, event, data } = job.data;
+    const { url, secret, event, data } = job.data;
 
     logger.info({ jobId: job.id, url, event }, 'Processing webhook job');
 
     try {
+      const payloadString = JSON.stringify({
+        event,
+        payload: data,
+        timestamp: new Date().toISOString(),
+      });
+      
+      const signature = crypto.createHmac('sha256', secret).update(payloadString).digest('base64');
+
       const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'User-Agent': 'Relay-Webhook-Dispatcher/1.0',
+          'x-relay-signature': signature
         },
-        body: JSON.stringify({
-          event,
-          payload: data,
-          timestamp: new Date().toISOString(),
-        }),
+        body: payloadString,
       });
 
       if (!response.ok) {
@@ -62,10 +70,10 @@ webhookWorker.on('failed', (job, err) => {
 });
 
 // Helper function to dispatch a webhook
-export async function dispatchWebhook(url: string, event: string, data: any) {
+export async function dispatchWebhook(url: string, secret: string, event: string, data: any) {
   await webhookQueue.add(
     'dispatch',
-    { url, event, data },
+    { url, secret, event, data },
     {
       attempts: 5, // Retry up to 5 times
       backoff: {

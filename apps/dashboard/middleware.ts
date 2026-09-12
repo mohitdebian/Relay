@@ -4,7 +4,7 @@ import { auth } from '@/app/lib/auth/server';
 
 const neonMiddleware = auth.middleware({ loginUrl: '/login' });
 
-const PUBLIC_PATHS = ['/', '/login', '/register'];
+const PUBLIC_PATHS = ['/', '/login', '/register', '/docs', '/demo'];
 
 function isPublicPath(pathname: string) {
   return PUBLIC_PATHS.some((p) => pathname === p || pathname.startsWith(p + '/'));

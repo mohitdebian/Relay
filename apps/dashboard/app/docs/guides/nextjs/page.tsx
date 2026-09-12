@@ -23,11 +23,20 @@ export default function NextjsGuidePage() {
           {'  }'}
           {'\n'}
           {'  '}const secret = process.env.RELAY_WEBHOOK_SECRET;{'\n'}
-          {'  '}const isVerified = crypto.verify({'\n'}
-          {'    '}null,{'\n'}
-          {'    '}Buffer.from(payload),{'\n'}
-          {'    '}secret,{'\n'}
-          {'    '}Buffer.from(signature, <span className="docs-tok-str">'base64'</span>){'\n'}
+          {'  '}if (!secret) {'{\n'}
+          {'    '}return NextResponse.json({'{\n'}
+          {'      '}error: <span className="docs-tok-str">'Server configuration error'</span>{'\n'}
+          {'    }'}, {'{'} status: <span className="docs-tok-str">500</span> {'}'});{'\n'}
+          {'  }'}{'\n'}
+          {'\n'}
+          {'  '}const expectedSignature = crypto{'\n'}
+          {'    '}.createHmac(<span className="docs-tok-str">'sha256'</span>, secret){'\n'}
+          {'    '}.update(payload){'\n'}
+          {'    '}.digest(<span className="docs-tok-str">'base64'</span>);{'\n'}
+          {'\n'}
+          {'  '}const isVerified = crypto.timingSafeEqual({'\n'}
+          {'    '}Buffer.from(signature),{'\n'}
+          {'    '}Buffer.from(expectedSignature){'\n'}
           {'  '});{'\n'}
           {'\n'}
           {'  '}if (!isVerified) {'{\n'}

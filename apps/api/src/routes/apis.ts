@@ -280,9 +280,14 @@ router.delete('/:id', async (req: AuthRequest, res: Response) => {
 // API Keys Management
 // ----------------------------------------------------------------------------
 
-function generateApiKey(): { rawKey: string; keyHash: string; keyPrefix: string } {
+function generateApiKey(environment: string = 'production'): { rawKey: string; keyHash: string; keyPrefix: string } {
   const token = crypto.randomBytes(32).toString('hex');
-  const rawKey = `relay_live_${token}`;
+  
+  let prefix = 'relay_live_';
+  if (environment === 'staging') prefix = 'relay_test_';
+  if (environment === 'development') prefix = 'relay_dev_';
+  
+  const rawKey = `${prefix}${token}`;
 
   // Prefix is typically the first part of the token, useful for identification in the UI
   // For example: "relay_live_abc12..." - we might take 4-8 chars of the random part
@@ -321,7 +326,7 @@ router.post(
       }
 
       // 2. Generate Key
-      const { rawKey, keyHash, keyPrefix } = generateApiKey();
+      const { rawKey, keyHash, keyPrefix } = generateApiKey(environment);
 
       // 3. Store Key Hash
       const insertResult = await pool.query(

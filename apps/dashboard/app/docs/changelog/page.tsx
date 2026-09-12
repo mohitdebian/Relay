@@ -34,7 +34,7 @@ const entries: ChangelogEntry[] = [
     date: '2026-08-24',
     title: 'Webhook Signatures & Retries',
     changes: [
-      { type: 'IMPROVED', area: 'API', text: <>All outbound webhooks now include a <code className="docs-inline">Relay-Signature</code> header using HMAC SHA-256.</> },
+      { type: 'IMPROVED', area: 'API', text: <>All outbound webhooks now include an <code className="docs-inline">x-relay-signature</code> header using HMAC SHA-256.</> },
       { type: 'IMPROVED', area: 'Core', text: 'Failed webhooks now automatically retry with exponential backoff up to 5 times over 3 hours.' },
       { type: 'BREAKING', area: 'API', text: 'Legacy un-signed webhook endpoints will be deprecated in v3.0.' }
     ],

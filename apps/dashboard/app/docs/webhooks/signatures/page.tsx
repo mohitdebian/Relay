@@ -12,7 +12,7 @@ export default function WebhooksSignaturesPage() {
           {'  '}<span className="docs-tok-key">const</span> expected = crypto{'\n'}
           {'    '}.<span className="docs-tok-str">createHmac</span>(<span className="docs-tok-str">'sha256'</span>, secret){'\n'}
           {'    '}.<span className="docs-tok-str">update</span>(rawBody){'\n'}
-          {'    '}.<span className="docs-tok-str">digest</span>(<span className="docs-tok-str">'hex'</span>);{'\n'}
+          {'    '}.<span className="docs-tok-str">digest</span>(<span className="docs-tok-str">'base64'</span>);{'\n'}
           {'  '}<span className="docs-tok-key">return</span> crypto.<span className="docs-tok-str">timingSafeEqual</span>({'\n'}
           {'    '}Buffer.<span className="docs-tok-str">from</span>(expected),{'\n'}
           {'    '}Buffer.<span className="docs-tok-str">from</span>(signature){'\n'}
@@ -26,13 +26,14 @@ export default function WebhooksSignaturesPage() {
       code: (
         <>
           <span className="docs-tok-key">import</span> hmac{'\n'}
-          <span className="docs-tok-key">import</span> hashlib{'\n\n'}
+          <span className="docs-tok-key">import</span> hashlib{'\n'}
+          <span className="docs-tok-key">import</span> base64{'\n\n'}
           <span className="docs-tok-key">def</span> <span className="docs-tok-str">is_valid</span>(raw_body: <span className="docs-tok-key">bytes</span>, signature: <span className="docs-tok-key">str</span>, secret: <span className="docs-tok-key">str</span>) -&gt; <span className="docs-tok-key">bool</span>:{'\n'}
-          {'    '}expected = hmac.new({'\n'}
+          {'    '}expected = base64.b64encode(hmac.new({'\n'}
           {'        '}secret.encode(<span className="docs-tok-str">'utf-8'</span>),{'\n'}
           {'        '}raw_body,{'\n'}
           {'        '}hashlib.sha256{'\n'}
-          {'    '}).hexdigest(){'\n'}
+          {'    '}).digest()).decode(<span className="docs-tok-str">'utf-8'</span>){'\n'}
           {'    '}<span className="docs-tok-key">return</span> hmac.compare_digest(expected, signature)
         </>
       ),
@@ -53,7 +54,7 @@ export default function WebhooksSignaturesPage() {
           How it works
         </h2>
         <p className="docs-p">
-          Every delivery includes a <code className="docs-inline">Relay-Signature</code> header: an HMAC-SHA256 hash of the raw request body, signed with your webhook's signing secret (shown once when the webhook is created).
+          Every delivery includes an <code className="docs-inline">x-relay-signature</code> header: an HMAC-SHA256 hash of the raw request body (base64 encoded), signed with your webhook's signing secret (shown once when the webhook is created).
         </p>
 
         <div style={{ marginTop: '24px', marginBottom: '32px' }}>

@@ -113,6 +113,9 @@ export async function deleteApiAction(apiId: number) {
 export async function updateApiAction(
   apiId: number,
   data: {
+    name?: string;
+    upstream_url?: string;
+    description?: string;
     rate_limit_enabled?: boolean;
     rate_limit_max?: number;
     rate_limit_window?: number;

@@ -7,7 +7,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Drawer from '../../../components/Drawer';
-import { deleteApiAction } from '../../../actions/api';
+import { deleteApiAction, updateApiAction } from '../../../actions/api';
 
 export default function ApiDetailClient({
   api,
@@ -24,6 +24,13 @@ export default function ApiDetailClient({
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
 
+  // Settings state
+  const [name, setName] = useState(api.name);
+  const [baseUrl, setBaseUrl] = useState(api.upstream_url);
+  const [description, setDescription] = useState(api.description || '');
+  const [isSaving, setIsSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+
   const handleDelete = async () => {
     setIsDeleting(true);
     setDeleteError(null);
@@ -35,6 +42,25 @@ export default function ApiDetailClient({
       console.error(res.error || 'Failed to delete API');
       setIsDeleting(false);
     }
+  };
+
+  const handleSaveSettings = async () => {
+    setIsSaving(true);
+    setSaved(false);
+    const res = await updateApiAction(api.id, {
+      name,
+      upstream_url: baseUrl,
+      description,
+    });
+    
+    if (res.success) {
+      setSaved(true);
+      router.refresh();
+      setTimeout(() => setSaved(false), 2000);
+    } else {
+      console.error(res.error || 'Failed to update API');
+    }
+    setIsSaving(false);
   };
 
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -360,18 +386,23 @@ export default function ApiDetailClient({
         <>
           <div className="field">
             <label>API name</label>
-            <input type="text" defaultValue={api.name} />
+            <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
           </div>
           <div className="field">
             <label>Base URL</label>
-            <input type="text" defaultValue={settings.baseUrl} className="mono" />
+            <input type="text" value={baseUrl} onChange={(e) => setBaseUrl(e.target.value)} className="mono" />
           </div>
           <div className="field">
             <label>Description</label>
-            <input type="text" defaultValue={settings.description} />
+            <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
           </div>
-          <button className="btn btn-primary" style={{ marginTop: '4px' }}>
-            Save changes
+          <button 
+            className="btn btn-primary" 
+            style={{ marginTop: '4px' }}
+            onClick={handleSaveSettings}
+            disabled={isSaving}
+          >
+            {isSaving ? 'Saving changes...' : saved ? 'Saved!' : 'Save changes'}
           </button>
 
           <div className="section" style={{ marginTop: '36px' }}>

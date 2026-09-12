@@ -41,7 +41,10 @@ const navGroups = [
   },
   {
     label: 'RESOURCES',
-    items: [{ name: 'Documentation', href: '/docs' }],
+    items: [
+      { name: 'Documentation', href: '/docs' },
+      { name: 'GitHub', href: 'https://github.com/mohitdebian/Relay', external: true },
+    ],
   },
 ];
 
@@ -83,11 +86,12 @@ export default function Sidebar({
         {navGroups.map((group) => (
           <div className="nav-group" key={group.label}>
             <div className="nav-group-label">{group.label}</div>
-            {group.items.map((item) => (
+            {group.items.map((item: any) => (
               <Link
                 key={item.href}
                 href={item.href}
                 className={`nav-item${isActive(item.href) ? ' active' : ''}`}
+                {...(item.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
               >
                 {item.name}
               </Link>

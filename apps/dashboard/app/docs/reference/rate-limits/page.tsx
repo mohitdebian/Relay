@@ -83,20 +83,32 @@ export default function RateLimitsPage() {
           <code className="docs-inline">429 Too Many Requests</code> response. The response includes
           standard rate limit headers to help you gracefully back off:
         </p>
-        <ul className="docs-ul">
-          <li>
-            <code className="docs-inline">X-RateLimit-Limit</code>: The maximum number of requests
-            allowed in the current window.
-          </li>
-          <li>
-            <code className="docs-inline">X-RateLimit-Remaining</code>: The number of requests
-            remaining in the current window.
-          </li>
-          <li>
-            <code className="docs-inline">X-RateLimit-Reset</code>: The Unix timestamp when the
-            current window expires and limits are reset.
-          </li>
-        </ul>
+        <div className="panel" style={{ display: 'flex', flexDirection: 'column' }}>
+          <div style={{ padding: '16px', borderBottom: '1px solid var(--border)' }}>
+            <code className="mono" style={{ color: 'var(--text)', fontWeight: 500 }}>
+              X-RateLimit-Limit
+            </code>
+            <p style={{ margin: '8px 0 0 0', color: 'var(--text-secondary)', fontSize: '14px', lineHeight: '1.5' }}>
+              The maximum number of requests allowed in the current window.
+            </p>
+          </div>
+          <div style={{ padding: '16px', borderBottom: '1px solid var(--border)' }}>
+            <code className="mono" style={{ color: 'var(--text)', fontWeight: 500 }}>
+              X-RateLimit-Remaining
+            </code>
+            <p style={{ margin: '8px 0 0 0', color: 'var(--text-secondary)', fontSize: '14px', lineHeight: '1.5' }}>
+              The number of requests remaining in the current window.
+            </p>
+          </div>
+          <div style={{ padding: '16px' }}>
+            <code className="mono" style={{ color: 'var(--text)', fontWeight: 500 }}>
+              X-RateLimit-Reset
+            </code>
+            <p style={{ margin: '8px 0 0 0', color: 'var(--text-secondary)', fontSize: '14px', lineHeight: '1.5' }}>
+              The Unix timestamp when the current window expires and limits are reset.
+            </p>
+          </div>
+        </div>
       </main>
 
       <aside className="docs-side">

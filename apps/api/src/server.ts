@@ -26,8 +26,14 @@ app.use(cors({ origin: process.env.FRONTEND_URL || 'http://localhost:3000', cred
 app.use(express.json());
 app.use(pinoHttp({ logger }));
 
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok' });
+app.get('/health', async (req, res) => {
+  try {
+    await pool.query('SELECT 1'); // Keep Neon database awake!
+    res.json({ status: 'ok' });
+  } catch (err) {
+    logger.error({ err }, 'Health check database ping failed');
+    res.status(500).json({ status: 'error', message: 'Database unreachable' });
+  }
 });
 
 app.use('/workspaces', workspacesRoutes);

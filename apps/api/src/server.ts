@@ -1,6 +1,4 @@
-import dotenv from 'dotenv';
-dotenv.config();
-
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import pinoHttp from 'pino-http';
@@ -61,8 +59,21 @@ redis.on('error', (err) => {
   logger.error({ err }, 'Redis error');
 });
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   logger.info(`Relay API running on port ${PORT}`);
 });
+
+// Graceful shutdown to fix EADDRINUSE during tsx watch restarts
+const shutdown = () => {
+  server.close(() => {
+    pool.end();
+    redis.quit();
+    process.exit(0);
+  });
+};
+
+process.once('SIGUSR2', shutdown);
+process.on('SIGINT', shutdown);
+process.on('SIGTERM', shutdown);
 
 export { app, pool, redis };

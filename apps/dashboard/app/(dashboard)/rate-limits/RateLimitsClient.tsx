@@ -16,13 +16,16 @@ interface Api {
 export default function RateLimitsClient({ initialApis }: { initialApis: Api[] }) {
   const [apis, setApis] = useState<Api[]>(initialApis);
   const [savingId, setSavingId] = useState<number | null>(null);
+  const [errorId, setErrorId] = useState<number | null>(null);
 
   const handleUpdate = (apiId: number, field: keyof Api, value: any) => {
     setApis(apis.map((api) => (api.id === apiId ? { ...api, [field]: value } : api)));
+    if (errorId === apiId) setErrorId(null);
   };
 
   const handleSave = async (api: Api) => {
     setSavingId(api.id);
+    setErrorId(null);
     const result = await updateApiAction(api.id, {
       rate_limit_enabled: api.rate_limit_enabled,
       rate_limit_max: Number(api.rate_limit_max),
@@ -30,7 +33,8 @@ export default function RateLimitsClient({ initialApis }: { initialApis: Api[] }
     });
     setSavingId(null);
     if (!result.success) {
-      alert(`Failed to save: ${result.error}`);
+      console.error(`Failed to save: ${result.error}`);
+      setErrorId(api.id);
     }
   };
 
@@ -92,7 +96,7 @@ export default function RateLimitsClient({ initialApis }: { initialApis: Api[] }
               <div className="hint">Duration in seconds for the rate limit window.</div>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'flex-start', paddingTop: '22px' }}>
+            <div style={{ display: 'flex', alignItems: 'flex-start', paddingTop: '22px', gap: '12px' }}>
               <button 
                 className="btn btn-primary"
                 style={{ height: '32px' }}
@@ -101,6 +105,11 @@ export default function RateLimitsClient({ initialApis }: { initialApis: Api[] }
               >
                 {savingId === api.id ? 'Saving...' : 'Save Configuration'}
               </button>
+              {errorId === api.id && (
+                <div style={{ color: 'var(--red)', fontSize: '13px', paddingTop: '8px' }}>
+                  Failed to save. Please try again.
+                </div>
+              )}
             </div>
           </div>
         </div>

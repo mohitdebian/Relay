@@ -7,20 +7,24 @@ import { ConfirmModal } from './modals/ConfirmModal';
 export function RemoveMemberButton({ userId, disabled }: { userId: string; disabled?: boolean }) {
   const [loading, setLoading] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleRemove = async () => {
     setLoading(true);
+    setError(null);
     try {
       const res = await removeMemberAction(userId);
       if (!res.success) {
-        alert(res.error || 'Failed to remove member');
+        setError(res.error || 'Failed to remove member');
+        console.error(res.error || 'Failed to remove member');
+      } else {
+        setShowConfirm(false);
       }
-    } catch (error) {
-      console.error(error);
-      alert('An unexpected error occurred');
+    } catch (err) {
+      console.error(err);
+      setError('An unexpected error occurred');
     } finally {
       setLoading(false);
-      setShowConfirm(false);
     }
   };
 
@@ -65,6 +69,7 @@ export function RemoveMemberButton({ userId, disabled }: { userId: string; disab
         confirmText="Remove"
         isDestructive={true}
         isLoading={loading}
+        error={error}
       />
     </>
   );

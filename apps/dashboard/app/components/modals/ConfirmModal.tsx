@@ -12,6 +12,7 @@ interface ConfirmModalProps {
   cancelText?: string;
   isDestructive?: boolean;
   isLoading?: boolean;
+  error?: string | null;
 }
 
 export function ConfirmModal({
@@ -24,11 +25,17 @@ export function ConfirmModal({
   cancelText = 'Cancel',
   isDestructive = false,
   isLoading = false,
+  error = null,
 }: ConfirmModalProps) {
   return (
     <Modal open={open} onClose={onClose} title={title}>
       <div className="modal-body" style={{ padding: '20px' }}>
         <p style={{ margin: '0 0 24px 0', color: 'var(--text-secondary)' }}>{message}</p>
+        {error && (
+          <div style={{ color: 'var(--red)', fontSize: '13px', marginBottom: '16px' }}>
+            {error}
+          </div>
+        )}
         <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
           <button
             type="button"

@@ -22,16 +22,18 @@ export default function ApiDetailClient({
   const [activeTab, setActiveTab] = useState('overview');
   const [isDeleting, setIsDeleting] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
 
   const handleDelete = async () => {
     setIsDeleting(true);
+    setDeleteError(null);
     const res = await deleteApiAction(api.id);
     if (res.success) {
       router.push('/apis');
     } else {
-      alert(res.error || 'Failed to delete API');
+      setDeleteError(res.error || 'Failed to delete API');
+      console.error(res.error || 'Failed to delete API');
       setIsDeleting(false);
-      setShowDeleteConfirm(false);
     }
   };
 
@@ -447,13 +449,17 @@ export default function ApiDetailClient({
 
           <ConfirmModal
             open={showDeleteConfirm}
-            onClose={() => setShowDeleteConfirm(false)}
+            onClose={() => {
+              setShowDeleteConfirm(false);
+              setDeleteError(null);
+            }}
             onConfirm={handleDelete}
             title="Delete API"
             message="Are you sure you want to delete this API? This will permanently remove all endpoints, keys, and logs. This action cannot be undone."
             confirmText="Delete"
             isDestructive={true}
             isLoading={isDeleting}
+            error={deleteError}
           />
         </>
       )}

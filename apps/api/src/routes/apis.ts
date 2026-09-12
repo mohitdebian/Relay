@@ -374,11 +374,8 @@ router.get('/:id/keys', async (req: AuthRequest, res: Response) => {
       return;
     }
 
-    const { role } = accessCheck.rows[0];
-    if (role.toLowerCase() !== 'admin' && role.toLowerCase() !== 'owner') {
-      res.status(403).json({ error: 'Unauthorized: Requires admin or owner role' });
-      return;
-    }
+    // Allow any workspace member to view the keys list
+    // (Actual secret is never returned here, only the prefix)
 
     const result = await pool.query(
       `SELECT id, workspace_id, api_id, name, key_prefix, environment, created_at, expires_at, last_used_at, revoked_at 

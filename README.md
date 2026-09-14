@@ -8,6 +8,11 @@
 
   [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
   [![CI Pipeline](https://github.com/mohitdebian/Relay/actions/workflows/ci.yml/badge.svg)](https://github.com/mohitdebian/Relay/actions/workflows/ci.yml)
+  
+  [![PRD](https://img.shields.io/badge/PRD-Product_Requirements-555555.svg)](./PRD.md)
+  [![HLD](https://img.shields.io/badge/HLD-High_Level_Design-555555.svg)](./HLD.md)
+  [![LLD](https://img.shields.io/badge/LLD-Low_Level_Design-555555.svg)](./LLD.md)
+  [![Design](https://img.shields.io/badge/Design-UI_&_UX-555555.svg)](./design.md)
 </div>
 
 <br />

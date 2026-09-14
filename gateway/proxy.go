@@ -13,6 +13,16 @@ import (
 	"time"
 )
 
+var baseTransport = &http.Transport{
+	Proxy:                 http.ProxyFromEnvironment,
+	ForceAttemptHTTP2:     true,
+	MaxIdleConns:          100,
+	IdleConnTimeout:       90 * time.Second,
+	TLSHandshakeTimeout:   10 * time.Second,
+	ExpectContinueTimeout: 1 * time.Second,
+	ResponseHeaderTimeout: 10 * time.Second,
+}
+
 func sendError(w http.ResponseWriter, statusCode int, errorCode string) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(statusCode)
@@ -168,17 +178,7 @@ func proxyHandler(w http.ResponseWriter, r *http.Request) {
 	// 4. Create Reverse Proxy
 	proxy := httputil.NewSingleHostReverseProxy(targetUrl)
 
-	// Set up a custom Transport with Timeouts and a simple Retry
-	baseTransport := &http.Transport{
-		Proxy:                 http.ProxyFromEnvironment,
-		ForceAttemptHTTP2:     true,
-		MaxIdleConns:          100,
-		IdleConnTimeout:       90 * time.Second,
-		TLSHandshakeTimeout:   10 * time.Second,
-		ExpectContinueTimeout: 1 * time.Second,
-		ResponseHeaderTimeout: 10 * time.Second,
-	}
-
+	// Use global baseTransport for connection pooling
 	proxy.Transport = &retryTransport{
 		transport:  baseTransport,
 		maxRetries: 1, // Simple 1-attempt retry
@@ -221,5 +221,5 @@ func proxyHandler(w http.ResponseWriter, r *http.Request) {
 	if loggedPath == "" {
 		loggedPath = "/"
 	}
-	go logRequest(api.ID, apiKeyInfo.ID, r.Method, loggedPath, trackingWriter.statusCode, latencyMs)
+	go logRequest(api.ID, apiKeyInfo.ID, r.Method, loggedPath, trackingWriter.statusCode, latencyMs, api.WorkspaceID)
 }

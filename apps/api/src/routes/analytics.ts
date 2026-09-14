@@ -54,8 +54,7 @@ router.get('/overview', async (req: AuthRequest, res: Response): Promise<void> =
         COALESCE(AVG(latency_ms), 0) as average_latency,
         COUNT(CASE WHEN status_code >= 400 THEN 1 END) as total_errors
       FROM api_request_logs l
-      JOIN apis a ON l.api_id = a.id
-      WHERE a.workspace_id = $1 AND l.created_at >= NOW() - INTERVAL '24 HOURS'
+      WHERE l.workspace_id = $1 AND l.created_at >= NOW() - INTERVAL '24 HOURS'
     `,
       [workspaceId]
     );
@@ -68,8 +67,7 @@ router.get('/overview', async (req: AuthRequest, res: Response): Promise<void> =
         COALESCE(AVG(latency_ms), 0) as average_latency,
         COUNT(CASE WHEN status_code >= 400 THEN 1 END) as total_errors
       FROM api_request_logs l
-      JOIN apis a ON l.api_id = a.id
-      WHERE a.workspace_id = $1 AND l.created_at >= NOW() - INTERVAL '48 HOURS' AND l.created_at < NOW() - INTERVAL '24 HOURS'
+      WHERE l.workspace_id = $1 AND l.created_at >= NOW() - INTERVAL '48 HOURS' AND l.created_at < NOW() - INTERVAL '24 HOURS'
     `,
       [workspaceId]
     );
@@ -79,12 +77,12 @@ router.get('/overview', async (req: AuthRequest, res: Response): Promise<void> =
       `
       SELECT 
         a.upstream_url as path,
-        COUNT(*) as requests,
+        COUNT(l.id) as requests,
         COUNT(CASE WHEN l.status_code >= 400 THEN 1 END) as errors,
         COALESCE(AVG(l.latency_ms), 0) as latency_ms
       FROM api_request_logs l
       JOIN apis a ON l.api_id = a.id
-      WHERE a.workspace_id = $1
+      WHERE l.workspace_id = $1
       GROUP BY a.upstream_url
       ORDER BY requests DESC
       LIMIT 10
@@ -97,10 +95,10 @@ router.get('/overview', async (req: AuthRequest, res: Response): Promise<void> =
       `
       SELECT 
         k.name,
-        COUNT(*) as requests
+        COUNT(l.id) as requests
       FROM api_request_logs l
       JOIN api_keys k ON l.api_key_id = k.id
-      WHERE k.workspace_id = $1
+      WHERE l.workspace_id = $1
       GROUP BY k.name
       ORDER BY requests DESC
       LIMIT 10

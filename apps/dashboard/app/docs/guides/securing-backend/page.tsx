@@ -350,43 +350,34 @@ export default function SecuringBackendPage() {
           forwarding to your upstream:
         </p>
 
-        <div className="docs-params-table" style={{ marginBottom: '24px' }}>
-          <table>
-            <thead>
-              <tr>
-                <th>Header</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <code className="docs-inline">X-Relay-Signature</code>
-                </td>
-                <td>Your shared secret — verify this to lock down your backend</td>
-              </tr>
-              <tr>
-                <td>
-                  <code className="docs-inline">X-Relay-Api-Id</code>
-                </td>
-                <td>The numeric ID of the API in Relay</td>
-              </tr>
-              <tr>
-                <td>
-                  <code className="docs-inline">X-Forwarded-For</code>
-                </td>
-                <td>The original client IP address</td>
-              </tr>
-              <tr>
-                <td>
-                  <code className="docs-inline">X-Api-Key</code>
-                </td>
-                <td>
-                  <strong>Removed</strong> — Relay strips the consumer key before forwarding
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <div className="docs-table-container" style={{ marginBottom: '24px' }}>
+          <div className="docs-table-row header" style={{ gridTemplateColumns: '200px 1fr' }}>
+            <span>Header</span>
+            <span>Description</span>
+          </div>
+          <div className="docs-table-row" style={{ gridTemplateColumns: '200px 1fr' }}>
+            <span className="docs-table-cell-mono">X-Relay-Signature</span>
+            <span className="docs-table-cell-muted">
+              Your shared secret — verify this to lock down your backend
+            </span>
+          </div>
+          <div className="docs-table-row" style={{ gridTemplateColumns: '200px 1fr' }}>
+            <span className="docs-table-cell-mono">X-Relay-Api-Id</span>
+            <span className="docs-table-cell-muted">The numeric ID of the API in Relay</span>
+          </div>
+          <div className="docs-table-row" style={{ gridTemplateColumns: '200px 1fr' }}>
+            <span className="docs-table-cell-mono">X-Forwarded-For</span>
+            <span className="docs-table-cell-muted">The original client IP address</span>
+          </div>
+          <div className="docs-table-row" style={{ gridTemplateColumns: '200px 1fr' }}>
+            <span className="docs-table-cell-mono" style={{ color: 'var(--red)' }}>
+              X-Api-Key
+            </span>
+            <span className="docs-table-cell-muted">
+              <strong style={{ color: 'var(--red)' }}>Removed</strong> — Relay strips the consumer
+              key before forwarding
+            </span>
+          </div>
         </div>
 
         <h2 className="docs-h2" id="team-access">

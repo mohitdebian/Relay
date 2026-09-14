@@ -31,6 +31,62 @@
 
 ## 2. Database Schema (PostgreSQL)
 
+```mermaid
+erDiagram
+    USERS {
+        int id PK
+        string email
+        string password_hash
+        timestamp created_at
+    }
+    WORKSPACES {
+        int id PK
+        string name
+        string slug
+        timestamp created_at
+    }
+    WORKSPACE_MEMBERS {
+        int workspace_id PK,FK
+        int user_id PK,FK
+        string role
+    }
+    APIS {
+        int id PK
+        int workspace_id FK
+        string name
+        string slug
+        string upstream_url
+        string status
+    }
+    API_KEYS {
+        int id PK
+        int api_id FK
+        string name
+        string key_hash
+        timestamp expires_at
+    }
+    API_REQUEST_LOGS {
+        int id PK
+        int api_id FK
+        int status_code
+        int latency_ms
+    }
+    WEBHOOKS {
+        int id PK
+        int workspace_id FK
+        string url
+        jsonb events
+    }
+
+    USERS ||--o{ WORKSPACE_MEMBERS : "member of"
+    WORKSPACES ||--o{ WORKSPACE_MEMBERS : "has members"
+    WORKSPACES ||--o{ APIS : "contains"
+    WORKSPACES ||--o{ WEBHOOKS : "triggers"
+    APIS ||--o{ API_KEYS : "secured by"
+    APIS ||--o{ API_REQUEST_LOGS : "logs"
+    API_KEYS ||--o{ API_REQUEST_LOGS : "used in"
+```
+
 ```sql
 -- Users and Workspaces
 CREATE TABLE users (

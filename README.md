@@ -9,10 +9,10 @@
   [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
   [![CI Pipeline](https://github.com/mohitdebian/Relay/actions/workflows/ci.yml/badge.svg)](https://github.com/mohitdebian/Relay/actions/workflows/ci.yml)
   
-  [![PRD](https://img.shields.io/badge/PRD-Product_Requirements-555555.svg)](./PRD.md)
-  [![HLD](https://img.shields.io/badge/HLD-High_Level_Design-555555.svg)](./HLD.md)
-  [![LLD](https://img.shields.io/badge/LLD-Low_Level_Design-555555.svg)](./LLD.md)
-  [![Design](https://img.shields.io/badge/Design-UI_&_UX-555555.svg)](./design.md)
+  [![PRD](https://img.shields.io/badge/PRD-Product_Requirements-555555.svg)](./docs/PRD.md)
+  [![HLD](https://img.shields.io/badge/HLD-High_Level_Design-555555.svg)](./docs/HLD.md)
+  [![LLD](https://img.shields.io/badge/LLD-Low_Level_Design-555555.svg)](./docs/LLD.md)
+  [![Design](https://img.shields.io/badge/Design-UI_&_UX-555555.svg)](./docs/design.md)
 </div>
 
 <br />
@@ -21,10 +21,10 @@ Relay is a self-hosted, lightweight alternative to enterprise API gateways. It p
 
 ## Documentation
 
-- **[Product Requirements Document (PRD)](./PRD.md)** - Feature specifications and product goals.
-- **[High-Level Design (HLD)](./HLD.md)** - System component architecture.
-- **[Low-Level Design (LLD)](./LLD.md)** - Database schema (ER diagram), rate-limiting algorithms, and queue architecture.
-- **[Design System & UI](./design.md)** - Frontend architecture and design guidelines.
+- **[Product Requirements Document (PRD)](./docs/PRD.md)** - Feature specifications and product goals.
+- **[High-Level Design (HLD)](./docs/HLD.md)** - System component architecture.
+- **[Low-Level Design (LLD)](./docs/LLD.md)** - Database schema (ER diagram), rate-limiting algorithms, and queue architecture.
+- **[Design System & UI](./docs/design.md)** - Frontend architecture and design guidelines.
 
 ## Features
 

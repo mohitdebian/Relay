@@ -30,14 +30,14 @@ Relay is a self-hosted, lightweight alternative to enterprise API gateways like 
 
 ```mermaid
 graph LR
-    Client([Client Apps]) --> Gateway[Relay Gateway\n(Go)]
+    Client([Client Apps]) --> Gateway["Relay Gateway<br>(Go)"]
     Gateway --> Redis[(Redis)]
     Gateway --> DB[(PostgreSQL)]
     Gateway --> Upstream([Upstream APIs])
     
-    Admin([Developers]) --> Dashboard[Dashboard\n(Next.js)]
+    Admin([Developers]) --> Dashboard["Dashboard<br>(Next.js)"]
     Dashboard --> Auth[Neon Auth]
-    Dashboard --> API[Management API\n(Node.js)]
+    Dashboard --> API["Management API<br>(Node.js)"]
     API --> DB
     API --> Redis
     API --> BullMQ[BullMQ Worker]

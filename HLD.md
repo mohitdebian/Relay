@@ -13,20 +13,20 @@ graph TD
     
     %% Relay Components
     subgraph Relay Infrastructure
-        Gateway[Gateway Proxy\nGo]
-        MgmtAPI[Management API\nNode.js]
-        Dashboard[Dashboard\nNext.js]
-        Worker[BullMQ Worker\nNode.js]
+        Gateway["Gateway Proxy<br>Go"]
+        MgmtAPI["Management API<br>Node.js"]
+        Dashboard["Dashboard<br>Next.js"]
+        Worker["BullMQ Worker<br>Node.js"]
     end
     
     %% Data Stores
     subgraph Data Layer
-        DB[(PostgreSQL\nNeon)]
+        DB[("PostgreSQL<br>Neon")]
         Redis[(Redis)]
     end
     
     %% Third-party
-    Auth[Neon Auth\nOIDC]
+    Auth["Neon Auth<br>OIDC"]
     Webhooks([Customer Webhooks])
     
     %% Connections

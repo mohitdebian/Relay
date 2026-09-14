@@ -1,6 +1,6 @@
 <div align="center">
   <br />
-  <h1>⚡ RELAY</h1>
+  <h1>RELAY</h1>
   <p>
     <strong>A high-performance, open-source API management platform and gateway.</strong>
   </p>
@@ -8,25 +8,30 @@
 
   [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
   [![CI Pipeline](https://github.com/mohitdebian/Relay/actions/workflows/ci.yml/badge.svg)](https://github.com/mohitdebian/Relay/actions/workflows/ci.yml)
-  [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
-
 </div>
 
 <br />
 
-Relay is a self-hosted, lightweight alternative to enterprise API gateways like Kong, Tyk, and AWS API Gateway. It provides a blistering fast Go-based reverse proxy coupled with a beautiful Next.js dashboard for managing API keys, rate limits, analytics, and webhooks.
+Relay is a self-hosted, lightweight alternative to enterprise API gateways. It provides a Go-based reverse proxy coupled with a Next.js dashboard for managing API keys, rate limits, analytics, and webhooks.
 
-## ✨ Features
+## Documentation
 
-- **🚀 Go Gateway Proxy**: Ultra-fast reverse proxy with zero-downtime routing, retry transports, and connection pooling.
-- **🔑 API Key Management**: Secure SHA-256 hashed API keys with prefixes, expiration dates, and one-click revocation.
-- **🚦 Configurable Rate Limiting**: Per-API sliding-window rate limiting backed by Redis.
-- **📊 Real-time Analytics**: Monitor request volumes, latencies, and status code distributions directly from the dashboard.
-- **🪝 Asynchronous Webhooks**: Event-driven webhook dispatch with HMAC-SHA256 signatures, exponential backoff, and BullMQ queues.
-- **👥 Multi-Workspace & RBAC**: Isolate environments and invite team members with Owner, Admin, or Viewer roles.
-- **🛡️ Audit Logging**: Complete trail of all actions performed within a workspace.
+- **[Product Requirements Document (PRD)](./PRD.md)** - Feature specifications and product goals.
+- **[High-Level Design (HLD)](./HLD.md)** - System component architecture.
+- **[Low-Level Design (LLD)](./LLD.md)** - Database schema (ER diagram), rate-limiting algorithms, and queue architecture.
+- **[Design System & UI](./design.md)** - Frontend architecture and design guidelines.
 
-## 🏗️ Architecture
+## Features
+
+- **Go Gateway Proxy**: Fast reverse proxy with zero-downtime routing, retry transports, and connection pooling.
+- **API Key Management**: Secure SHA-256 hashed API keys with prefixes, expiration dates, and one-click revocation.
+- **Configurable Rate Limiting**: Per-API sliding-window rate limiting backed by Redis.
+- **Real-time Analytics**: Monitor request volumes, latencies, and status code distributions directly from the dashboard.
+- **Asynchronous Webhooks**: Event-driven webhook dispatch with HMAC-SHA256 signatures, exponential backoff, and BullMQ queues.
+- **Multi-Workspace & RBAC**: Isolate environments and invite team members with Owner, Admin, or Viewer roles.
+- **Audit Logging**: Complete trail of all actions performed within a workspace.
+
+## Architecture
 
 ```mermaid
 graph LR
@@ -44,7 +49,7 @@ graph LR
     BullMQ -.-> Webhooks([Customer Webhooks])
 ```
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 - Node.js 20+
@@ -86,7 +91,7 @@ graph LR
    go run .
    ```
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Component | Technology | Description |
 | :--- | :--- | :--- |
@@ -97,7 +102,7 @@ graph LR
 | **Cache & Queues**| Redis, BullMQ | Rate limiting and async job processing |
 | **Authentication**| Neon Auth | Secure OpenID Connect user management |
 
-## 📁 Project Structure
+## Project Structure
 
 ```text
 relay/
@@ -109,10 +114,10 @@ relay/
 └── docker-compose.yml
 ```
 
-## 🤝 Contributing
+## Contributing
 
 We love contributions! Whether it's bug reports, feature requests, or pull requests, all contributions are welcome. Please read our contributing guidelines before submitting a PR.
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

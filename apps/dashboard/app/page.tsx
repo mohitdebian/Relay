@@ -42,7 +42,7 @@ export default async function LandingPage() {
             <div className="nav-links">
               <a href="#features">Product</a>
               <a href="#pricing">Pricing</a>
-              <a href="#">Docs</a>
+              <Link href="/docs">Docs</Link>
               <a href="#">Changelog</a>
             </div>
           </div>
@@ -72,9 +72,9 @@ export default async function LandingPage() {
                 <Link className="btn btn-primary btn-lg" href="/login">
                   Get started →
                 </Link>
-                <a className="btn btn-secondary btn-lg" href="#">
+                <Link className="btn btn-secondary btn-lg" href="/docs">
                   View docs
-                </a>
+                </Link>
               </div>
               <div className="hero-meta">No credit card required · free up to 100K requests/mo</div>
             </div>
@@ -422,9 +422,9 @@ export default async function LandingPage() {
               <Link className="btn btn-primary btn-lg" href="/login">
                 Get started →
               </Link>
-              <a className="btn btn-secondary btn-lg" href="#">
+              <Link className="btn btn-secondary btn-lg" href="/docs">
                 View docs
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -450,7 +450,7 @@ export default async function LandingPage() {
             </div>
             <div className="footer-col">
               <div className="footer-col-label">DEVELOPERS</div>
-              <a href="#">Documentation</a>
+              <Link href="/docs">Documentation</Link>
               <a href="#">API reference</a>
               <a href="#">Changelog</a>
               <a href="#">Status</a>

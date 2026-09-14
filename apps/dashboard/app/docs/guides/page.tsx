@@ -22,6 +22,11 @@ export default function GuidesPage() {
 
         <div className="docs-grid">
           <DocsCard
+            title="Securing Your Backend"
+            description="Lock down your backend so only Relay traffic is accepted. One middleware, any framework."
+            href="/docs/guides/securing-backend"
+          />
+          <DocsCard
             title="Next.js App Router"
             description="Protect your Next.js API routes with Relay and verify webhooks."
             href="/docs/guides/nextjs"

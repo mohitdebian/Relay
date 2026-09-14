@@ -67,6 +67,33 @@ export function DocsSidebar() {
           </Link>
         </div>
         <div className="nav-group">
+          <div className="nav-group-label">GUIDES</div>
+          <Link
+            href="/docs/guides/securing-backend"
+            className={`nav-item${isActive('/docs/guides/securing-backend')}`}
+          >
+            Securing your backend
+          </Link>
+          <Link
+            href="/docs/guides/express"
+            className={`nav-item${isActive('/docs/guides/express')}`}
+          >
+            Express & Node.js
+          </Link>
+          <Link
+            href="/docs/guides/fastapi"
+            className={`nav-item${isActive('/docs/guides/fastapi')}`}
+          >
+            Python FastAPI
+          </Link>
+          <Link href="/docs/guides/nextjs" className={`nav-item${isActive('/docs/guides/nextjs')}`}>
+            Next.js App Router
+          </Link>
+          <Link href="/docs/guides" className={`nav-item${isActive('/docs/guides')}`}>
+            All guides
+          </Link>
+        </div>
+        <div className="nav-group">
           <div className="nav-group-label">WEBHOOKS</div>
           <Link
             href="/docs/webhooks/overview"

@@ -1,11 +1,15 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"os/signal"
+	"syscall"
+	"time"
 )
 
 type HealthResponse struct {
@@ -56,6 +60,45 @@ func main() {
 	// All other routes go to the proxy handler
 	http.HandleFunc("/", proxyHandler)
 
-	fmt.Printf("Starting gateway on port %s\n", port)
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	server := &http.Server{
+		Addr:    ":" + port,
+		Handler: nil, // uses DefaultServeMux
+	}
+
+	// Channel to listen for errors coming from the listener.
+	serverErrors := make(chan error, 1)
+
+	go func() {
+		fmt.Printf("Starting gateway on port %s\n", port)
+		serverErrors <- server.ListenAndServe()
+	}()
+
+	// Channel to listen for an interrupt or terminate signal from the OS.
+	osSignals := make(chan os.Signal, 1)
+	signal.Notify(osSignals, os.Interrupt, syscall.SIGTERM)
+
+	select {
+	case err := <-serverErrors:
+		log.Fatalf("Error starting server: %v", err)
+	case <-osSignals:
+		fmt.Println("\nStarting graceful shutdown...")
+		
+		// Create context with timeout for shutdown
+		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer cancel()
+
+		// Attempt graceful shutdown
+		if err := server.Shutdown(ctx); err != nil {
+			log.Printf("Graceful shutdown did not complete in %v: %v", 10*time.Second, err)
+			if err := server.Close(); err != nil {
+				log.Printf("Error killing server: %v", err)
+			}
+		}
+
+		// Flush remaining logs
+		fmt.Println("Flushing remaining request logs...")
+		ShutdownLogger()
+		
+		fmt.Println("Shutdown complete")
+	}
 }

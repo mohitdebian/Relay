@@ -46,6 +46,26 @@ func setToCache(key string, value interface{}) {
 	}
 }
 
+func startCacheSweeper() {
+	ticker := time.NewTicker(5 * time.Minute)
+	go func() {
+		for range ticker.C {
+			cacheMutex.Lock()
+			now := time.Now()
+			for k, v := range cacheMap {
+				if now.After(v.expiresAt) {
+					delete(cacheMap, k)
+				}
+			}
+			cacheMutex.Unlock()
+		}
+	}()
+}
+
+func init() {
+	startCacheSweeper()
+}
+
 func initDB(connStr string) error {
 	var err error
 	db, err = sql.Open("postgres", connStr)
@@ -134,13 +154,17 @@ type RequestLog struct {
 var (
 	logChan = make(chan RequestLog, 10000)
 	keyChan = make(chan int, 10000)
+	doneChan = make(chan struct{})
+	wg sync.WaitGroup
 )
 
 func init() {
+	wg.Add(1)
 	go processBatches()
 }
 
 func processBatches() {
+	defer wg.Done()
 	ticker := time.NewTicker(1 * time.Second)
 	var logBatch []RequestLog
 	var keyBatch []int
@@ -168,8 +192,31 @@ func processBatches() {
 				flushKeys(keyBatch)
 				keyBatch = nil
 			}
+		case <-doneChan:
+			ticker.Stop()
+			// Drain remaining in channels
+			close(logChan)
+			for l := range logChan {
+				logBatch = append(logBatch, l)
+			}
+			close(keyChan)
+			for k := range keyChan {
+				keyBatch = append(keyBatch, k)
+			}
+			if len(logBatch) > 0 {
+				flushLogs(logBatch)
+			}
+			if len(keyBatch) > 0 {
+				flushKeys(keyBatch)
+			}
+			return
 		}
 	}
+}
+
+func ShutdownLogger() {
+	close(doneChan)
+	wg.Wait()
 }
 
 func flushLogs(logs []RequestLog) {
@@ -184,7 +231,7 @@ func flushLogs(logs []RequestLog) {
 	`
 	
 	apiIds := make([]int, len(logs))
-	keyIds := make([]int, len(logs))
+	keyIds := make([]sql.NullInt64, len(logs))
 	methods := make([]string, len(logs))
 	paths := make([]string, len(logs))
 	statuses := make([]int, len(logs))
@@ -193,7 +240,13 @@ func flushLogs(logs []RequestLog) {
 	
 	for i, l := range logs {
 		apiIds[i] = l.ApiID
-		keyIds[i] = l.ApiKeyID
+		
+		if l.ApiKeyID > 0 {
+			keyIds[i] = sql.NullInt64{Int64: int64(l.ApiKeyID), Valid: true}
+		} else {
+			keyIds[i] = sql.NullInt64{Valid: false}
+		}
+		
 		methods[i] = l.Method
 		if l.Path == "" {
 			l.Path = "/"
@@ -243,7 +296,7 @@ func updateApiKeyLastUsed(id int) {
 	select {
 	case keyChan <- id:
 	default:
-		// Drop if channel is full
+		log.Printf("WARN: Key channel full, dropping last_used update for key ID %d", id)
 	}
 }
 
@@ -259,6 +312,6 @@ func logRequest(apiId int, apiKeyId int, method string, path string, statusCode 
 		WorkspaceID: workspaceId,
 	}:
 	default:
-		// Drop if channel is full
+		log.Printf("WARN: Log channel full, dropping request log for API ID %d", apiId)
 	}
 }

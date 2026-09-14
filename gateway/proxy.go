@@ -83,10 +83,31 @@ func (w *statusTrackingResponseWriter) WriteHeader(code int) {
 }
 
 func proxyHandler(w http.ResponseWriter, r *http.Request) {
+	start := time.Now()
+	trackingWriter := &statusTrackingResponseWriter{
+		ResponseWriter: w,
+		statusCode:     http.StatusOK, // Default if not explicitly set
+	}
+
+	var apiId, apiKeyId, workspaceId int
+
+	defer func() {
+		if apiId != 0 {
+			latencyMs := time.Since(start).Milliseconds()
+			loggedPath := "/"
+			pathParts := strings.SplitN(strings.TrimPrefix(r.URL.Path, "/"), "/", 2)
+			if len(pathParts) > 1 && pathParts[1] != "" {
+				loggedPath = "/" + pathParts[1]
+			}
+			// Fire and forget logging the request
+			go logRequest(apiId, apiKeyId, r.Method, loggedPath, trackingWriter.statusCode, latencyMs, workspaceId)
+		}
+	}()
+
 	// r.URL.Path should look like /:slug/some/path
 	pathParts := strings.SplitN(strings.TrimPrefix(r.URL.Path, "/"), "/", 2)
 	if len(pathParts) == 0 || pathParts[0] == "" {
-		sendError(w, http.StatusNotFound, "api_not_found")
+		sendError(trackingWriter, http.StatusNotFound, "api_not_found")
 		return
 	}
 
@@ -100,18 +121,22 @@ func proxyHandler(w http.ResponseWriter, r *http.Request) {
 	api, err := getApiBySlug(slug)
 	if err != nil {
 		log.Printf("DB error fetching API config: %v", err)
-		sendError(w, http.StatusInternalServerError, "internal_error")
+		sendError(trackingWriter, http.StatusInternalServerError, "internal_error")
 		return
 	}
 	if api == nil {
-		sendError(w, http.StatusNotFound, "api_not_found")
+		sendError(trackingWriter, http.StatusNotFound, "api_not_found")
 		return
 	}
+
+	// Now we know the API, capture for logging
+	apiId = api.ID
+	workspaceId = api.WorkspaceID
 
 	// 2. Extract and Verify API Key
 	rawKey := r.Header.Get("X-API-Key")
 	if rawKey == "" {
-		sendError(w, http.StatusUnauthorized, "missing_api_key")
+		sendError(trackingWriter, http.StatusUnauthorized, "missing_api_key")
 		return
 	}
 
@@ -119,23 +144,26 @@ func proxyHandler(w http.ResponseWriter, r *http.Request) {
 	apiKeyInfo, err := getApiKeyByHash(keyHash, api.ID)
 	if err != nil {
 		log.Printf("DB error fetching API key: %v", err)
-		sendError(w, http.StatusInternalServerError, "internal_error")
+		sendError(trackingWriter, http.StatusInternalServerError, "internal_error")
 		return
 	}
 	if apiKeyInfo == nil {
-		sendError(w, http.StatusUnauthorized, "invalid_api_key")
+		sendError(trackingWriter, http.StatusUnauthorized, "invalid_api_key")
 		return
 	}
 
+	// Now we know the key, capture for logging
+	apiKeyId = apiKeyInfo.ID
+
 	// Check if key is revoked
 	if apiKeyInfo.RevokedAt.Valid {
-		sendError(w, http.StatusUnauthorized, "invalid_api_key")
+		sendError(trackingWriter, http.StatusUnauthorized, "invalid_api_key")
 		return
 	}
 
 	// Check if key is expired
 	if apiKeyInfo.ExpiresAt.Valid && apiKeyInfo.ExpiresAt.Time.Before(time.Now()) {
-		sendError(w, http.StatusUnauthorized, "invalid_api_key")
+		sendError(trackingWriter, http.StatusUnauthorized, "invalid_api_key")
 		return
 	}
 
@@ -144,19 +172,19 @@ func proxyHandler(w http.ResponseWriter, r *http.Request) {
 		allowed, remaining, resetTime, err := CheckRateLimit(r.Context(), api.ID, apiKeyInfo.ID, api.RateLimitMax, api.RateLimitWindow)
 		if err != nil {
 			log.Printf("Redis error checking rate limit: %v", err)
-			sendError(w, http.StatusInternalServerError, "internal_error")
+			sendError(trackingWriter, http.StatusInternalServerError, "internal_error")
 			return
 		}
 
-		w.Header().Set("X-RateLimit-Limit", fmt.Sprintf("%d", api.RateLimitMax))
-		w.Header().Set("X-RateLimit-Remaining", fmt.Sprintf("%d", remaining))
-		w.Header().Set("X-RateLimit-Reset", fmt.Sprintf("%d", resetTime))
+		trackingWriter.Header().Set("X-RateLimit-Limit", fmt.Sprintf("%d", api.RateLimitMax))
+		trackingWriter.Header().Set("X-RateLimit-Remaining", fmt.Sprintf("%d", remaining))
+		trackingWriter.Header().Set("X-RateLimit-Reset", fmt.Sprintf("%d", resetTime))
 
 		if !allowed {
-			w.Header().Set("Retry-After", fmt.Sprintf("%d", resetTime-time.Now().Unix()))
-			w.Header().Set("Content-Type", "application/json")
-			w.WriteHeader(http.StatusTooManyRequests)
-			json.NewEncoder(w).Encode(map[string]string{
+			trackingWriter.Header().Set("Retry-After", fmt.Sprintf("%d", resetTime-time.Now().Unix()))
+			trackingWriter.Header().Set("Content-Type", "application/json")
+			trackingWriter.WriteHeader(http.StatusTooManyRequests)
+			json.NewEncoder(trackingWriter).Encode(map[string]string{
 				"error":   "rate_limit_exceeded",
 				"message": "Too many requests",
 			})
@@ -171,7 +199,7 @@ func proxyHandler(w http.ResponseWriter, r *http.Request) {
 	targetUrl, err := url.Parse(api.UpstreamURL)
 	if err != nil {
 		log.Printf("Invalid upstream URL %s: %v", api.UpstreamURL, err)
-		sendError(w, http.StatusInternalServerError, "upstream_invalid")
+		sendError(trackingWriter, http.StatusInternalServerError, "upstream_invalid")
 		return
 	}
 
@@ -203,23 +231,9 @@ func proxyHandler(w http.ResponseWriter, r *http.Request) {
 	// Customize ErrorHandler to handle upstream unavailable
 	proxy.ErrorHandler = func(w http.ResponseWriter, req *http.Request, proxyErr error) {
 		log.Printf("Upstream error for API %s: %v", api.Slug, proxyErr)
-		sendError(w, http.StatusBadGateway, "upstream_unavailable")
+		sendError(trackingWriter, http.StatusBadGateway, "upstream_unavailable")
 	}
 
 	// 5. Execute Proxy
-	start := time.Now()
-	trackingWriter := &statusTrackingResponseWriter{
-		ResponseWriter: w,
-		statusCode:     http.StatusOK, // Default if not explicitly set
-	}
-	
 	proxy.ServeHTTP(trackingWriter, r)
-
-	// Fire and forget logging the request
-	latencyMs := time.Since(start).Milliseconds()
-	loggedPath := restOfPath
-	if loggedPath == "" {
-		loggedPath = "/"
-	}
-	go logRequest(api.ID, apiKeyInfo.ID, r.Method, loggedPath, trackingWriter.statusCode, latencyMs, api.WorkspaceID)
 }

@@ -70,10 +70,20 @@ export function CreateKeyModal({ open, onClose }: CreateKeyModalProps) {
 
   const copyKey = () => {
     if (!createdData) return;
-    navigator.clipboard.writeText(createdData.rawKey).then(() => {
-      setCopyText('Copied!');
-      setTimeout(() => setCopyText('Copy'), 2000);
-    });
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(createdData.rawKey);
+    } else {
+      const textArea = document.createElement("textarea");
+      textArea.value = createdData.rawKey;
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand('copy');
+      } catch (err) {}
+      document.body.removeChild(textArea);
+    }
+    setCopyText('Copied!');
+    setTimeout(() => setCopyText('Copy'), 2000);
   };
 
   return (

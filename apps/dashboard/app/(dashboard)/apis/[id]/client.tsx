@@ -613,13 +613,36 @@ function CopyKeyButton({ apiId, keyId }: { apiId: number; keyId: number }) {
   const handleCopy = async () => {
     setState('loading');
     setErrorMsg('');
-    const res = await revealApiKeyAction(apiId, keyId);
-    if (res.success && res.rawKey) {
-      await navigator.clipboard.writeText(res.rawKey);
-      setState('copied');
-      setTimeout(() => setState('idle'), 2000);
-    } else {
-      setErrorMsg(res.error || 'Failed to copy');
+    try {
+      const res = await revealApiKeyAction(apiId, keyId);
+      if (res.success && res.rawKey) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(res.rawKey).catch(err => {
+            console.warn('Clipboard write failed:', err);
+          });
+        } else {
+          // Fallback if clipboard API is not available (e.g. non-HTTPS)
+          const textArea = document.createElement("textarea");
+          textArea.value = res.rawKey;
+          document.body.appendChild(textArea);
+          textArea.select();
+          try {
+            document.execCommand('copy');
+          } catch (err) {
+            console.warn('Fallback copy failed:', err);
+          }
+          document.body.removeChild(textArea);
+        }
+        setState('copied');
+        setTimeout(() => setState('idle'), 2000);
+      } else {
+        setErrorMsg(res.error || 'Failed to copy');
+        setState('error');
+        setTimeout(() => setState('idle'), 3000);
+      }
+    } catch (err: any) {
+      console.error('Failed to execute Server Action:', err);
+      setErrorMsg(err.message || 'Network error');
       setState('error');
       setTimeout(() => setState('idle'), 3000);
     }

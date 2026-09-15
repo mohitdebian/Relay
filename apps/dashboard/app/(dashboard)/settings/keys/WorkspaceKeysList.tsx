@@ -65,10 +65,26 @@ export default function WorkspaceKeysList({
 
   const copyKey = () => {
     if (!createdData) return;
-    navigator.clipboard.writeText(createdData.rawKey).then(() => {
-      setCopyText('Copied!');
-      setTimeout(() => setCopyText('Copy'), 2000);
-    });
+    
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(createdData.rawKey).then(() => {
+        setCopyText('Copied!');
+        setTimeout(() => setCopyText('Copy'), 2000);
+      }).catch(err => console.warn('Clipboard write failed:', err));
+    } else {
+      const textArea = document.createElement("textarea");
+      textArea.value = createdData.rawKey;
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        setCopyText('Copied!');
+        setTimeout(() => setCopyText('Copy'), 2000);
+      } catch (err) {
+        console.warn('Fallback copy failed:', err);
+      }
+      document.body.removeChild(textArea);
+    }
   };
 
   const handleRevoke = (id: number) => {

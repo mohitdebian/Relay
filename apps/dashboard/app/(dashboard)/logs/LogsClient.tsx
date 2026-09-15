@@ -73,7 +73,7 @@ export default function LogsClient({ initialLogs }: { initialLogs: any[] }) {
       </div>
 
       <div className="panel">
-        <div className="row row-head" style={{ gridTemplateColumns: '80px 70px 1.6fr 70px 70px' }}>
+        <div className="row row-head" style={{ gridTemplateColumns: '100px 70px 1.6fr 70px 70px' }}>
           <div>TIME</div>
           <div>METHOD</div>
           <div>PATH</div>
@@ -91,7 +91,7 @@ export default function LogsClient({ initialLogs }: { initialLogs: any[] }) {
           <div
             key={i}
             className="row log-row"
-            style={{ gridTemplateColumns: '80px 70px 1.6fr 70px 70px' }}
+            style={{ gridTemplateColumns: '100px 70px 1.6fr 70px 70px' }}
           >
             <span className="c-secondary mono">{log.time}</span>
             <span className={`method ${log.method.toLowerCase()}`}>{log.method}</span>

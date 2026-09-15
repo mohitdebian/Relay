@@ -30,7 +30,7 @@ router.get('/overview', async (req: AuthRequest, res: Response): Promise<void> =
 
   if (!workspaceId) {
     const defaultWorkspace = await pool.query(
-      'SELECT workspace_id FROM workspace_members WHERE user_id = $1 ORDER BY joined_at ASC LIMIT 1',
+      'SELECT workspace_id FROM workspace_members WHERE user_id = $1 ORDER BY created_at ASC LIMIT 1',
       [userId]
     );
     if (defaultWorkspace.rows.length > 0) {

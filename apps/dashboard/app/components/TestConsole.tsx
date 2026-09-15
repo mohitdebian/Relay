@@ -37,7 +37,7 @@ export default function TestConsole({ apiSlug, keys }: { apiSlug: string, keys: 
           method,
           url: targetUrl,
           headers,
-          body: ['POST', 'PUT', 'PATCH'].includes(method) && reqBody.trim() ? reqBody : undefined,
+          body: ['POST', 'PUT', 'PATCH', 'DELETE'].includes(method) && reqBody.trim() ? reqBody : undefined,
         }),
       });
 
@@ -84,7 +84,7 @@ export default function TestConsole({ apiSlug, keys }: { apiSlug: string, keys: 
             <input type="text" value={rawKey} onChange={(e) => setRawKey(e.target.value)} placeholder="rly_live_..." />
             <div className="hint" style={{ marginTop: '8px' }}>Paste the raw key you generated earlier.</div>
           </div>
-          {['POST', 'PUT', 'PATCH'].includes(method) && (
+          {['POST', 'PUT', 'PATCH', 'DELETE'].includes(method) && (
             <div className="field">
               <label>Request Body (JSON)</label>
               <textarea 

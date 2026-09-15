@@ -107,9 +107,10 @@ export async function deleteAccountAction() {
 
     const cookieStore = await cookies();
     cookieStore.delete('relay_active_workspace');
+    
+    return { success: true };
   } catch (error: any) {
-    if (isRedirectError(error)) redirect('/');
+    if (isRedirectError(error)) throw error;
     return { error: error.message || 'Failed to delete account' };
   }
-  redirect('/');
 }

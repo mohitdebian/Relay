@@ -9,6 +9,7 @@ import {
   deleteWorkspaceAction,
   deleteAccountAction,
 } from '@/app/actions/workspace';
+import { authClient } from '@/app/lib/auth/client';
 
 interface Workspace {
   id: number;
@@ -258,6 +259,11 @@ export default function SettingsForm({ workspace }: { workspace: Workspace | nul
               if (res?.error) {
                 setAccDeleteError(res.error);
                 setAccDeleting(false);
+              } else {
+                if (typeof authClient.signOut === 'function') {
+                  await authClient.signOut();
+                }
+                window.location.href = '/login';
               }
             }}
           >

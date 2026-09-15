@@ -50,6 +50,7 @@ export async function initDb() {
         name VARCHAR(255) NOT NULL,
         key_hash VARCHAR(255) UNIQUE NOT NULL,
         key_prefix VARCHAR(50) NOT NULL,
+        encrypted_key TEXT,
         environment VARCHAR(50) DEFAULT 'production',
         expires_at TIMESTAMP,
         last_used_at TIMESTAMP,
@@ -130,6 +131,7 @@ export async function initDb() {
     // Retroactive update for existing databases
     await pool.query(`ALTER TABLE apis ADD COLUMN IF NOT EXISTS shared_secret VARCHAR(255);`);
     await pool.query(`ALTER TABLE webhooks ADD COLUMN IF NOT EXISTS secret VARCHAR(255);`);
+    await pool.query(`ALTER TABLE api_keys ADD COLUMN IF NOT EXISTS encrypted_key TEXT;`);
 
     console.log('Database initialized');
   } catch (error) {

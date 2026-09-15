@@ -136,3 +136,13 @@ export async function updateApiAction(
     return { success: false, error: error.message };
   }
 }
+
+export async function revealApiKeyAction(apiId: number, keyId: number) {
+  try {
+    const res = await fetchAPI(`/apis/${apiId}/keys/${keyId}/reveal`);
+    return { success: true, rawKey: res.rawKey };
+  } catch (error: any) {
+    if (isRedirectError(error)) throw error;
+    return { success: false, error: error.message };
+  }
+}

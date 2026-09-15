@@ -11,7 +11,7 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Drawer from '../../../components/Drawer';
-import { deleteApiAction, updateApiAction } from '../../../actions/api';
+import { deleteApiAction, updateApiAction, revealApiKeyAction } from '../../../actions/api';
 
 export default function ApiDetailClient({
   api,
@@ -448,18 +448,21 @@ export default function ApiDetailClient({
               key={i}
               className="row"
               style={{
-                gridTemplateColumns: '1fr auto',
+                gridTemplateColumns: '1fr auto auto',
                 padding: '10px 0',
                 borderBottom: i === keys.length - 1 ? 'none' : '1px solid var(--border)',
+                gap: '12px',
+                alignItems: 'center',
               }}
             >
               <div>
                 <div className="c-strong">{k.name}</div>
-                <div className="c-secondary mono">{k.key_prefix}</div>
+                <div className="c-secondary mono" style={{ fontSize: '12px' }}>{k.key_prefix}</div>
               </div>
-              <div className="c-secondary c-right">
-                created {new Date(k.created_at).toLocaleDateString()}
+              <div className="c-secondary" style={{ fontSize: '12px', whiteSpace: 'nowrap' }}>
+                {new Date(k.created_at).toLocaleDateString()}
               </div>
+              <CopyKeyButton apiId={api.id} keyId={k.id} />
             </div>
           ))}
           {keys.length === 0 && (
@@ -602,3 +605,39 @@ export default function ApiDetailClient({
     </>
   );
 }
+
+function CopyKeyButton({ apiId, keyId }: { apiId: number; keyId: number }) {
+  const [state, setState] = useState<'idle' | 'loading' | 'copied' | 'error'>('idle');
+  const [errorMsg, setErrorMsg] = useState('');
+
+  const handleCopy = async () => {
+    setState('loading');
+    setErrorMsg('');
+    const res = await revealApiKeyAction(apiId, keyId);
+    if (res.success && res.rawKey) {
+      await navigator.clipboard.writeText(res.rawKey);
+      setState('copied');
+      setTimeout(() => setState('idle'), 2000);
+    } else {
+      setErrorMsg(res.error || 'Failed to copy');
+      setState('error');
+      setTimeout(() => setState('idle'), 3000);
+    }
+  };
+
+  return (
+    <button
+      className="btn btn-secondary"
+      style={{ padding: '4px 10px', fontSize: '11px', height: 'auto', whiteSpace: 'nowrap', minWidth: '56px' }}
+      onClick={handleCopy}
+      disabled={state === 'loading'}
+      title={state === 'error' ? errorMsg : 'Copy API key to clipboard'}
+    >
+      {state === 'idle' && '⎘ Copy'}
+      {state === 'loading' && '...'}
+      {state === 'copied' && '✓ Copied'}
+      {state === 'error' && '✗ Error'}
+    </button>
+  );
+}
+

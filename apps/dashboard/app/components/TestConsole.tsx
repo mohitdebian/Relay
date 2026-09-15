@@ -17,7 +17,6 @@ export default function TestConsole({ apiSlug, keys }: { apiSlug: string, keys: 
   const sendRequest = async () => {
     setLoading(true);
     setResponse(null);
-    const start = Date.now();
     try {
       const targetUrl = `${gatewayUrl}/${apiSlug}${path.startsWith('/') ? path : '/' + path}`;
       
@@ -29,28 +28,26 @@ export default function TestConsole({ apiSlug, keys }: { apiSlug: string, keys: 
         headers['Authorization'] = `Bearer ${rawKey}`;
       }
 
-      const res = await fetch(targetUrl, {
-        method,
-        headers
+      // Route through our server-side proxy to avoid CORS issues
+      const res = await fetch('/api/proxy-test', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          method,
+          url: targetUrl,
+          headers,
+        }),
       });
-      const end = Date.now();
-      setLatency(end - start);
 
-      let body;
-      try {
-        body = await res.json();
-      } catch (e) {
-        body = await res.text();
-      }
-
+      const data = await res.json();
+      setLatency(data.latency || 0);
       setResponse({
-        status: res.status,
-        headers: Object.fromEntries(res.headers.entries()),
-        body
+        status: data.status,
+        headers: data.headers || {},
+        body: data.body
       });
     } catch (e: any) {
-      const end = Date.now();
-      setLatency(end - start);
+      setLatency(0);
       setResponse({
         status: 'Error',
         body: e.message

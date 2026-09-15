@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"net/url"
+	"os"
 	"strings"
 	"time"
 )
@@ -83,13 +84,21 @@ func (w *statusTrackingResponseWriter) WriteHeader(code int) {
 }
 
 func proxyHandler(w http.ResponseWriter, r *http.Request) {
-	// CORS: Allow the dashboard to call the gateway from the browser
+	// CORS: Only allow explicitly configured origins (e.g. the dashboard)
 	origin := r.Header.Get("Origin")
 	if origin != "" {
-		w.Header().Set("Access-Control-Allow-Origin", origin)
-		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS")
-		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, X-API-Key")
-		w.Header().Set("Access-Control-Max-Age", "86400")
+		allowedRaw := os.Getenv("ALLOWED_ORIGINS") // comma-separated, e.g. "https://dashboard.example.com,https://localhost:3000"
+		if allowedRaw != "" {
+			for _, allowed := range strings.Split(allowedRaw, ",") {
+				if strings.TrimSpace(allowed) == origin {
+					w.Header().Set("Access-Control-Allow-Origin", origin)
+					w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS")
+					w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, X-API-Key")
+					w.Header().Set("Access-Control-Max-Age", "86400")
+					break
+				}
+			}
+		}
 	}
 
 	// Handle preflight

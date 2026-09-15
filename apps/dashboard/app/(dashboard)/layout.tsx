@@ -3,7 +3,8 @@ import { cookies } from 'next/headers';
 import Sidebar from '../components/Sidebar';
 import Topbar from '../components/Topbar';
 import { fetchAPI } from '../lib/api';
-import RetroError from '../components/RetroError';
+import ConnectionError from '../components/ConnectionError';
+
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const cookieStore = await cookies();
 
@@ -19,7 +20,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   const { workspaces, error: fetchError } = result;
 
   if (fetchError) {
-    return <RetroError error={fetchError} />;
+    return <ConnectionError error={fetchError} />;
   }
 
   if (!workspaces || workspaces.length === 0) {

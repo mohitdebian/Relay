@@ -3,6 +3,7 @@ import { NewApiModal } from '@/app/components/modals/NewApiModal';
 import { ConfirmModal } from '@/app/components/modals/ConfirmModal';
 import Typewriter from '@/app/components/Typewriter';
 import LocalTime from '@/app/components/LocalTime';
+import TestConsole from '@/app/components/TestConsole';
 
 import { FilterDropdown } from '@/app/components/FilterDropdown';
 
@@ -154,7 +155,7 @@ export default function ApiDetailClient({
       </div>
 
       <div className="tabs">
-        {['overview', 'endpoints', 'traffic', 'logs', 'keys', 'settings'].map((tab) => (
+        {['overview', 'endpoints', 'traffic', 'logs', 'keys', 'test', 'settings'].map((tab) => (
           <div
             key={tab}
             className={`tab${activeTab === tab ? ' active' : ''}`}
@@ -469,6 +470,10 @@ export default function ApiDetailClient({
             </div>
           )}
         </div>
+      )}
+
+      {activeTab === 'test' && (
+        <TestConsole apiSlug={api.slug} keys={keys} />
       )}
 
       {activeTab === 'settings' && (

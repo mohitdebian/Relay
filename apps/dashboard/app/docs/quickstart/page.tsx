@@ -1,5 +1,6 @@
 import { cookies } from 'next/headers';
 import CodeCard from '../_components/CodeCard';
+import { fetchAPI } from '@/app/lib/api';
 
 export default async function QuickstartPage() {
   const cookieStore = await cookies();
@@ -11,6 +12,10 @@ export default async function QuickstartPage() {
 
   const workspaceId = cookieStore.get('relay_active_workspace')?.value || '1';
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.relay.dev';
+  const gatewayUrl = (process.env.NEXT_PUBLIC_GATEWAY_URL || 'http://127.0.0.1:8080').replace(/\/$/, '');
+
+  const { apis } = await fetchAPI('/apis').catch(() => ({ apis: [] }));
+  const defaultApi = apis && apis.length > 0 ? apis[0] : { id: 1, slug: 'my-first-api', name: 'My First API' };
 
   const createApiTabs = [
     {
@@ -45,10 +50,10 @@ export default async function QuickstartPage() {
       code: (
         <>
           <span className="docs-tok-comment">
-            # Create an API Key for your new API (replace 1 with your API ID)
+            # Create an API Key for your new API (replace {defaultApi.id} with your API ID)
           </span>
           {'\n'}
-          curl -X POST {apiUrl}/apis/1/keys \{'\n'}
+          curl -X POST {apiUrl}/apis/{defaultApi.id}/keys \{'\n'}
           {'  '}-H <span className="docs-tok-str">"Authorization: Bearer {token}"</span> \{'\n'}
           {'  '}-H <span className="docs-tok-str">"Content-Type: application/json"</span> \{'\n'}
           {'  '}-d{' '}
@@ -72,7 +77,7 @@ export default async function QuickstartPage() {
         <>
           <span className="docs-tok-comment"># Send a request through the Relay Gateway</span>
           {'\n'}
-          curl -X GET {apiUrl}/v1/my-first-api/anything \{'\n'}
+          curl -X GET {gatewayUrl}/{defaultApi.slug}/anything \{'\n'}
           {'  '}-H{' '}
           <span className="docs-tok-str">"Authorization: Bearer relay_live_YOUR_RAW_KEY"</span>
         </>

@@ -18,11 +18,14 @@ export default async function KeysPage() {
       fetchAPI(`/apis/${api.id}/keys`).catch((e) => {
         if (isRedirectError(e)) throw e;
         return {};
-      })
+      }).then((res: any) => ({ ...res, apiName: api.name }))
     );
     const keysResults = await Promise.all(keysPromises);
     keysResults.forEach((res) => {
-      if (res.keys) allKeys = [...allKeys, ...res.keys];
+      if (res.keys) {
+        const enrichedKeys = res.keys.map((k: any) => ({ ...k, apiName: res.apiName }));
+        allKeys = [...allKeys, ...enrichedKeys];
+      }
     });
   }
 
@@ -61,7 +64,14 @@ export default async function KeysPage() {
           <div className="panel">
             {groupedKeys[env]?.map((k) => (
               <div key={k.id} className="row" style={{ gridTemplateColumns: '1fr 1fr auto' }}>
-                <div className="c-strong">{k.name}</div>
+                <div className="c-strong">
+                  {k.name}
+                  {k.apiName && (
+                    <span className="c-secondary" style={{ fontWeight: 400, marginLeft: '8px', fontSize: '12px' }}>
+                      ({k.apiName})
+                    </span>
+                  )}
+                </div>
                 <div className="c-secondary mono">{k.key_prefix}</div>
                 <div className="c-secondary c-right">
                   created {new Date(k.created_at).toLocaleDateString()}

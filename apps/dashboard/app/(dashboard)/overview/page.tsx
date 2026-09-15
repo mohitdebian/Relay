@@ -95,206 +95,215 @@ export default async function OverviewPage() {
         <NewApiButton />
       </div>
 
-      <div className="stat-row">
-        <div className="stat">
-          <div className="stat-label">Requests (24h)</div>
-          <div className="stat-value">
-            {analyticsOverview ? analyticsOverview.totalRequests : '---'}
-          </div>
-          <div className="stat-delta">
-            {!analyticsOverview ? (
-              'N/A'
-            ) : lowVolume ? (
-              <span className="c-secondary">not enough data for a trend</span>
-            ) : analyticsOverview.totalRequestsDelta !== undefined ? (
-              <span className={analyticsOverview.totalRequestsDelta >= 0 ? 'green' : 'red'}>
-                {analyticsOverview.totalRequestsDelta > 0 ? '+' : ''}
-                {analyticsOverview.totalRequestsDelta}%
-              </span>
-            ) : (
-              'N/A'
-            )}
-          </div>
-        </div>
-        <div className="stat">
-          <div className="stat-label">Success rate</div>
-          <div className={`stat-value ${successRateColor}`}>
-            {successRate !== null ? Math.round(successRate) + '%' : '---'}
-          </div>
-          <div className="stat-delta">
-            {!analyticsOverview ? (
-              'N/A'
-            ) : lowVolume ? (
-              <span className="c-secondary">
-                {analyticsOverview.totalErrors} of {analyticsOverview.totalRequests} failed
-              </span>
-            ) : analyticsOverview.successRateDelta !== undefined ? (
-              <span className={analyticsOverview.successRateDelta >= 0 ? 'green' : 'red'}>
-                {analyticsOverview.successRateDelta > 0 ? '+' : ''}
-                {analyticsOverview.successRateDelta}%
-              </span>
-            ) : (
-              'N/A'
-            )}
-          </div>
-        </div>
-        <div className="stat">
-          <div className="stat-label">p95 latency</div>
-          <div className="stat-value">
-            {analyticsOverview ? analyticsOverview.averageLatencyMs + 'ms' : '---'}
-          </div>
-          <div className="stat-delta">
-            {!analyticsOverview ? (
-              'N/A'
-            ) : lowVolume ? (
-              <span className="c-secondary">not enough data for a trend</span>
-            ) : analyticsOverview.averageLatencyDelta !== undefined ? (
-              <span className={analyticsOverview.averageLatencyDelta <= 0 ? 'green' : 'red'}>
-                {analyticsOverview.averageLatencyDelta > 0 ? '+' : ''}
-                {analyticsOverview.averageLatencyDelta}%
-              </span>
-            ) : (
-              'N/A'
-            )}
-          </div>
-        </div>
-        <div className="stat">
-          <div className="stat-label">Active API keys</div>
-          <div className="stat-value">{allKeys.length}</div>
-          <div className="stat-delta">across all APIs</div>
-        </div>
-      </div>
-
-      <div className="section">
-        <div className="section-head">
-          <div className="section-title">Your APIs</div>
-          <Link href="/apis" className="section-link">
-            View all
-          </Link>
-        </div>
-        <div className="panel">
-          {apis.length === 0 && (
-            <div style={{ padding: '16px', color: 'var(--text-secondary)' }}>
-              No APIs found. Create one to get started.<span className="cursor-blink"></span>
+      {apis.length === 0 ? (
+        <div className="panel" style={{ padding: '64px 20px', textAlign: 'center', marginTop: '24px' }}>
+          <div style={{ marginBottom: '24px' }}>
+            <div className="page-title" style={{ justifyContent: 'center', marginBottom: '8px' }}>Welcome to Relay</div>
+            <div className="c-secondary" style={{ maxWidth: '400px', margin: '0 auto', lineHeight: 1.5 }}>
+              Your workspace is ready. To start routing traffic, enforcing rate limits, and collecting analytics, you need to create your first API target.
             </div>
-          )}
-          {apis.map((api: any) => (
-            <Link
-              key={api.id}
-              href={`/apis/${api.id}`}
-              className="row clickable"
-              style={{ gridTemplateColumns: '1fr auto' }}
-            >
-              <div>
-                <div className="c-strong">{api.name}</div>
-                <div className="c-secondary">
-                  REST · v1{' '}
-                  <span className="tag" style={{ marginLeft: '6px' }}>
-                    {api.environment}
+          </div>
+          <NewApiButton />
+        </div>
+      ) : (
+        <>
+          <div className="stat-row">
+            <div className="stat">
+              <div className="stat-label">Requests (24h)</div>
+              <div className="stat-value">
+                {analyticsOverview ? analyticsOverview.totalRequests : '---'}
+              </div>
+              <div className="stat-delta">
+                {!analyticsOverview ? (
+                  'N/A'
+                ) : lowVolume ? (
+                  <span className="c-secondary">not enough data for a trend</span>
+                ) : analyticsOverview.totalRequestsDelta !== undefined ? (
+                  <span className={analyticsOverview.totalRequestsDelta >= 0 ? 'green' : 'red'}>
+                    {analyticsOverview.totalRequestsDelta > 0 ? '+' : ''}
+                    {analyticsOverview.totalRequestsDelta}%
                   </span>
-                </div>
+                ) : (
+                  'N/A'
+                )}
               </div>
-              <div className={`status ${api.status || 'active'} c-right`}>
-                <span
-                  className={`dot ${(api.status?.toLowerCase() || 'active') === 'active' ? 'green' : 'yellow'}`}
-                ></span>
-                {(api.status?.toLowerCase() || 'active') === 'active' ? 'Healthy' : 'Degraded'}
+            </div>
+            <div className="stat">
+              <div className="stat-label">Success rate</div>
+              <div className={`stat-value ${successRateColor}`}>
+                {successRate !== null ? Math.round(successRate) + '%' : '---'}
               </div>
-            </Link>
-          ))}
-        </div>
-      </div>
+              <div className="stat-delta">
+                {!analyticsOverview ? (
+                  'N/A'
+                ) : lowVolume ? (
+                  <span className="c-secondary">
+                    {analyticsOverview.totalErrors} of {analyticsOverview.totalRequests} failed
+                  </span>
+                ) : analyticsOverview.successRateDelta !== undefined ? (
+                  <span className={analyticsOverview.successRateDelta >= 0 ? 'green' : 'red'}>
+                    {analyticsOverview.successRateDelta > 0 ? '+' : ''}
+                    {analyticsOverview.successRateDelta}%
+                  </span>
+                ) : (
+                  'N/A'
+                )}
+              </div>
+            </div>
+            <div className="stat">
+              <div className="stat-label">p95 latency</div>
+              <div className="stat-value">
+                {analyticsOverview ? analyticsOverview.averageLatencyMs + 'ms' : '---'}
+              </div>
+              <div className="stat-delta">
+                {!analyticsOverview ? (
+                  'N/A'
+                ) : lowVolume ? (
+                  <span className="c-secondary">not enough data for a trend</span>
+                ) : analyticsOverview.averageLatencyDelta !== undefined ? (
+                  <span className={analyticsOverview.averageLatencyDelta <= 0 ? 'green' : 'red'}>
+                    {analyticsOverview.averageLatencyDelta > 0 ? '+' : ''}
+                    {analyticsOverview.averageLatencyDelta}%
+                  </span>
+                ) : (
+                  'N/A'
+                )}
+              </div>
+            </div>
+            <div className="stat">
+              <div className="stat-label">Active API keys</div>
+              <div className="stat-value">{allKeys.length}</div>
+              <div className="stat-delta">across all APIs</div>
+            </div>
+          </div>
 
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '1.5fr 1fr',
-          gap: '24px',
-        }}
-      >
-        <div className="section">
-          <div className="section-head">
-            <div className="section-title">Recent activity</div>
-            <Link href="/logs" className="section-link">
-              View logs
-            </Link>
-          </div>
-          <div className="panel">
-            {(!logs || logs.length === 0) && (
-              <div style={{ padding: '16px', color: 'var(--text-secondary)' }}>
-                No logs found.<span className="cursor-blink"></span>
-              </div>
-            )}
-            {logs.slice(0, 5).map((log: any, index: number) => (
-              <div key={index} className="row log-row">
-                <span className="c-secondary mono" style={{ whiteSpace: 'nowrap' }}>
-                  <LocalTime time={log.time} removeSeconds={true} />
-                </span>
-                <span className={`method ${log.method.toLowerCase()}`}>{log.method}</span>
-                <span
-                  className="mono"
-                  style={{
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  {log.path}
-                </span>
-                <span
-                  className="mono c-right"
-                  style={{
-                    color: log.status < 400 ? 'var(--green)' : 'var(--red)',
-                  }}
-                >
-                  {log.status}
-                </span>
-                <span className="mono c-secondary c-right">{log.latency}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="section">
-          <div className="section-head">
-            <div className="section-title">API keys</div>
-            <Link href="/keys" className="section-link">
-              Manage
-            </Link>
-          </div>
-          <div className="panel" style={{ padding: '14px 16px' }}>
-            {overviewKeys.length === 0 && (
-              <div className="row" style={{ padding: 0 }}>
-                <span className="c-secondary">
-                  No keys found.<span className="cursor-blink"></span>
-                </span>
-              </div>
-            )}
-            {overviewKeys.map((k: any, index: number) => {
-              const isLast = index === overviewKeys.length - 1;
-              return (
-                <div
-                  key={k.id}
-                  className="row"
-                  style={{
-                    gridTemplateColumns: '1fr auto',
-                    padding: '10px 0',
-                    borderBottom: isLast ? 'none' : '1px solid var(--border)',
-                  }}
+          <div className="section">
+            <div className="section-head">
+              <div className="section-title">Your APIs</div>
+              <Link href="/apis" className="section-link">
+                View all
+              </Link>
+            </div>
+            <div className="panel">
+              {apis.map((api: any) => (
+                <Link
+                  key={api.id}
+                  href={`/apis/${api.id}`}
+                  className="row clickable"
+                  style={{ gridTemplateColumns: '1fr auto' }}
                 >
                   <div>
-                    <div className="c-strong">{k.name}</div>
-                    <div className="c-secondary mono">{k.key_prefix}</div>
+                    <div className="c-strong">{api.name}</div>
+                    <div className="c-secondary">
+                      REST · v1{' '}
+                      <span className="tag" style={{ marginLeft: '6px' }}>
+                        {api.environment}
+                      </span>
+                    </div>
                   </div>
-                  <div className="c-secondary c-right">
-                    created {new Date(k.created_at).toLocaleDateString()}
+                  <div className={`status ${api.status || 'active'} c-right`}>
+                    <span
+                      className={`dot ${(api.status?.toLowerCase() || 'active') === 'active' ? 'green' : 'yellow'}`}
+                    ></span>
+                    {(api.status?.toLowerCase() || 'active') === 'active' ? 'Healthy' : 'Degraded'}
                   </div>
-                </div>
-              );
-            })}
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
-      </div>
+
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: '1.5fr 1fr',
+              gap: '24px',
+            }}
+          >
+            <div className="section">
+              <div className="section-head">
+                <div className="section-title">Recent activity</div>
+                <Link href="/logs" className="section-link">
+                  View logs
+                </Link>
+              </div>
+              <div className="panel">
+                {(!logs || logs.length === 0) && (
+                  <div style={{ padding: '16px', color: 'var(--text-secondary)' }}>
+                    No logs found.<span className="cursor-blink"></span>
+                  </div>
+                )}
+                {logs.slice(0, 5).map((log: any, index: number) => (
+                  <div key={index} className="row log-row">
+                    <span className="c-secondary mono" style={{ whiteSpace: 'nowrap' }}>
+                      <LocalTime time={log.time} removeSeconds={true} />
+                    </span>
+                    <span className={`method ${log.method.toLowerCase()}`}>{log.method}</span>
+                    <span
+                      className="mono"
+                      style={{
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {log.path}
+                    </span>
+                    <span
+                      className="mono c-right"
+                      style={{
+                        color: log.status < 400 ? 'var(--green)' : 'var(--red)',
+                      }}
+                    >
+                      {log.status}
+                    </span>
+                    <span className="mono c-secondary c-right">{log.latency}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="section">
+              <div className="section-head">
+                <div className="section-title">API keys</div>
+                <Link href="/keys" className="section-link">
+                  Manage
+                </Link>
+              </div>
+              <div className="panel" style={{ padding: '14px 16px' }}>
+                {overviewKeys.length === 0 && (
+                  <div className="row" style={{ padding: 0 }}>
+                    <span className="c-secondary">
+                      No keys found.<span className="cursor-blink"></span>
+                    </span>
+                  </div>
+                )}
+                {overviewKeys.map((k: any, index: number) => {
+                  const isLast = index === overviewKeys.length - 1;
+                  return (
+                    <div
+                      key={k.id}
+                      className="row"
+                      style={{
+                        gridTemplateColumns: '1fr auto',
+                        padding: '10px 0',
+                        borderBottom: isLast ? 'none' : '1px solid var(--border)',
+                      }}
+                    >
+                      <div>
+                        <div className="c-strong">{k.name}</div>
+                        <div className="c-secondary mono">{k.key_prefix}</div>
+                      </div>
+                      <div className="c-secondary c-right">
+                        created {new Date(k.created_at).toLocaleDateString()}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 }

@@ -95,7 +95,7 @@ export function NewApiModal({ open, onClose }: NewApiModalProps) {
               />
             </div>
             <div className="field">
-              <label>Target URL</label>
+              <label>Target URL (Your existing backend server)</label>
               <input
                 type="url"
                 placeholder="https://api.yourdomain.com"
@@ -218,6 +218,13 @@ export function NewApiModal({ open, onClose }: NewApiModalProps) {
                 >
                   {copyText}
                 </button>
+              </div>
+            </div>
+            <div className="modal-kv-panel" style={{ marginTop: '16px', background: 'var(--bg-app)' }}>
+              <div style={{ marginBottom: '8px', fontSize: '12px', fontWeight: 500, color: 'var(--text-secondary)' }}>TEST YOUR NEW API</div>
+              <div className="mono" style={{ fontSize: '12px', color: 'var(--text-primary)', whiteSpace: 'pre-wrap', wordBreak: 'break-all', lineHeight: 1.5 }}>
+                curl -H "Authorization: Bearer {createdData?.rawKey || 'YOUR_KEY'}" \<br />
+                {(process.env.NEXT_PUBLIC_GATEWAY_URL || (typeof window !== 'undefined' && window.location.hostname !== 'localhost' ? 'https://your-gateway.com' : 'http://127.0.0.1:8080')).replace(/\/$/, '')}/{createdData?.slug || 'api'}
               </div>
             </div>
             <div className="modal-warning">

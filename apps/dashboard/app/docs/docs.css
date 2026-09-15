@@ -167,6 +167,19 @@
 .docs-p.muted {
   color: var(--text-secondary);
 }
+.docs-ul {
+  font-size: 15px;
+  color: var(--text);
+  margin-bottom: 18px;
+  padding-left: 20px;
+  line-height: 1.8;
+}
+.docs-ul li {
+  margin-bottom: 8px;
+}
+.docs-ul li:last-child {
+  margin-bottom: 0;
+}
 code.docs-inline {
   font-family: 'JetBrains Mono', monospace;
   font-size: 13.5px;

@@ -20,7 +20,7 @@ async function checkWorkspaceAccess(userId: number, workspaceId: number): Promis
 // GET /analytics/overview
 // Workspace-level analytics
 router.get('/overview', async (req: AuthRequest, res: Response): Promise<void> => {
-  const workspaceId = req.workspaceId || req.query.workspaceId;
+  let workspaceId = req.workspaceId || req.query.workspaceId;
   const userId = req.user?.id;
 
   if (!userId) {
@@ -29,8 +29,16 @@ router.get('/overview', async (req: AuthRequest, res: Response): Promise<void> =
   }
 
   if (!workspaceId) {
-    res.status(400).json({ error: 'Workspace context is missing' });
-    return;
+    const defaultWorkspace = await pool.query(
+      'SELECT workspace_id FROM workspace_members WHERE user_id = $1 ORDER BY joined_at ASC LIMIT 1',
+      [userId]
+    );
+    if (defaultWorkspace.rows.length > 0) {
+      workspaceId = defaultWorkspace.rows[0].workspace_id;
+    } else {
+      res.status(400).json({ error: 'Workspace context is missing' });
+      return;
+    }
   }
 
   const parsedWorkspaceId = parseInt(workspaceId as string, 10);

@@ -415,7 +415,11 @@ export default function ApiDetailClient({
               <div
                 key={i}
                 className="row log-row"
-                style={{ gridTemplateColumns: '100px 70px 1.6fr 70px 70px' }}
+                style={{ gridTemplateColumns: '100px 70px 1.6fr 70px 70px', cursor: 'pointer' }}
+                onClick={() => {
+                  setDrawerLog(log);
+                  setDrawerOpen(true);
+                }}
               >
                 <span className="c-secondary mono">{log.time}</span>
                 <span className={`method ${log.method.toLowerCase()}`}>{log.method}</span>

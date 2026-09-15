@@ -146,9 +146,13 @@ type RequestLog struct {
 	ApiKeyID    int
 	Method      string
 	Path        string
-	StatusCode  int
-	LatencyMs   int64
-	WorkspaceID int
+	StatusCode      int
+	LatencyMs       int64
+	WorkspaceID     int
+	IpAddress       string
+	UserAgent       string
+	RequestHeaders  string
+	ResponseHeaders string
 }
 
 var (
@@ -226,8 +230,8 @@ func flushLogs(logs []RequestLog) {
 	
 	// Fast bulk insert using unnest
 	query := `
-		INSERT INTO api_request_logs (api_id, api_key_id, method, path, status_code, latency_ms, workspace_id)
-		SELECT * FROM unnest($1::int[], $2::int[], $3::varchar[], $4::varchar[], $5::int[], $6::int[], $7::int[])
+		INSERT INTO api_request_logs (api_id, api_key_id, method, path, status_code, latency_ms, workspace_id, ip_address, user_agent, request_headers, response_headers)
+		SELECT * FROM unnest($1::int[], $2::int[], $3::varchar[], $4::varchar[], $5::int[], $6::int[], $7::int[], $8::varchar[], $9::text[], $10::jsonb[], $11::jsonb[])
 	`
 	
 	apiIds := make([]int, len(logs))
@@ -237,6 +241,10 @@ func flushLogs(logs []RequestLog) {
 	statuses := make([]int, len(logs))
 	latencies := make([]int64, len(logs))
 	workspaceIds := make([]int, len(logs))
+	ips := make([]sql.NullString, len(logs))
+	userAgents := make([]sql.NullString, len(logs))
+	reqHeaders := make([]sql.NullString, len(logs))
+	resHeaders := make([]sql.NullString, len(logs))
 	
 	for i, l := range logs {
 		apiIds[i] = l.ApiID
@@ -255,12 +263,37 @@ func flushLogs(logs []RequestLog) {
 		statuses[i] = l.StatusCode
 		latencies[i] = l.LatencyMs
 		workspaceIds[i] = l.WorkspaceID
+		
+		if l.IpAddress != "" {
+			ips[i] = sql.NullString{String: l.IpAddress, Valid: true}
+		} else {
+			ips[i] = sql.NullString{Valid: false}
+		}
+		
+		if l.UserAgent != "" {
+			userAgents[i] = sql.NullString{String: l.UserAgent, Valid: true}
+		} else {
+			userAgents[i] = sql.NullString{Valid: false}
+		}
+		
+		if l.RequestHeaders != "" {
+			reqHeaders[i] = sql.NullString{String: l.RequestHeaders, Valid: true}
+		} else {
+			reqHeaders[i] = sql.NullString{Valid: false}
+		}
+		
+		if l.ResponseHeaders != "" {
+			resHeaders[i] = sql.NullString{String: l.ResponseHeaders, Valid: true}
+		} else {
+			resHeaders[i] = sql.NullString{Valid: false}
+		}
 	}
 	
 	_, err := db.Exec(query, 
 		pq.Array(apiIds), pq.Array(keyIds), pq.Array(methods), 
 		pq.Array(paths), pq.Array(statuses), pq.Array(latencies),
-		pq.Array(workspaceIds),
+		pq.Array(workspaceIds), pq.Array(ips), pq.Array(userAgents),
+		pq.Array(reqHeaders), pq.Array(resHeaders),
 	)
 	if err != nil {
 		log.Printf("Failed to bulk insert logs: %v", err)
@@ -300,16 +333,20 @@ func updateApiKeyLastUsed(id int) {
 	}
 }
 
-func logRequest(apiId int, apiKeyId int, method string, path string, statusCode int, latencyMs int64, workspaceId int) {
+func logRequest(apiId int, apiKeyId int, method string, path string, statusCode int, latencyMs int64, workspaceId int, ipAddress string, userAgent string, reqHeaders string, resHeaders string) {
 	select {
 	case logChan <- RequestLog{
-		ApiID:       apiId,
-		ApiKeyID:    apiKeyId,
-		Method:      method,
-		Path:        path,
-		StatusCode:  statusCode,
-		LatencyMs:   latencyMs,
-		WorkspaceID: workspaceId,
+		ApiID:           apiId,
+		ApiKeyID:        apiKeyId,
+		Method:          method,
+		Path:            path,
+		StatusCode:      statusCode,
+		LatencyMs:       latencyMs,
+		WorkspaceID:     workspaceId,
+		IpAddress:       ipAddress,
+		UserAgent:       userAgent,
+		RequestHeaders:  reqHeaders,
+		ResponseHeaders: resHeaders,
 	}:
 	default:
 		log.Printf("WARN: Log channel full, dropping request log for API ID %d", apiId)

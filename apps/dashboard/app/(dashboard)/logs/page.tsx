@@ -1,12 +1,15 @@
+import { fetchAPI } from '@/app/lib/api';
 import LogsClient from './LogsClient';
 
-const logs = [
-  { time: '12:04:11', method: 'GET', path: '/api/v1/workspaces', status: 200, latency: '45ms' },
-  { time: '12:03:59', method: 'POST', path: '/api/v1/auth/login', status: 200, latency: '120ms' },
-  { time: '12:01:23', method: 'GET', path: '/api/v1/users/me', status: 401, latency: '12ms' },
-];
+export default async function LogsPage() {
+  let logs: any[] = [];
+  try {
+    const logsRes = await fetchAPI('/logs');
+    if (logsRes.logs) logs = logsRes.logs;
+  } catch (e) {
+    console.error('Failed to fetch logs', e);
+  }
 
-export default function LogsPage() {
   return (
     <div className="page">
       <div className="page-head">

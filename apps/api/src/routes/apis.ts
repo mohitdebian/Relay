@@ -416,6 +416,10 @@ router.get('/:id/logs', async (req: AuthRequest, res: Response) => {
         l.created_at,
         l.method,
         l.path,
+        l.ip_address,
+        l.user_agent,
+        l.request_headers,
+        l.response_headers,
         a.name as api_name,
         a.upstream_url
       FROM api_request_logs l
@@ -444,6 +448,10 @@ router.get('/:id/logs', async (req: AuthRequest, res: Response) => {
       status: row.status_code,
       latency: `${row.latency_ms}ms`,
       api: row.api_name,
+      ipAddress: row.ip_address,
+      userAgent: row.user_agent,
+      requestHeaders: row.request_headers,
+      responseHeaders: row.response_headers,
     }));
 
     res.json({ logs });

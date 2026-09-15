@@ -82,6 +82,10 @@ export async function initDb() {
       ALTER TABLE api_request_logs ADD COLUMN IF NOT EXISTS method VARCHAR(10) NOT NULL DEFAULT 'GET';
       ALTER TABLE api_request_logs ADD COLUMN IF NOT EXISTS path VARCHAR(255) NOT NULL DEFAULT '/';
       ALTER TABLE api_request_logs ADD COLUMN IF NOT EXISTS workspace_id INTEGER REFERENCES workspaces(id) ON DELETE CASCADE;
+      ALTER TABLE api_request_logs ADD COLUMN IF NOT EXISTS ip_address VARCHAR(45);
+      ALTER TABLE api_request_logs ADD COLUMN IF NOT EXISTS user_agent TEXT;
+      ALTER TABLE api_request_logs ADD COLUMN IF NOT EXISTS request_headers JSONB;
+      ALTER TABLE api_request_logs ADD COLUMN IF NOT EXISTS response_headers JSONB;
       
       CREATE INDEX IF NOT EXISTS idx_api_request_logs_api_id ON api_request_logs(api_id);
       CREATE INDEX IF NOT EXISTS idx_api_request_logs_created_at ON api_request_logs(created_at);

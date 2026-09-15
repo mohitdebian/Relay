@@ -90,6 +90,16 @@ func proxyHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var apiId, apiKeyId, workspaceId int
+	
+	var reqHeadersStr, resHeadersStr string
+	reqHeadersBytes, _ := json.Marshal(r.Header)
+	reqHeadersStr = string(reqHeadersBytes)
+	
+	userAgent := r.UserAgent()
+	ipAddress := r.RemoteAddr
+	if forwarded := r.Header.Get("X-Forwarded-For"); forwarded != "" {
+		ipAddress = strings.Split(forwarded, ",")[0]
+	}
 
 	defer func() {
 		if apiId != 0 {
@@ -99,8 +109,12 @@ func proxyHandler(w http.ResponseWriter, r *http.Request) {
 			if len(pathParts) > 1 && pathParts[1] != "" {
 				loggedPath = "/" + pathParts[1]
 			}
+			
+			resHeadersBytes, _ := json.Marshal(trackingWriter.Header())
+			resHeadersStr = string(resHeadersBytes)
+			
 			// Fire and forget logging the request
-			go logRequest(apiId, apiKeyId, r.Method, loggedPath, trackingWriter.statusCode, latencyMs, workspaceId)
+			go logRequest(apiId, apiKeyId, r.Method, loggedPath, trackingWriter.statusCode, latencyMs, workspaceId, ipAddress, userAgent, reqHeadersStr, resHeadersStr)
 		}
 	}()
 

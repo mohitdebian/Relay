@@ -83,6 +83,21 @@ func (w *statusTrackingResponseWriter) WriteHeader(code int) {
 }
 
 func proxyHandler(w http.ResponseWriter, r *http.Request) {
+	// CORS: Allow the dashboard to call the gateway from the browser
+	origin := r.Header.Get("Origin")
+	if origin != "" {
+		w.Header().Set("Access-Control-Allow-Origin", origin)
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, X-API-Key")
+		w.Header().Set("Access-Control-Max-Age", "86400")
+	}
+
+	// Handle preflight
+	if r.Method == http.MethodOptions {
+		w.WriteHeader(http.StatusNoContent)
+		return
+	}
+
 	start := time.Now()
 	trackingWriter := &statusTrackingResponseWriter{
 		ResponseWriter: w,
@@ -147,8 +162,14 @@ func proxyHandler(w http.ResponseWriter, r *http.Request) {
 	apiId = api.ID
 	workspaceId = api.WorkspaceID
 
-	// 2. Extract and Verify API Key
+	// 2. Extract and Verify API Key (supports both X-API-Key and Authorization: Bearer)
 	rawKey := r.Header.Get("X-API-Key")
+	if rawKey == "" {
+		authHeader := r.Header.Get("Authorization")
+		if strings.HasPrefix(authHeader, "Bearer ") {
+			rawKey = strings.TrimPrefix(authHeader, "Bearer ")
+		}
+	}
 	if rawKey == "" {
 		sendError(trackingWriter, http.StatusUnauthorized, "missing_api_key")
 		return

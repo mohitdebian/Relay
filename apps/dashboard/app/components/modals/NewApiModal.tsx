@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Typewriter from '../Typewriter';
 import Modal from '../Modal';
 
@@ -13,6 +14,7 @@ import { Dropdown } from '../Dropdown';
 import { createApiAction } from '@/app/actions/api';
 
 export function NewApiModal({ open, onClose }: NewApiModalProps) {
+  const router = useRouter();
   const [step, setStep] = useState<1 | 2>(1);
   const [name, setName] = useState('');
   const [apiType, setApiType] = useState('REST');
@@ -21,6 +23,7 @@ export function NewApiModal({ open, onClose }: NewApiModalProps) {
   const [desc, setDesc] = useState('');
   const [copyText, setCopyText] = useState('Copy');
   const [copyUrlText, setCopyUrlText] = useState('Copy');
+  const [copyCurlText, setCopyCurlText] = useState('Copy');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [createdData, setCreatedData] = useState<{
@@ -41,9 +44,14 @@ export function NewApiModal({ open, onClose }: NewApiModalProps) {
       setDesc('');
       setCopyText('Copy');
       setCopyUrlText('Copy');
+      setCopyCurlText('Copy');
       setError('');
       setIsSubmitting(false);
       setCreatedData(null);
+      // Refresh the page data now that the modal has fully animated out
+      if (step === 2) {
+        router.refresh();
+      }
     }, 200); // Wait for transition
   };
 
@@ -72,6 +80,16 @@ export function NewApiModal({ open, onClose }: NewApiModalProps) {
     navigator.clipboard.writeText(createdData.rawKey).then(() => {
       setCopyText('Copied!');
       setTimeout(() => setCopyText('Copy'), 2000);
+    });
+  };
+
+  const copyCurlCommand = () => {
+    if (!createdData) return;
+    const url = `${(process.env.NEXT_PUBLIC_GATEWAY_URL || (typeof window !== 'undefined' && window.location.hostname !== 'localhost' ? 'https://your-gateway.com' : 'http://127.0.0.1:8080')).replace(/\/$/, '')}/${createdData.slug}`;
+    const cmd = `curl -H "Authorization: Bearer ${createdData.rawKey}" \\\n${url}`;
+    navigator.clipboard.writeText(cmd).then(() => {
+      setCopyCurlText('Copied!');
+      setTimeout(() => setCopyCurlText('Copy'), 2000);
     });
   };
 
@@ -220,11 +238,16 @@ export function NewApiModal({ open, onClose }: NewApiModalProps) {
                 </button>
               </div>
             </div>
-            <div className="modal-kv-panel" style={{ marginTop: '16px', background: 'var(--bg-app)' }}>
-              <div style={{ marginBottom: '8px', fontSize: '12px', fontWeight: 500, color: 'var(--text-secondary)' }}>TEST YOUR NEW API</div>
-              <div className="mono" style={{ fontSize: '12px', color: 'var(--text-primary)', whiteSpace: 'pre-wrap', wordBreak: 'break-all', lineHeight: 1.5 }}>
-                curl -H "Authorization: Bearer {createdData?.rawKey || 'YOUR_KEY'}" \<br />
-                {(process.env.NEXT_PUBLIC_GATEWAY_URL || (typeof window !== 'undefined' && window.location.hostname !== 'localhost' ? 'https://your-gateway.com' : 'http://127.0.0.1:8080')).replace(/\/$/, '')}/{createdData?.slug || 'api'}
+            <div style={{ marginTop: '24px', border: '1px solid var(--border)', borderRadius: 'var(--radius)', overflow: 'hidden' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'var(--bg-app)', padding: '8px 12px', borderBottom: '1px solid var(--border)' }}>
+                <div style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-secondary)', letterSpacing: '0.5px' }}>TEST YOUR NEW API</div>
+                <button type="button" className="btn btn-secondary" style={{ padding: '4px 8px', fontSize: '11px', height: 'auto' }} onClick={copyCurlCommand}>
+                  {copyCurlText}
+                </button>
+              </div>
+              <div className="mono" style={{ padding: '16px', background: '#0a0a0a', color: '#e5e5e5', fontSize: '12px', whiteSpace: 'pre-wrap', wordBreak: 'break-all', lineHeight: 1.6 }}>
+                <span style={{ color: '#569cd6' }}>curl</span> -H <span style={{ color: '#ce9178' }}>"Authorization: Bearer {createdData?.rawKey || 'YOUR_KEY'}"</span> \<br />
+                <span style={{ color: '#4ec9b0' }}>{(process.env.NEXT_PUBLIC_GATEWAY_URL || (typeof window !== 'undefined' && window.location.hostname !== 'localhost' ? 'https://your-gateway.com' : 'http://127.0.0.1:8080')).replace(/\/$/, '')}/{createdData?.slug || 'api'}</span>
               </div>
             </div>
             <div className="modal-warning">

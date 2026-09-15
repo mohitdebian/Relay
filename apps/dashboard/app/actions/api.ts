@@ -55,10 +55,8 @@ export async function createApiAction(
       }),
     });
 
-    // 4. Force Next.js to refresh the Server Components so they show the new API
-    revalidatePath('/overview');
-    revalidatePath('/apis');
-
+    // Removed revalidatePath here to prevent unmounting the modal while the user is viewing the key.
+    // We will refresh the router on the client side when the modal closes instead.
     return { success: true, api: res.api, key: keyRes };
   } catch (error: any) {
     if (isRedirectError(error)) throw error;

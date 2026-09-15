@@ -16,6 +16,7 @@ import auditRoutes from './routes/audit';
 import webhooksRoutes from './routes/webhooks';
 import logsRoutes from './routes/logs';
 import invitationsRoutes from './routes/invitations';
+import usersRoutes from './routes/users';
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -45,6 +46,7 @@ app.use('/analytics', analyticsRoutes);
 app.use('/webhooks', webhooksRoutes);
 app.use('/logs', logsRoutes);
 app.use('/invitations', invitationsRoutes);
+app.use('/users', usersRoutes);
 
 // Check database connection on startup
 pool

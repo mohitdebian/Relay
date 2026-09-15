@@ -25,10 +25,14 @@ export default function SettingsForm({ workspace }: { workspace: Workspace | nul
 
   const [wsModalOpen, setWsModalOpen] = useState(false);
   const [wsConfirmText, setWsConfirmText] = useState('');
+  const [wsDeleting, setWsDeleting] = useState(false);
+  const [wsDeleteError, setWsDeleteError] = useState('');
   const wsRequiredText = `delete my ${workspace?.name || 'workspace'} workspace`;
 
   const [accModalOpen, setAccModalOpen] = useState(false);
   const [accConfirmText, setAccConfirmText] = useState('');
+  const [accDeleting, setAccDeleting] = useState(false);
+  const [accDeleteError, setAccDeleteError] = useState('');
   const accRequiredText = 'delete my account';
 
   const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -186,17 +190,31 @@ export default function SettingsForm({ workspace }: { workspace: Workspace | nul
               placeholder={wsRequiredText}
             />
           </div>
+          {wsDeleteError && (
+            <div style={{ color: 'var(--red)', fontSize: '13px', marginTop: '12px' }}>
+              {wsDeleteError}
+            </div>
+          )}
         </div>
         <div className="modal-foot">
-          <button className="btn btn-secondary" onClick={() => setWsModalOpen(false)}>
+          <button className="btn btn-secondary" onClick={() => { setWsModalOpen(false); setWsDeleteError(''); setWsConfirmText(''); }}>
             Cancel
           </button>
           <button
             className="btn btn-danger"
-            disabled={wsConfirmText !== wsRequiredText}
-            onClick={() => workspace && deleteWorkspaceAction(workspace.id.toString())}
+            disabled={wsConfirmText !== wsRequiredText || wsDeleting}
+            onClick={async () => {
+              if (!workspace) return;
+              setWsDeleting(true);
+              setWsDeleteError('');
+              const res = await deleteWorkspaceAction(workspace.id.toString());
+              if (res?.error) {
+                setWsDeleteError(res.error);
+                setWsDeleting(false);
+              }
+            }}
           >
-            I understand, delete workspace
+            {wsDeleting ? 'Deleting...' : 'I understand, delete workspace'}
           </button>
         </div>
       </Modal>
@@ -220,17 +238,30 @@ export default function SettingsForm({ workspace }: { workspace: Workspace | nul
               placeholder={accRequiredText}
             />
           </div>
+          {accDeleteError && (
+            <div style={{ color: 'var(--red)', fontSize: '13px', marginTop: '12px' }}>
+              {accDeleteError}
+            </div>
+          )}
         </div>
         <div className="modal-foot">
-          <button className="btn btn-secondary" onClick={() => setAccModalOpen(false)}>
+          <button className="btn btn-secondary" onClick={() => { setAccModalOpen(false); setAccDeleteError(''); setAccConfirmText(''); }}>
             Cancel
           </button>
           <button
             className="btn btn-danger"
-            disabled={accConfirmText !== accRequiredText}
-            onClick={() => deleteAccountAction()}
+            disabled={accConfirmText !== accRequiredText || accDeleting}
+            onClick={async () => {
+              setAccDeleting(true);
+              setAccDeleteError('');
+              const res = await deleteAccountAction();
+              if (res?.error) {
+                setAccDeleteError(res.error);
+                setAccDeleting(false);
+              }
+            }}
           >
-            I understand, delete my account
+            {accDeleting ? 'Deleting...' : 'I understand, delete my account'}
           </button>
         </div>
       </Modal>

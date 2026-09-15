@@ -70,11 +70,7 @@ router.get('/', async (req: AuthRequest, res: Response): Promise<void> => {
 
     const logs = result.rows.map((row) => ({
       id: row.id,
-      time: new Date(row.created_at).toLocaleTimeString([], {
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-      }),
+      time: new Date(row.created_at).toISOString(),
       method: row.method || 'GET',
       path:
         row.path !== null && row.path !== undefined && row.path !== ''

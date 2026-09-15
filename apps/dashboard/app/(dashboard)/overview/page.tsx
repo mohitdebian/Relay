@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Typewriter from '@/app/components/Typewriter';
 import { fetchAPI } from '@/app/lib/api';
 import { getLogsAction } from '@/app/actions/logs';
+import LocalTime from '@/app/components/LocalTime';
 
 import { NewApiButton } from '@/app/components/modals/NewApiModal';
 
@@ -227,7 +228,7 @@ export default async function OverviewPage() {
             {logs.slice(0, 5).map((log: any, index: number) => (
               <div key={index} className="row log-row">
                 <span className="c-secondary mono" style={{ whiteSpace: 'nowrap' }}>
-                  {log.time.replace(/:\d{2}(?=\s|$)/, '')}
+                  <LocalTime time={log.time} removeSeconds={true} />
                 </span>
                 <span className={`method ${log.method.toLowerCase()}`}>{log.method}</span>
                 <span

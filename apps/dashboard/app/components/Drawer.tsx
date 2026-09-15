@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import LocalTime from './LocalTime';
 
 interface DrawerProps {
   open: boolean;
@@ -37,7 +38,7 @@ export default function Drawer({ open, onClose, log }: DrawerProps) {
               <div className="drawer-section-title">REQUEST</div>
               <div className="kv">
                 <span className="k">Timestamp</span>
-                <span className="v">{log.time}</span>
+                <span className="v"><LocalTime time={log.time} /></span>
               </div>
               <div className="kv">
                 <span className="k">Method</span>

@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import { FilterDropdown } from '@/app/components/FilterDropdown';
+import LocalTime from '@/app/components/LocalTime';
 
 export default function LogsClient({ initialLogs }: { initialLogs: any[] }) {
   const [apiFilter, setApiFilter] = useState('all');
@@ -93,11 +94,12 @@ export default function LogsClient({ initialLogs }: { initialLogs: any[] }) {
             className="row log-row"
             style={{ gridTemplateColumns: '100px 70px 1.6fr 70px 70px' }}
           >
-            <span className="c-secondary mono">{log.time}</span>
+            <span className="c-secondary mono"><LocalTime time={log.time} /></span>
             <span className={`method ${log.method.toLowerCase()}`}>{log.method}</span>
             <span
               className="mono"
               style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+              title={log.path}
             >
               {log.path}
             </span>

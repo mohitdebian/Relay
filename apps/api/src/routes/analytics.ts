@@ -56,7 +56,7 @@ router.get('/overview', async (req: AuthRequest, res: Response): Promise<void> =
       FROM api_request_logs l
       WHERE l.workspace_id = $1 AND l.created_at >= NOW() - INTERVAL '24 HOURS'
     `,
-      [workspaceId]
+      [parsedWorkspaceId]
     );
 
     // 1.5 Fetch Aggregated Metrics (Previous 24h)
@@ -67,9 +67,11 @@ router.get('/overview', async (req: AuthRequest, res: Response): Promise<void> =
         COALESCE(AVG(latency_ms), 0) as average_latency,
         COUNT(CASE WHEN status_code >= 400 THEN 1 END) as total_errors
       FROM api_request_logs l
-      WHERE l.workspace_id = $1 AND l.created_at >= NOW() - INTERVAL '48 HOURS' AND l.created_at < NOW() - INTERVAL '24 HOURS'
+      WHERE l.workspace_id = $1 
+      AND l.created_at >= NOW() - INTERVAL '48 HOURS' 
+      AND l.created_at < NOW() - INTERVAL '24 HOURS'
     `,
-      [workspaceId]
+      [parsedWorkspaceId]
     );
 
     // 2. Fetch by Endpoint (mocked via upstream_url for now, or just path if available)

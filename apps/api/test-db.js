@@ -1,14 +1,35 @@
-require('dotenv').config();
-const { Pool } = require('pg');
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const { Client } = require('pg');
+const fs = require('fs');
 
-async function run() {
-  const result = await pool.query('SELECT a.name, a.workspace_id, wm.user_id, u.email, wm.role FROM apis a JOIN workspace_members wm ON a.workspace_id = wm.workspace_id JOIN users u ON wm.user_id = u.id');
-  console.log(result.rows);
-  const result2 = await pool.query('SELECT id, status, invited_user_id, workspace_id FROM workspace_invitations');
-  console.log('Invitations:', result2.rows);
-  const result3 = await pool.query('SELECT * FROM workspace_members JOIN users u ON u.id = user_id');
-  console.log('Members:', result3.rows);
-  process.exit(0);
+const envFile = fs.readFileSync('/home/mohit/projects/relay/apps/api/.env', 'utf8');
+let dbUrl = '';
+for (const line of envFile.split('\n')) {
+  if (line.startsWith('DATABASE_URL=')) {
+    dbUrl = line.split('DATABASE_URL=')[1].replace(/"/g, '').trim();
+    break;
+  }
 }
-run();
+
+const url = new URL(dbUrl);
+const client = new Client({
+  user: url.username,
+  password: url.password,
+  host: url.hostname,
+  port: url.port || 5432,
+  database: url.pathname.slice(1),
+  ssl: { rejectUnauthorized: false }
+});
+
+async function check() {
+  await client.connect();
+  try {
+    const res = await client.query("SELECT name, slug, shared_secret FROM apis WHERE slug = 'tetsing-real-backend'");
+    console.log('RESULT:', res.rows);
+  } catch (err) {
+    console.error(err);
+  } finally {
+    await client.end();
+  }
+}
+
+check();

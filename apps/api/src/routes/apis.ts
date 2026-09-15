@@ -392,4 +392,65 @@ router.get('/:id/keys', async (req: AuthRequest, res: Response) => {
   }
 });
 
+// GET /apis/:id/logs
+router.get('/:id/logs', async (req: AuthRequest, res: Response) => {
+  const { id } = req.params;
+  const userId = req.user?.id;
+
+  try {
+    const accessCheck = await pool.query(
+      `SELECT a.id, wm.role FROM apis a JOIN workspace_members wm ON a.workspace_id = wm.workspace_id WHERE a.id = $1 AND wm.user_id = $2`,
+      [id, userId]
+    );
+    if (accessCheck.rows.length === 0) {
+      res.status(404).json({ error: 'API not found or unauthorized' });
+      return;
+    }
+
+    const result = await pool.query(
+      `
+      SELECT 
+        l.id,
+        l.status_code,
+        l.latency_ms,
+        l.created_at,
+        l.method,
+        l.path,
+        a.name as api_name,
+        a.upstream_url
+      FROM api_request_logs l
+      JOIN apis a ON l.api_id = a.id
+      WHERE a.id = $1
+      ORDER BY l.created_at DESC
+      LIMIT 50
+    `,
+      [id]
+    );
+
+    const logs = result.rows.map((row) => ({
+      id: row.id,
+      time: new Date(row.created_at).toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+      }),
+      method: row.method || 'GET',
+      path:
+        row.path !== null && row.path !== undefined && row.path !== ''
+          ? row.path
+          : row.path === ''
+            ? '/'
+            : row.upstream_url,
+      status: row.status_code,
+      latency: `${row.latency_ms}ms`,
+      api: row.api_name,
+    }));
+
+    res.json({ logs });
+  } catch (error) {
+    console.error('Error fetching API logs:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 export default router;

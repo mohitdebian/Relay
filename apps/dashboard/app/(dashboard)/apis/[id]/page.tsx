@@ -23,6 +23,13 @@ export default async function ApiDetailPage({ params }: { params: Promise<{ id: 
       console.error('Failed to fetch analytics', e);
     }
   }
+  let logs: any[] = [];
+  try {
+    const logsRes = await fetchAPI(`/apis/${id}/logs`);
+    if (logsRes.logs) logs = logsRes.logs;
+  } catch (e) {
+    console.error('Failed to fetch logs', e);
+  }
 
-  return <ApiDetailClient api={api} keys={keys} analytics={analytics} />;
+  return <ApiDetailClient api={api} keys={keys} analytics={analytics} logs={logs} />;
 }

@@ -3,19 +3,6 @@ import { Callout } from '../../_components/Callout';
 import CodeCard from '../../_components/CodeCard';
 
 export default function SecuringBackendPage() {
-  const secretCode = [
-    {
-      label: 'Terminal',
-      code: (
-        <>
-          <span className="docs-tok-comment">{'# Generate a secret'}</span>
-          {'\n'}
-          openssl rand -hex 32
-        </>
-      ),
-    },
-  ];
-
   const middlewareCode = [
     {
       label: 'Express',
@@ -198,14 +185,15 @@ export default function SecuringBackendPage() {
         </Callout>
 
         <h2 className="docs-h2" id="step-1">
-          Step 1 — Generate a shared secret
+          Step 1 — Copy your shared secret
         </h2>
         <p className="docs-p">
-          Run this in your terminal, then paste the output into{' '}
-          <strong>Relay Dashboard → APIs → your API → Settings → Shared Secret</strong>.
+          Relay automatically generates a secure shared secret for your API. You can find it by
+          going to <strong>Relay Dashboard → APIs → your API → Settings → Shared Secret</strong>.
         </p>
-
-        <CodeCard tabs={secretCode} />
+        <p className="docs-p" style={{ marginBottom: '24px' }}>
+          Click the <strong>Copy</strong> button to save it to your clipboard.
+        </p>
 
         <h2 className="docs-h2" id="step-2">
           Step 2 — Add one middleware to your backend

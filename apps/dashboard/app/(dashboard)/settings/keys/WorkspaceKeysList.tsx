@@ -239,34 +239,39 @@ export default function WorkspaceKeysList({
         )}
 
         {step === 2 && (
-          <div>
-            <div className="modal-body">
-              <div className="modal-success-line">
-                <span className="dot green"></span>
-                <span>{name}</span>
-                <span className="tag">Workspace Admin</span>
+          <div data-testid="create-workspace-key-success">
+            <div className="modal-body" style={{ paddingBottom: '0' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '24px' }}>
+                <div style={{ 
+                  width: '32px', height: '32px', borderRadius: '50%', background: 'var(--green-dim)', 
+                  color: 'var(--green)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: '18px'
+                }}>✓</div>
+                <div>
+                  <div style={{ fontSize: '15px', fontWeight: 600 }}>{name}</div>
+                  <div style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Role: Workspace Admin</div>
+                </div>
               </div>
-              <div className="modal-kv-panel">
-                <div className="modal-kv-row">
-                  <span className="k">SECRET KEY</span>
-                  <span className="v">
-                    <Typewriter text={createdData?.rawKey || ''} />
+
+              <div style={{ marginBottom: '24px' }}>
+                <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '8px', letterSpacing: '0.5px' }}>SECRET KEY</div>
+                <div style={{ 
+                  display: 'flex', alignItems: 'center', justifyContent: 'space-between', 
+                  background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', 
+                  padding: '8px 12px' 
+                }}>
+                  <span className="mono" style={{ fontSize: '13px' }}>
+                    <Typewriter text={createdData?.rawKey || ''} delay={400} />
                   </span>
                   <button
                     type="button"
-                    className="btn btn-secondary modal-copy-btn"
+                    className="btn btn-secondary"
+                    style={{ padding: '4px 10px', fontSize: '12px', height: 'auto', marginLeft: '12px', flexShrink: 0 }}
                     onClick={copyKey}
                   >
                     {copyText}
                   </button>
                 </div>
-              </div>
-              <div className="modal-warning">
-                <span>⚠</span>
-                <span>
-                  This key is shown only once. Store it securely — you won't be able to view it
-                  again.
-                </span>
               </div>
             </div>
             <div className="modal-foot">

@@ -77,7 +77,7 @@ export function CreateKeyModal({ open, onClose }: CreateKeyModalProps) {
   };
 
   return (
-    <Modal open={open} onClose={handleClose} title={step === 1 ? 'Create API Key' : 'Key created'}>
+    <Modal open={open} onClose={handleClose} title={step === 1 ? 'Create API Key' : 'API Key Created Successfully'}>
       {step === 1 && (
         <form onSubmit={submitCreateKey}>
           <div className="modal-body">
@@ -145,37 +145,52 @@ export function CreateKeyModal({ open, onClose }: CreateKeyModalProps) {
       )}
 
       {step === 2 && (
-        <div>
-          <div className="modal-body">
-            <div className="modal-success-line">
-              <span className="dot green"></span>
-              <span>{name || 'Marketing Site'} Key</span>
-              <span className="tag">{env}</span>
-            </div>
-            <div className="modal-kv-panel">
-              <div className="modal-kv-row">
-                <span className="k">SCOPED TO</span>
-                <span className="v">{createdData?.apiName || 'API'}</span>
+        <div data-testid="create-key-success">
+          <div className="modal-body" style={{ paddingBottom: '0' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '24px' }}>
+              <div style={{ 
+                width: '32px', height: '32px', borderRadius: '50%', background: 'var(--green-dim)', 
+                color: 'var(--green)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: '18px'
+              }}>✓</div>
+              <div>
+                <div style={{ fontSize: '15px', fontWeight: 600 }}>{name || 'Marketing Site Key'}</div>
+                <div style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Environment: {env}</div>
               </div>
-              <div className="modal-kv-row">
-                <span className="k">API KEY</span>
-                <span className="v">
-                  <Typewriter text={createdData?.rawKey || 'rly_live_••••••••••••6f2a'} />
+            </div>
+
+            <div style={{ marginBottom: '20px' }}>
+              <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '8px', letterSpacing: '0.5px' }}>SCOPED TO</div>
+              <div style={{ 
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between', 
+                background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', 
+                padding: '8px 12px' 
+              }}>
+                <span className="mono" style={{ fontSize: '13px' }}>
+                  {createdData?.apiName || 'API'}
+                </span>
+              </div>
+            </div>
+
+            <div style={{ marginBottom: '24px' }}>
+              <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '8px', letterSpacing: '0.5px' }}>API KEY</div>
+              <div style={{ 
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between', 
+                background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', 
+                padding: '8px 12px' 
+              }}>
+                <span className="mono" style={{ fontSize: '13px' }}>
+                  <Typewriter text={createdData?.rawKey || 'rly_live_••••••••••••6f2a'} delay={400} />
                 </span>
                 <button
                   type="button"
-                  className="btn btn-secondary modal-copy-btn"
+                  className="btn btn-secondary"
+                  style={{ padding: '4px 10px', fontSize: '12px', height: 'auto', marginLeft: '12px', flexShrink: 0 }}
                   onClick={copyKey}
                 >
                   {copyText}
                 </button>
               </div>
-            </div>
-            <div className="modal-warning">
-              <span>⚠</span>
-              <span>
-                This key is shown only once. Store it securely — you won't be able to view it again.
-              </span>
             </div>
           </div>
           <div className="modal-foot">

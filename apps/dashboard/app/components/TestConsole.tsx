@@ -7,6 +7,7 @@ export default function TestConsole({ apiSlug, keys }: { apiSlug: string, keys: 
   const [method, setMethod] = useState('GET');
   const [path, setPath] = useState('/');
   const [rawKey, setRawKey] = useState('');
+  const [reqBody, setReqBody] = useState('{\n  \n}');
   
   const [response, setResponse] = useState<any>(null);
   const [loading, setLoading] = useState(false);
@@ -36,6 +37,7 @@ export default function TestConsole({ apiSlug, keys }: { apiSlug: string, keys: 
           method,
           url: targetUrl,
           headers,
+          body: ['POST', 'PUT', 'PATCH'].includes(method) && reqBody.trim() ? reqBody : undefined,
         }),
       });
 
@@ -82,6 +84,26 @@ export default function TestConsole({ apiSlug, keys }: { apiSlug: string, keys: 
             <input type="text" value={rawKey} onChange={(e) => setRawKey(e.target.value)} placeholder="rly_live_..." />
             <div className="hint" style={{ marginTop: '8px' }}>Paste the raw key you generated earlier.</div>
           </div>
+          {['POST', 'PUT', 'PATCH'].includes(method) && (
+            <div className="field">
+              <label>Request Body (JSON)</label>
+              <textarea 
+                value={reqBody} 
+                onChange={(e) => setReqBody(e.target.value)} 
+                className="mono" 
+                style={{ 
+                  width: '100%', 
+                  height: '120px', 
+                  background: 'var(--bg)', 
+                  border: '1px solid var(--border)', 
+                  borderRadius: 'var(--radius)', 
+                  padding: '10px',
+                  fontSize: '13px',
+                  resize: 'vertical'
+                }} 
+              />
+            </div>
+          )}
           <button className="btn btn-primary" onClick={sendRequest} disabled={loading} style={{ marginTop: '16px', width: '100%', justifyContent: 'center' }}>
             {loading ? 'Sending...' : 'Send Request'}
           </button>

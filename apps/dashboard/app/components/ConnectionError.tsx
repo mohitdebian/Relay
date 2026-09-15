@@ -10,7 +10,6 @@ export default function ConnectionError({ error }: { error: string }) {
   return (
     <div className="shell">
       <div
-        className="main-col"
         style={{
           display: 'flex',
           flexDirection: 'column',

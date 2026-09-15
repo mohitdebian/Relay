@@ -2,6 +2,7 @@
 import { NewApiModal } from '@/app/components/modals/NewApiModal';
 import { ConfirmModal } from '@/app/components/modals/ConfirmModal';
 import Typewriter from '@/app/components/Typewriter';
+import LocalTime from '@/app/components/LocalTime';
 
 import { FilterDropdown } from '@/app/components/FilterDropdown';
 
@@ -421,7 +422,7 @@ export default function ApiDetailClient({
                   setDrawerOpen(true);
                 }}
               >
-                <span className="c-secondary mono">{log.time}</span>
+                <span className="c-secondary mono"><LocalTime time={log.time} /></span>
                 <span className={`method ${log.method.toLowerCase()}`}>{log.method}</span>
                 <span
                   className="mono"

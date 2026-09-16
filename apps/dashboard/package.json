@@ -11,10 +11,12 @@
     "format": "prettier --write 'app/**/*.{ts,tsx,js,jsx}'"
   },
   "dependencies": {
+    "@gsap/react": "^2.1.2",
     "@neondatabase/auth": "^0.5.0-beta",
     "@neondatabase/auth-ui": "^0.3.0-beta",
     "@react-oauth/google": "^0.13.5",
     "@vercel/analytics": "^2.0.1",
+    "gsap": "^3.15.0",
     "next": "16.3.4",
     "posthog-js": "^1.430.3",
     "react": "19.2.8",

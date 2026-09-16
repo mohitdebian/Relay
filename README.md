@@ -1,6 +1,6 @@
 <div align="center">
   <br />
-  <img src="./docs/logo.svg" alt="RELAY_" height="64" />
+  <img src="./docs/logo-light.svg#gh-light-mode-only" alt="RELAY_" height="64" /><img src="./docs/logo-dark.svg#gh-dark-mode-only" alt="RELAY_" height="64" />
   <p>
     <strong>A high-performance, open-source API management platform and gateway.</strong>
   </p>
@@ -19,14 +19,14 @@
 
 Relay is a self-hosted, lightweight alternative to enterprise API gateways. It provides a Go-based reverse proxy coupled with a Next.js dashboard for managing API keys, rate limits, analytics, and webhooks.
 
-## <img src="./docs/headers/documentation.svg" alt="Documentation" height="24" />
+## <img src="./docs/headers/documentation-light.svg#gh-light-mode-only" alt="Documentation" height="24" /><img src="./docs/headers/documentation-dark.svg#gh-dark-mode-only" alt="Documentation" height="24" />
 
 - **[Product Requirements Document (PRD)](./docs/PRD.md)** - Feature specifications and product goals.
 - **[High-Level Design (HLD)](./docs/HLD.md)** - System component architecture.
 - **[Low-Level Design (LLD)](./docs/LLD.md)** - Database schema (ER diagram), rate-limiting algorithms, and queue architecture.
 - **[Design System & UI](./docs/design.md)** - Frontend architecture and design guidelines.
 
-## <img src="./docs/headers/features.svg" alt="Features" height="24" />
+## <img src="./docs/headers/features-light.svg#gh-light-mode-only" alt="Features" height="24" /><img src="./docs/headers/features-dark.svg#gh-dark-mode-only" alt="Features" height="24" />
 
 - **Go Gateway Proxy**: Fast reverse proxy with zero-downtime routing, retry transports, and connection pooling.
 - **API Key Management**: Secure SHA-256 hashed API keys with prefixes, expiration dates, and one-click revocation.
@@ -36,7 +36,7 @@ Relay is a self-hosted, lightweight alternative to enterprise API gateways. It p
 - **Multi-Workspace & RBAC**: Isolate environments and invite team members with Owner, Admin, or Viewer roles.
 - **Audit Logging**: Complete trail of all actions performed within a workspace.
 
-## <img src="./docs/headers/architecture.svg" alt="Architecture" height="24" />
+## <img src="./docs/headers/architecture-light.svg#gh-light-mode-only" alt="Architecture" height="24" /><img src="./docs/headers/architecture-dark.svg#gh-dark-mode-only" alt="Architecture" height="24" />
 
 ```mermaid
 graph LR
@@ -54,7 +54,7 @@ graph LR
     BullMQ -.-> Webhooks([Customer Webhooks])
 ```
 
-## <img src="./docs/headers/getting-started.svg" alt="Getting Started" height="24" />
+## <img src="./docs/headers/getting-started-light.svg#gh-light-mode-only" alt="Getting Started" height="24" /><img src="./docs/headers/getting-started-dark.svg#gh-dark-mode-only" alt="Getting Started" height="24" />
 
 ### Prerequisites
 - Node.js 20+
@@ -96,7 +96,7 @@ graph LR
    go run .
    ```
 
-## <img src="./docs/headers/tech-stack.svg" alt="Tech Stack" height="24" />
+## <img src="./docs/headers/tech-stack-light.svg#gh-light-mode-only" alt="Tech Stack" height="24" /><img src="./docs/headers/tech-stack-dark.svg#gh-dark-mode-only" alt="Tech Stack" height="24" />
 
 | Component | Technology | Description |
 | :--- | :--- | :--- |
@@ -107,7 +107,7 @@ graph LR
 | **Cache & Queues**| Redis, BullMQ | Rate limiting and async job processing |
 | **Authentication**| Neon Auth | Secure OpenID Connect user management |
 
-## <img src="./docs/headers/project-structure.svg" alt="Project Structure" height="24" />
+## <img src="./docs/headers/project-structure-light.svg#gh-light-mode-only" alt="Project Structure" height="24" /><img src="./docs/headers/project-structure-dark.svg#gh-dark-mode-only" alt="Project Structure" height="24" />
 
 ```text
 relay/
@@ -119,10 +119,10 @@ relay/
 └── docker-compose.yml
 ```
 
-## <img src="./docs/headers/contributing.svg" alt="Contributing" height="24" />
+## <img src="./docs/headers/contributing-light.svg#gh-light-mode-only" alt="Contributing" height="24" /><img src="./docs/headers/contributing-dark.svg#gh-dark-mode-only" alt="Contributing" height="24" />
 
 We love contributions! Whether it's bug reports, feature requests, or pull requests, all contributions are welcome. Please read our contributing guidelines before submitting a PR.
 
-## <img src="./docs/headers/license.svg" alt="License" height="24" />
+## <img src="./docs/headers/license-light.svg#gh-light-mode-only" alt="License" height="24" /><img src="./docs/headers/license-dark.svg#gh-dark-mode-only" alt="License" height="24" />
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

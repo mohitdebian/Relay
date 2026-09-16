@@ -21,6 +21,7 @@ export default function AntigravityAd() {
     
     // Initial Setup
     gsap.set('.ag-world', { rotationX: 0, rotationZ: 0, scale: 1 });
+    gsap.set('.ag-centered', { left: '50%', top: '50%', xPercent: -50, yPercent: -50 });
     gsap.set('.ag-node', { z: 0, opacity: 0, scale: 0.8 });
     gsap.set('.ag-auth-panel', { z: -100, opacity: 0, scale: 0.8 });
     gsap.set('.ag-particle', { opacity: 0 });
@@ -165,15 +166,15 @@ export default function AntigravityAd() {
       `}</style>
 
       {/* 3D World Container */}
-      <div className="ag-world">
+      <div className="ag-world ag-centered">
         <div className="ag-bg-grid" />
         
-        <div className="ag-title absolute top-[10%] text-4xl font-medium tracking-wide text-white drop-shadow-2xl z-50" style={{ transform: 'translateZ(100px)' }}>
+        <div className="ag-title absolute top-[10%] left-0 right-0 text-center text-4xl font-medium tracking-wide text-white drop-shadow-2xl z-50" style={{ transform: 'translateZ(100px)' }}>
           Weightless API Infrastructure.
         </div>
 
         {/* Central Gateway */}
-        <div className="ag-node gateway glass-panel absolute w-64 h-64 flex flex-col items-center justify-center">
+        <div className="ag-centered ag-node gateway glass-panel absolute w-64 h-64 flex flex-col items-center justify-center">
           <div className="font-pixel text-4xl mb-3 text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]">RELAY_</div>
           <div className="font-mono text-xs text-[#a1a1aa] tracking-[0.2em] bg-black/40 px-3 py-1 rounded border border-white/5">GATEWAY</div>
           
@@ -183,7 +184,7 @@ export default function AntigravityAd() {
 
         {/* Floating Auth Panel */}
         {/* We position it centered, GSAP translates Z to float it above */}
-        <div className="ag-auth-panel glass-panel-heavy absolute w-[340px] p-8 flex flex-col gap-5">
+        <div className="ag-centered ag-auth-panel glass-panel-heavy absolute w-[340px] p-8 flex flex-col gap-5">
           <div className="text-xs font-mono text-[#a1a1aa] tracking-[0.15em] border-b border-white/10 pb-3 flex items-center justify-between">
             SECURITY LAYER
             <div className="w-2 h-2 rounded-full bg-[#34d399] shadow-[0_0_10px_#34d399]" />
@@ -204,7 +205,7 @@ export default function AntigravityAd() {
         </div>
 
         {/* Upstream APIs */}
-        <div className="ag-node upstream u1 glass-panel absolute w-56 p-5 left-[50%] top-[50%] ml-[150px] mt-[-200px]">
+        <div className="ag-centered ag-node upstream u1 glass-panel absolute w-56 p-5 ml-[250px] mt-[-120px]">
           <div className="font-mono text-sm text-white mb-3 flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-[#34d399] shadow-[0_0_8px_#34d399]" />
             payments-api
@@ -215,7 +216,7 @@ export default function AntigravityAd() {
           </div>
         </div>
 
-        <div className="ag-node upstream u2 glass-panel absolute w-56 p-5 left-[50%] top-[50%] ml-[150px] mt-[100px]">
+        <div className="ag-centered ag-node upstream u2 glass-panel absolute w-56 p-5 ml-[250px] mt-[120px]">
           <div className="font-mono text-sm text-white mb-3 flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-[#34d399] shadow-[0_0_8px_#34d399]" />
             notifications

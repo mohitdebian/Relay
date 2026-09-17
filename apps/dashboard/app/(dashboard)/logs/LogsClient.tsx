@@ -94,7 +94,9 @@ export default function LogsClient({ initialLogs }: { initialLogs: any[] }) {
             className="row log-row"
             style={{ gridTemplateColumns: '100px 70px 1.6fr 70px 70px' }}
           >
-            <span className="c-secondary mono"><LocalTime time={log.time} /></span>
+            <span className="c-secondary mono">
+              <LocalTime time={log.time} />
+            </span>
             <span className={`method ${log.method.toLowerCase()}`}>{log.method}</span>
             <span
               className="mono"

@@ -72,7 +72,7 @@ export default function ConnectionError({ error }: { error: string }) {
           >
             Connection Lost
           </h1>
-          
+
           <p
             style={{
               fontSize: '14px',
@@ -81,7 +81,8 @@ export default function ConnectionError({ error }: { error: string }) {
               lineHeight: '1.5',
             }}
           >
-            We are unable to reach the Relay API server. Please check your connection or try again shortly.
+            We are unable to reach the Relay API server. Please check your connection or try again
+            shortly.
           </p>
 
           <div
@@ -95,8 +96,27 @@ export default function ConnectionError({ error }: { error: string }) {
               textAlign: 'left',
             }}
           >
-            <span style={{ display: 'block', fontSize: '11px', color: 'var(--red)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '6px', fontWeight: 600 }}>Error Details</span>
-            <code style={{ fontSize: '13px', color: 'var(--red)', fontFamily: 'var(--font-mono, monospace)', wordBreak: 'break-all' }}>
+            <span
+              style={{
+                display: 'block',
+                fontSize: '11px',
+                color: 'var(--red)',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                marginBottom: '6px',
+                fontWeight: 600,
+              }}
+            >
+              Error Details
+            </span>
+            <code
+              style={{
+                fontSize: '13px',
+                color: 'var(--red)',
+                fontFamily: 'var(--font-mono, monospace)',
+                wordBreak: 'break-all',
+              }}
+            >
               {error}
             </code>
           </div>

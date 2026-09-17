@@ -96,7 +96,11 @@ export function NewApiModal({ open, onClose }: NewApiModalProps) {
   const slugifiedName = name.toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'orders-api';
 
   return (
-    <Modal open={open} onClose={handleClose} title={step === 1 ? 'Create New API' : 'API Created Successfully'}>
+    <Modal
+      open={open}
+      onClose={handleClose}
+      title={step === 1 ? 'Create New API' : 'API Created Successfully'}
+    >
       {step === 1 && (
         <form onSubmit={submitNewApi} data-testid="new-api-form">
           <div className="modal-body">
@@ -190,32 +194,82 @@ export function NewApiModal({ open, onClose }: NewApiModalProps) {
       {step === 2 && (
         <div data-testid="new-api-success">
           <div className="modal-body" style={{ paddingBottom: '0' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '24px' }}>
-              <div style={{ 
-                width: '32px', height: '32px', borderRadius: '50%', background: 'var(--green-dim)', 
-                color: 'var(--green)', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: '18px'
-              }}>✓</div>
+            <div
+              style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '24px' }}
+            >
+              <div
+                style={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '50%',
+                  background: 'var(--green-dim)',
+                  color: 'var(--green)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '18px',
+                }}
+              >
+                ✓
+              </div>
               <div>
                 <div style={{ fontSize: '15px', fontWeight: 600 }}>{name || 'Orders API'}</div>
-                <div style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Environment: {env}</div>
+                <div style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
+                  Environment: {env}
+                </div>
               </div>
             </div>
 
             <div style={{ marginBottom: '20px' }}>
-              <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '8px', letterSpacing: '0.5px' }}>BASE URL</div>
-              <div style={{ 
-                display: 'flex', alignItems: 'center', justifyContent: 'space-between', 
-                background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', 
-                padding: '8px 12px' 
-              }}>
-                <span className="mono" style={{ fontSize: '13px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                  {(process.env.NEXT_PUBLIC_GATEWAY_URL || (typeof window !== 'undefined' && window.location.hostname !== 'localhost' ? 'https://your-gateway.com' : 'http://127.0.0.1:8080')).replace(/\/$/, '')}/{createdData?.slug || 'api'}
+              <div
+                style={{
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  color: 'var(--text-secondary)',
+                  marginBottom: '8px',
+                  letterSpacing: '0.5px',
+                }}
+              >
+                BASE URL
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  background: 'var(--bg)',
+                  border: '1px solid var(--border)',
+                  borderRadius: 'var(--radius)',
+                  padding: '8px 12px',
+                }}
+              >
+                <span
+                  className="mono"
+                  style={{
+                    fontSize: '13px',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {(
+                    process.env.NEXT_PUBLIC_GATEWAY_URL ||
+                    (typeof window !== 'undefined' && window.location.hostname !== 'localhost'
+                      ? 'https://your-gateway.com'
+                      : 'http://127.0.0.1:8080')
+                  ).replace(/\/$/, '')}
+                  /{createdData?.slug || 'api'}
                 </span>
                 <button
                   type="button"
                   className="btn btn-secondary"
-                  style={{ padding: '4px 10px', fontSize: '12px', height: 'auto', marginLeft: '12px', flexShrink: 0 }}
+                  style={{
+                    padding: '4px 10px',
+                    fontSize: '12px',
+                    height: 'auto',
+                    marginLeft: '12px',
+                    flexShrink: 0,
+                  }}
                   onClick={() => {
                     if (!createdData) return;
                     const url = `${(process.env.NEXT_PUBLIC_GATEWAY_URL || (typeof window !== 'undefined' && window.location.hostname !== 'localhost' ? 'https://your-gateway.com' : 'http://127.0.0.1:8080')).replace(/\/$/, '')}/${createdData.slug}`;
@@ -231,19 +285,44 @@ export function NewApiModal({ open, onClose }: NewApiModalProps) {
             </div>
 
             <div style={{ marginBottom: '24px' }}>
-              <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '8px', letterSpacing: '0.5px' }}>API KEY</div>
-              <div style={{ 
-                display: 'flex', alignItems: 'center', justifyContent: 'space-between', 
-                background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', 
-                padding: '8px 12px' 
-              }}>
+              <div
+                style={{
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  color: 'var(--text-secondary)',
+                  marginBottom: '8px',
+                  letterSpacing: '0.5px',
+                }}
+              >
+                API KEY
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  background: 'var(--bg)',
+                  border: '1px solid var(--border)',
+                  borderRadius: 'var(--radius)',
+                  padding: '8px 12px',
+                }}
+              >
                 <span className="mono" style={{ fontSize: '13px' }}>
-                  <Typewriter text={createdData?.rawKey || 'rly_live_••••••••••••4f2a'} delay={400} />
+                  <Typewriter
+                    text={createdData?.rawKey || 'rly_live_••••••••••••4f2a'}
+                    delay={400}
+                  />
                 </span>
                 <button
                   type="button"
                   className="btn btn-secondary"
-                  style={{ padding: '4px 10px', fontSize: '12px', height: 'auto', marginLeft: '12px', flexShrink: 0 }}
+                  style={{
+                    padding: '4px 10px',
+                    fontSize: '12px',
+                    height: 'auto',
+                    marginLeft: '12px',
+                    flexShrink: 0,
+                  }}
                   onClick={copyNewApiKey}
                 >
                   {copyText}
@@ -251,16 +330,70 @@ export function NewApiModal({ open, onClose }: NewApiModalProps) {
               </div>
             </div>
 
-            <div style={{ border: '1px solid var(--border)', borderRadius: 'var(--radius)', overflow: 'hidden', marginBottom: '24px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'var(--bg-app)', padding: '10px 14px', borderBottom: '1px solid var(--border)' }}>
-                <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)', letterSpacing: '0.5px' }}>TEST YOUR API</div>
-                <button type="button" className="btn btn-secondary" style={{ padding: '4px 10px', fontSize: '12px', height: 'auto' }} onClick={copyCurlCommand}>
+            <div
+              style={{
+                border: '1px solid var(--border)',
+                borderRadius: 'var(--radius)',
+                overflow: 'hidden',
+                marginBottom: '24px',
+              }}
+            >
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  background: 'var(--bg-app)',
+                  padding: '10px 14px',
+                  borderBottom: '1px solid var(--border)',
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: '12px',
+                    fontWeight: 600,
+                    color: 'var(--text-secondary)',
+                    letterSpacing: '0.5px',
+                  }}
+                >
+                  TEST YOUR API
+                </div>
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  style={{ padding: '4px 10px', fontSize: '12px', height: 'auto' }}
+                  onClick={copyCurlCommand}
+                >
                   {copyCurlText}
                 </button>
               </div>
-              <div className="mono" style={{ padding: '16px', background: '#fafafa', color: '#333', borderTop: '1px solid #fff', fontSize: '12.5px', whiteSpace: 'pre-wrap', wordBreak: 'break-all', lineHeight: 1.6 }}>
-                <span style={{ color: '#005cc5' }}>curl</span> -H <span style={{ color: '#d73a49' }}>"Authorization: Bearer {createdData?.rawKey || 'YOUR_KEY'}"</span> \<br />
-                <span style={{ color: '#22863a' }}>{(process.env.NEXT_PUBLIC_GATEWAY_URL || (typeof window !== 'undefined' && window.location.hostname !== 'localhost' ? 'https://your-gateway.com' : 'http://127.0.0.1:8080')).replace(/\/$/, '')}/{createdData?.slug || 'api'}</span>
+              <div
+                className="mono"
+                style={{
+                  padding: '16px',
+                  background: '#fafafa',
+                  color: '#333',
+                  borderTop: '1px solid #fff',
+                  fontSize: '12.5px',
+                  whiteSpace: 'pre-wrap',
+                  wordBreak: 'break-all',
+                  lineHeight: 1.6,
+                }}
+              >
+                <span style={{ color: '#005cc5' }}>curl</span> -H{' '}
+                <span style={{ color: '#d73a49' }}>
+                  "Authorization: Bearer {createdData?.rawKey || 'YOUR_KEY'}"
+                </span>{' '}
+                \<br />
+                <span style={{ color: '#22863a' }}>
+                  {(
+                    process.env.NEXT_PUBLIC_GATEWAY_URL ||
+                    (typeof window !== 'undefined' && window.location.hostname !== 'localhost'
+                      ? 'https://your-gateway.com'
+                      : 'http://127.0.0.1:8080')
+                  ).replace(/\/$/, '')}
+                  /{createdData?.slug || 'api'}
+                </span>
               </div>
             </div>
           </div>

@@ -12,10 +12,14 @@ export default async function QuickstartPage() {
 
   const workspaceId = cookieStore.get('relay_active_workspace')?.value || '1';
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.relay.dev';
-  const gatewayUrl = (process.env.NEXT_PUBLIC_GATEWAY_URL || 'http://127.0.0.1:8080').replace(/\/$/, '');
+  const gatewayUrl = (process.env.NEXT_PUBLIC_GATEWAY_URL || 'http://127.0.0.1:8080').replace(
+    /\/$/,
+    ''
+  );
 
   const { apis } = await fetchAPI('/apis').catch(() => ({ apis: [] }));
-  const defaultApi = apis && apis.length > 0 ? apis[0] : { id: 1, slug: 'my-first-api', name: 'My First API' };
+  const defaultApi =
+    apis && apis.length > 0 ? apis[0] : { id: 1, slug: 'my-first-api', name: 'My First API' };
 
   const createApiTabs = [
     {

@@ -15,10 +15,12 @@ export default async function KeysPage() {
   let allKeys: any[] = [];
   if (safeApis.length > 0) {
     const keysPromises = safeApis.map((api: any) =>
-      fetchAPI(`/apis/${api.id}/keys`).catch((e) => {
-        if (isRedirectError(e)) throw e;
-        return {};
-      }).then((res: any) => ({ ...res, apiName: api.name }))
+      fetchAPI(`/apis/${api.id}/keys`)
+        .catch((e) => {
+          if (isRedirectError(e)) throw e;
+          return {};
+        })
+        .then((res: any) => ({ ...res, apiName: api.name }))
     );
     const keysResults = await Promise.all(keysPromises);
     keysResults.forEach((res) => {
@@ -67,7 +69,10 @@ export default async function KeysPage() {
                 <div className="c-strong">
                   {k.name}
                   {k.apiName && (
-                    <span className="c-secondary" style={{ fontWeight: 400, marginLeft: '8px', fontSize: '12px' }}>
+                    <span
+                      className="c-secondary"
+                      style={{ fontWeight: 400, marginLeft: '8px', fontSize: '12px' }}
+                    >
                       ({k.apiName})
                     </span>
                   )}

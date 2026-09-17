@@ -399,7 +399,10 @@ export default function ApiDetailClient({
             />
           </div>
           <div className="panel">
-            <div className="row row-head" style={{ gridTemplateColumns: '100px 70px 1.6fr 70px 70px' }}>
+            <div
+              className="row row-head"
+              style={{ gridTemplateColumns: '100px 70px 1.6fr 70px 70px' }}
+            >
               <div>TIME</div>
               <div>METHOD</div>
               <div>PATH</div>
@@ -423,7 +426,9 @@ export default function ApiDetailClient({
                   setDrawerOpen(true);
                 }}
               >
-                <span className="c-secondary mono"><LocalTime time={log.time} /></span>
+                <span className="c-secondary mono">
+                  <LocalTime time={log.time} />
+                </span>
                 <span className={`method ${log.method.toLowerCase()}`}>{log.method}</span>
                 <span
                   className="mono"
@@ -431,7 +436,9 @@ export default function ApiDetailClient({
                 >
                   {log.path}
                 </span>
-                <span className={`mono c-right ${log.status >= 400 ? 'status failing' : 'status ok'}`}>
+                <span
+                  className={`mono c-right ${log.status >= 400 ? 'status failing' : 'status ok'}`}
+                >
                   {log.status}
                 </span>
                 <span className="mono c-secondary c-right">{log.latency}</span>
@@ -457,7 +464,9 @@ export default function ApiDetailClient({
             >
               <div>
                 <div className="c-strong">{k.name}</div>
-                <div className="c-secondary mono" style={{ fontSize: '12px' }}>{k.key_prefix}</div>
+                <div className="c-secondary mono" style={{ fontSize: '12px' }}>
+                  {k.key_prefix}
+                </div>
               </div>
               <div className="c-secondary" style={{ fontSize: '12px', whiteSpace: 'nowrap' }}>
                 {new Date(k.created_at).toLocaleDateString()}
@@ -475,9 +484,7 @@ export default function ApiDetailClient({
         </div>
       )}
 
-      {activeTab === 'test' && (
-        <TestConsole apiSlug={api.slug} keys={keys} />
-      )}
+      {activeTab === 'test' && <TestConsole apiSlug={api.slug} keys={keys} />}
 
       {activeTab === 'settings' && (
         <>
@@ -617,12 +624,12 @@ function CopyKeyButton({ apiId, keyId }: { apiId: number; keyId: number }) {
       const res = await revealApiKeyAction(apiId, keyId);
       if (res.success && res.rawKey) {
         if (navigator.clipboard && navigator.clipboard.writeText) {
-          await navigator.clipboard.writeText(res.rawKey).catch(err => {
+          await navigator.clipboard.writeText(res.rawKey).catch((err) => {
             console.warn('Clipboard write failed:', err);
           });
         } else {
           // Fallback if clipboard API is not available (e.g. non-HTTPS)
-          const textArea = document.createElement("textarea");
+          const textArea = document.createElement('textarea');
           textArea.value = res.rawKey;
           document.body.appendChild(textArea);
           textArea.select();
@@ -651,7 +658,13 @@ function CopyKeyButton({ apiId, keyId }: { apiId: number; keyId: number }) {
   return (
     <button
       className="btn btn-secondary"
-      style={{ padding: '4px 10px', fontSize: '11px', height: 'auto', whiteSpace: 'nowrap', minWidth: '56px' }}
+      style={{
+        padding: '4px 10px',
+        fontSize: '11px',
+        height: 'auto',
+        whiteSpace: 'nowrap',
+        minWidth: '56px',
+      }}
       onClick={handleCopy}
       disabled={state === 'loading'}
       title={state === 'error' ? errorMsg : 'Copy API key to clipboard'}
@@ -663,4 +676,3 @@ function CopyKeyButton({ apiId, keyId }: { apiId: number; keyId: number }) {
     </button>
   );
 }
-

@@ -1,0 +1,208 @@
+<Rive version="1" kind="fragment">
+    <Artboard defaultStateMachineId="0:40" styleId="0:5" width="800" height="400" name="Artboard" id="0:2">
+        <LayoutComponentStyle name="Artboard Style" id="0:5"/>
+
+        <Fill name="Background">
+            <SolidColor colorValue="FF1D1D1D" name="Color"/>
+        </Fill>
+
+        <!-- Connecting Line -->
+        <Shape x="150" y="200" name="Line" id="0:20">
+            <Rectangle originX="0" originY="0.5" width="500" height="4" name="Path"/>
+            <Fill name="Fill">
+                <SolidColor colorValue="FF333333" name="Color"/>
+            </Fill>
+        </Shape>
+
+        <!-- Nodes -->
+        <!-- Client -->
+        <Shape x="150" y="200" name="Client Node" id="0:21">
+            <Rectangle originX="0.5" originY="0.5" width="60" height="60" cornerRadiusTL="8" cornerRadiusTR="8" cornerRadiusBL="8" cornerRadiusBR="8" name="Path"/>
+            <Fill name="Fill">
+                <SolidColor colorValue="FF4A4A4A" name="Color"/>
+            </Fill>
+        </Shape>
+
+        <!-- Gateway -->
+        <Shape x="350" y="200" name="Gateway Node" id="0:22">
+            <Rectangle originX="0.5" originY="0.5" width="60" height="60" cornerRadiusTL="8" cornerRadiusTR="8" cornerRadiusBL="8" cornerRadiusBR="8" name="Path"/>
+            <Fill name="Fill">
+                <SolidColor colorValue="FF57A5E0" name="Color"/>
+            </Fill>
+        </Shape>
+
+        <!-- Auth -->
+        <Shape x="500" y="200" name="Auth Node" id="0:23">
+            <Rectangle originX="0.5" originY="0.5" width="60" height="60" cornerRadiusTL="8" cornerRadiusTR="8" cornerRadiusBL="8" cornerRadiusBR="8" name="Path"/>
+            <Fill name="Fill">
+                <SolidColor colorValue="FFF0B90B" name="Color"/>
+            </Fill>
+        </Shape>
+        <!-- Auth Inner state indicator -->
+        <Shape x="500" y="200" name="Auth Status" id="0:231">
+            <Rectangle originX="0.5" originY="0.5" width="40" height="40" cornerRadiusTL="4" cornerRadiusTR="4" cornerRadiusBL="4" cornerRadiusBR="4" name="Path"/>
+            <Fill name="Fill">
+                <SolidColor colorValue="FF1D1D1D" name="Color" id="0:232"/>
+            </Fill>
+        </Shape>
+
+        <!-- Backend -->
+        <Shape x="650" y="200" name="Backend Node" id="0:24">
+            <Rectangle originX="0.5" originY="0.5" width="60" height="60" cornerRadiusTL="8" cornerRadiusTR="8" cornerRadiusBL="8" cornerRadiusBR="8" name="Path"/>
+            <Fill name="Fill">
+                <SolidColor colorValue="FF4CAF50" name="Color"/>
+            </Fill>
+        </Shape>
+
+        <!-- Particle (The Request) -->
+        <Shape x="150" y="200" name="Particle" id="0:25">
+            <Ellipse originX="0.5" originY="0.5" width="20" height="20" name="Path"/>
+            <Fill name="Fill">
+                <SolidColor colorValue="00FFFFFF" name="Color" id="0:251"/> <!-- Start hidden -->
+            </Fill>
+        </Shape>
+
+        <!-- Good Request Button -->
+        <Shape x="250" y="320" name="Good Btn" id="0:28">
+            <Rectangle originX="0.5" originY="0.5" width="120" height="40" cornerRadiusTL="4" cornerRadiusTR="4" cornerRadiusBL="4" cornerRadiusBR="4" name="Path"/>
+            <Fill name="Fill">
+                <SolidColor colorValue="FF4CAF50" name="Color"/>
+            </Fill>
+        </Shape>
+
+        <!-- Bad Request Button -->
+        <Shape x="550" y="320" name="Bad Btn" id="0:29">
+            <Rectangle originX="0.5" originY="0.5" width="120" height="40" cornerRadiusTL="4" cornerRadiusTR="4" cornerRadiusBL="4" cornerRadiusBR="4" name="Path"/>
+            <Fill name="Fill">
+                <SolidColor colorValue="FFF44336" name="Color"/>
+            </Fill>
+        </Shape>
+
+        <!-- Animations -->
+        <LinearAnimation loopValue="loop" duration="60" name="Idle" id="0:30">
+            <KeyedObject objectId="0:251">
+                <KeyedProperty propertyKey="37"> <!-- Color -->
+                    <KeyFrameColor value="00FFFFFF" interpolationType="linear" frame="0"/>
+                </KeyedProperty>
+            </KeyedObject>
+        </LinearAnimation>
+
+        <!-- GoodRequestFlow Animation (Particle 150 -> 350 -> 500 -> 650) -->
+        <LinearAnimation loopValue="oneShot" duration="180" name="GoodRequestFlow" id="0:31">
+            <KeyedObject objectId="0:25">
+                <KeyedProperty propertyKey="13"> <!-- X position -->
+                    <KeyFrameDouble value="150" interpolationType="linear" frame="0"/>
+                    <KeyFrameDouble value="350" interpolationType="linear" frame="60"/>
+                    <KeyFrameDouble value="500" interpolationType="linear" frame="120"/>
+                    <KeyFrameDouble value="650" interpolationType="linear" frame="180"/>
+                </KeyedProperty>
+                <KeyedProperty propertyKey="17">
+                    <KeyFrameDouble value="1" interpolationType="linear" frame="0"/>
+                </KeyedProperty>
+                <KeyedProperty propertyKey="18">
+                    <KeyFrameDouble value="1" interpolationType="linear" frame="0"/>
+                </KeyedProperty>
+            </KeyedObject>
+            <KeyedObject objectId="0:251">
+                <KeyedProperty propertyKey="37"> <!-- Color -->
+                    <KeyFrameColor value="00FFFFFF" interpolationType="linear" frame="0"/>
+                    <KeyFrameColor value="FFFFFFFF" interpolationType="linear" frame="10"/>
+                    <KeyFrameColor value="FFFFFFFF" interpolationType="linear" frame="170"/>
+                    <KeyFrameColor value="00FFFFFF" interpolationType="linear" frame="180"/>
+                </KeyedProperty>
+            </KeyedObject>
+            <KeyedObject objectId="0:232">
+                <KeyedProperty propertyKey="37"> <!-- Auth Color turns Green -->
+                    <KeyFrameColor value="FF1D1D1D" interpolationType="linear" frame="100"/>
+                    <KeyFrameColor value="FF4CAF50" interpolationType="linear" frame="120"/>
+                    <KeyFrameColor value="FF1D1D1D" interpolationType="linear" frame="180"/>
+                </KeyedProperty>
+            </KeyedObject>
+        </LinearAnimation>
+
+        <!-- BadRequestFlow Animation (Particle 150 -> 350 -> 500 then shatter) -->
+        <LinearAnimation loopValue="oneShot" duration="180" name="BadRequestFlow" id="0:32">
+            <KeyedObject objectId="0:25">
+                <KeyedProperty propertyKey="13"> <!-- X position -->
+                    <KeyFrameDouble value="150" interpolationType="linear" frame="0"/>
+                    <KeyFrameDouble value="350" interpolationType="linear" frame="60"/>
+                    <KeyFrameDouble value="500" interpolationType="linear" frame="120"/>
+                    <KeyFrameDouble value="500" interpolationType="linear" frame="180"/>
+                </KeyedProperty>
+                <KeyedProperty propertyKey="17"> <!-- Scale X -->
+                    <KeyFrameDouble value="1" interpolationType="linear" frame="0"/>
+                    <KeyFrameDouble value="1" interpolationType="linear" frame="120"/>
+                    <KeyFrameDouble value="0.2" interpolationType="linear" frame="150"/>
+                </KeyedProperty>
+                <KeyedProperty propertyKey="18"> <!-- Scale Y -->
+                    <KeyFrameDouble value="1" interpolationType="linear" frame="0"/>
+                    <KeyFrameDouble value="1" interpolationType="linear" frame="120"/>
+                    <KeyFrameDouble value="0.2" interpolationType="linear" frame="150"/>
+                </KeyedProperty>
+            </KeyedObject>
+            <KeyedObject objectId="0:251">
+                <KeyedProperty propertyKey="37"> <!-- Color turns red and fades -->
+                    <KeyFrameColor value="00FFFFFF" interpolationType="linear" frame="0"/>
+                    <KeyFrameColor value="FFFFFFFF" interpolationType="linear" frame="10"/>
+                    <KeyFrameColor value="FFFF1D1D" interpolationType="linear" frame="120"/>
+                    <KeyFrameColor value="00FF1D1D" interpolationType="linear" frame="150"/>
+                </KeyedProperty>
+            </KeyedObject>
+            <KeyedObject objectId="0:232">
+                <KeyedProperty propertyKey="37"> <!-- Auth Color turns Red -->
+                    <KeyFrameColor value="FF1D1D1D" interpolationType="linear" frame="100"/>
+                    <KeyFrameColor value="FFFF1D1D" interpolationType="linear" frame="120"/>
+                    <KeyFrameColor value="FF1D1D1D" interpolationType="linear" frame="180"/>
+                </KeyedProperty>
+            </KeyedObject>
+        </LinearAnimation>
+
+        <!-- State Machine -->
+        <StateMachine name="Flow Machine" id="0:40">
+            <!-- Inputs -->
+            <StateMachineTrigger name="sendGood" id="0:401"/>
+            <StateMachineTrigger name="sendBad" id="0:402"/>
+
+            <!-- Listeners -->
+            <!-- Good Button Listener -->
+            <StateMachineListenerSingle targetId="0:28" listenerTypeValue="click">
+                <ListenerTriggerChange inputId="0:401"/>
+            </StateMachineListenerSingle>
+            
+            <!-- Bad Button Listener -->
+            <StateMachineListenerSingle targetId="0:29" listenerTypeValue="click">
+                <ListenerTriggerChange inputId="0:402"/>
+            </StateMachineListenerSingle>
+
+            <!-- Layers -->
+            <StateMachineLayer name="Flow Layer" id="0:41">
+                <AnyState x="200" y="-120"/>
+                <ExitState x="400" y="-120"/>
+                <EntryState>
+                    <StateTransition stateToId="0:42"/>
+                </EntryState>
+                
+                <AnimationState x="200" y="0" animationId="0:30" id="0:42">
+                    <!-- Trigger Good -->
+                    <StateTransition stateToId="0:43">
+                        <TransitionTriggerCondition inputId="0:401"/>
+                    </StateTransition>
+                    <!-- Trigger Bad -->
+                    <StateTransition stateToId="0:44">
+                        <TransitionTriggerCondition inputId="0:402"/>
+                    </StateTransition>
+                </AnimationState>
+
+                <!-- Good Flow -->
+                <AnimationState x="400" y="0" animationId="0:31" id="0:43">
+                    <StateTransition stateToId="0:42" duration="0" enableExitTime="true"/>
+                </AnimationState>
+
+                <!-- Bad Flow -->
+                <AnimationState x="400" y="100" animationId="0:32" id="0:44">
+                    <StateTransition stateToId="0:42" duration="0" enableExitTime="true"/>
+                </AnimationState>
+            </StateMachineLayer>
+        </StateMachine>
+    </Artboard>
+</Rive>

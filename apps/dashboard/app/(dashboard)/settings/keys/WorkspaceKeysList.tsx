@@ -65,14 +65,17 @@ export default function WorkspaceKeysList({
 
   const copyKey = () => {
     if (!createdData) return;
-    
+
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(createdData.rawKey).then(() => {
-        setCopyText('Copied!');
-        setTimeout(() => setCopyText('Copy'), 2000);
-      }).catch(err => console.warn('Clipboard write failed:', err));
+      navigator.clipboard
+        .writeText(createdData.rawKey)
+        .then(() => {
+          setCopyText('Copied!');
+          setTimeout(() => setCopyText('Copy'), 2000);
+        })
+        .catch((err) => console.warn('Clipboard write failed:', err));
     } else {
-      const textArea = document.createElement("textarea");
+      const textArea = document.createElement('textarea');
       textArea.value = createdData.rawKey;
       document.body.appendChild(textArea);
       textArea.select();
@@ -257,32 +260,68 @@ export default function WorkspaceKeysList({
         {step === 2 && (
           <div data-testid="create-workspace-key-success">
             <div className="modal-body" style={{ paddingBottom: '0' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '24px' }}>
-                <div style={{ 
-                  width: '32px', height: '32px', borderRadius: '50%', background: 'var(--green-dim)', 
-                  color: 'var(--green)', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: '18px'
-                }}>✓</div>
+              <div
+                style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '24px' }}
+              >
+                <div
+                  style={{
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '50%',
+                    background: 'var(--green-dim)',
+                    color: 'var(--green)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '18px',
+                  }}
+                >
+                  ✓
+                </div>
                 <div>
                   <div style={{ fontSize: '15px', fontWeight: 600 }}>{name}</div>
-                  <div style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Role: Workspace Admin</div>
+                  <div style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
+                    Role: Workspace Admin
+                  </div>
                 </div>
               </div>
 
               <div style={{ marginBottom: '24px' }}>
-                <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '8px', letterSpacing: '0.5px' }}>SECRET KEY</div>
-                <div style={{ 
-                  display: 'flex', alignItems: 'center', justifyContent: 'space-between', 
-                  background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', 
-                  padding: '8px 12px' 
-                }}>
+                <div
+                  style={{
+                    fontSize: '12px',
+                    fontWeight: 600,
+                    color: 'var(--text-secondary)',
+                    marginBottom: '8px',
+                    letterSpacing: '0.5px',
+                  }}
+                >
+                  SECRET KEY
+                </div>
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    background: 'var(--bg)',
+                    border: '1px solid var(--border)',
+                    borderRadius: 'var(--radius)',
+                    padding: '8px 12px',
+                  }}
+                >
                   <span className="mono" style={{ fontSize: '13px' }}>
                     <Typewriter text={createdData?.rawKey || ''} delay={400} />
                   </span>
                   <button
                     type="button"
                     className="btn btn-secondary"
-                    style={{ padding: '4px 10px', fontSize: '12px', height: 'auto', marginLeft: '12px', flexShrink: 0 }}
+                    style={{
+                      padding: '4px 10px',
+                      fontSize: '12px',
+                      height: 'auto',
+                      marginLeft: '12px',
+                      flexShrink: 0,
+                    }}
                     onClick={copyKey}
                   >
                     {copyText}

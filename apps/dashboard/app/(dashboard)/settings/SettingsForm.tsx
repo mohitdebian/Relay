@@ -198,7 +198,14 @@ export default function SettingsForm({ workspace }: { workspace: Workspace | nul
           )}
         </div>
         <div className="modal-foot">
-          <button className="btn btn-secondary" onClick={() => { setWsModalOpen(false); setWsDeleteError(''); setWsConfirmText(''); }}>
+          <button
+            className="btn btn-secondary"
+            onClick={() => {
+              setWsModalOpen(false);
+              setWsDeleteError('');
+              setWsConfirmText('');
+            }}
+          >
             Cancel
           </button>
           <button
@@ -246,7 +253,14 @@ export default function SettingsForm({ workspace }: { workspace: Workspace | nul
           )}
         </div>
         <div className="modal-foot">
-          <button className="btn btn-secondary" onClick={() => { setAccModalOpen(false); setAccDeleteError(''); setAccConfirmText(''); }}>
+          <button
+            className="btn btn-secondary"
+            onClick={() => {
+              setAccModalOpen(false);
+              setAccDeleteError('');
+              setAccConfirmText('');
+            }}
+          >
             Cancel
           </button>
           <button

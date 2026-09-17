@@ -96,11 +96,20 @@ export default async function OverviewPage() {
       </div>
 
       {apis.length === 0 ? (
-        <div className="panel" style={{ padding: '64px 20px', textAlign: 'center', marginTop: '24px' }}>
+        <div
+          className="panel"
+          style={{ padding: '64px 20px', textAlign: 'center', marginTop: '24px' }}
+        >
           <div style={{ marginBottom: '24px' }}>
-            <div className="page-title" style={{ justifyContent: 'center', marginBottom: '8px' }}>Welcome to Relay</div>
-            <div className="c-secondary" style={{ maxWidth: '400px', margin: '0 auto', lineHeight: 1.5 }}>
-              Your workspace is ready. To start routing traffic, enforcing rate limits, and collecting analytics, you need to create your first API target.
+            <div className="page-title" style={{ justifyContent: 'center', marginBottom: '8px' }}>
+              Welcome to Relay
+            </div>
+            <div
+              className="c-secondary"
+              style={{ maxWidth: '400px', margin: '0 auto', lineHeight: 1.5 }}
+            >
+              Your workspace is ready. To start routing traffic, enforcing rate limits, and
+              collecting analytics, you need to create your first API target.
             </div>
           </div>
           <NewApiButton />

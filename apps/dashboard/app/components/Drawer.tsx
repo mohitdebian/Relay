@@ -25,10 +25,18 @@ export default function Drawer({ open, onClose, log }: DrawerProps) {
       <div className={`drawer-backdrop${open ? ' open' : ''}`} onClick={onClose} />
       <div className={`drawer${open ? ' open' : ''}`}>
         <div className="drawer-head">
-          <div className="drawer-title mono" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={log ? `${log.method} ${log.path}` : ''}>
+          <div
+            className="drawer-title mono"
+            style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+            title={log ? `${log.method} ${log.path}` : ''}
+          >
             {log ? `${log.method} ${log.path}` : ''}
           </div>
-          <button className="drawer-close" onClick={onClose} style={{ flexShrink: 0, marginLeft: '12px' }}>
+          <button
+            className="drawer-close"
+            onClick={onClose}
+            style={{ flexShrink: 0, marginLeft: '12px' }}
+          >
             &times;
           </button>
         </div>
@@ -38,7 +46,9 @@ export default function Drawer({ open, onClose, log }: DrawerProps) {
               <div className="drawer-section-title">REQUEST</div>
               <div className="kv">
                 <span className="k">Timestamp</span>
-                <span className="v"><LocalTime time={log.time} /></span>
+                <span className="v">
+                  <LocalTime time={log.time} />
+                </span>
               </div>
               <div className="kv">
                 <span className="k">Method</span>
@@ -46,7 +56,9 @@ export default function Drawer({ open, onClose, log }: DrawerProps) {
               </div>
               <div className="kv">
                 <span className="k">Path</span>
-                <span className="v" style={{ wordBreak: 'break-all' }}>{log.path}</span>
+                <span className="v" style={{ wordBreak: 'break-all' }}>
+                  {log.path}
+                </span>
               </div>
               {log.ipAddress && (
                 <div className="kv">
@@ -57,7 +69,9 @@ export default function Drawer({ open, onClose, log }: DrawerProps) {
               {log.userAgent && (
                 <div className="kv">
                   <span className="k">User Agent</span>
-                  <span className="v" style={{ wordBreak: 'break-all' }}>{log.userAgent}</span>
+                  <span className="v" style={{ wordBreak: 'break-all' }}>
+                    {log.userAgent}
+                  </span>
                 </div>
               )}
             </div>
@@ -66,7 +80,9 @@ export default function Drawer({ open, onClose, log }: DrawerProps) {
                 <div className="drawer-section-title">HEADERS</div>
                 {log.requestHeaders && (
                   <div style={{ marginBottom: '12px' }}>
-                    <div className="c-label" style={{ marginBottom: '4px' }}>REQUEST HEADERS</div>
+                    <div className="c-label" style={{ marginBottom: '4px' }}>
+                      REQUEST HEADERS
+                    </div>
                     <div className="code-block" style={{ maxHeight: '200px', overflowY: 'auto' }}>
                       {typeof log.requestHeaders === 'string'
                         ? (() => {
@@ -82,7 +98,9 @@ export default function Drawer({ open, onClose, log }: DrawerProps) {
                 )}
                 {log.responseHeaders && (
                   <div>
-                    <div className="c-label" style={{ marginBottom: '4px' }}>RESPONSE HEADERS</div>
+                    <div className="c-label" style={{ marginBottom: '4px' }}>
+                      RESPONSE HEADERS
+                    </div>
                     <div className="code-block" style={{ maxHeight: '200px', overflowY: 'auto' }}>
                       {typeof log.responseHeaders === 'string'
                         ? (() => {

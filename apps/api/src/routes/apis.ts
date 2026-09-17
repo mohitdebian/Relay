@@ -394,61 +394,69 @@ router.get('/:id/keys', async (req: AuthRequest, res: Response) => {
 });
 
 // GET /apis/:id/keys/:keyId/reveal — Decrypt and return the full API key (admin/owner only)
-router.get('/:id/keys/:keyId/reveal', sensitiveRateLimit, async (req: AuthRequest, res: Response) => {
-  const { id, keyId } = req.params;
-  const userId = req.user?.id;
+router.get(
+  '/:id/keys/:keyId/reveal',
+  sensitiveRateLimit,
+  async (req: AuthRequest, res: Response) => {
+    const { id, keyId } = req.params;
+    const userId = req.user?.id;
 
-  try {
-    // 1. Verify admin/owner access to the API
-    const accessCheck = await pool.query(
-      `SELECT a.id, wm.role FROM apis a JOIN workspace_members wm ON a.workspace_id = wm.workspace_id WHERE a.id = $1 AND wm.user_id = $2`,
-      [id, userId]
-    );
-    if (accessCheck.rows.length === 0) {
-      res.status(404).json({ error: 'API not found or unauthorized' });
-      return;
+    try {
+      // 1. Verify admin/owner access to the API
+      const accessCheck = await pool.query(
+        `SELECT a.id, wm.role FROM apis a JOIN workspace_members wm ON a.workspace_id = wm.workspace_id WHERE a.id = $1 AND wm.user_id = $2`,
+        [id, userId]
+      );
+      if (accessCheck.rows.length === 0) {
+        res.status(404).json({ error: 'API not found or unauthorized' });
+        return;
+      }
+
+      const { role } = accessCheck.rows[0];
+      if (role.toLowerCase() !== 'admin' && role.toLowerCase() !== 'owner') {
+        res.status(403).json({ error: 'Unauthorized: Requires admin or owner role' });
+        return;
+      }
+
+      // 2. Fetch the encrypted key
+      const keyResult = await pool.query(
+        `SELECT encrypted_key, revoked_at FROM api_keys WHERE id = $1 AND api_id = $2`,
+        [keyId, id]
+      );
+      if (keyResult.rows.length === 0) {
+        res.status(404).json({ error: 'API key not found' });
+        return;
+      }
+
+      if (keyResult.rows[0].revoked_at) {
+        res.status(410).json({ error: 'This key has been revoked' });
+        return;
+      }
+
+      const encryptedKey = keyResult.rows[0].encrypted_key;
+      if (!encryptedKey) {
+        res.status(404).json({
+          error: 'Key was created before copy-key feature was enabled. Generate a new key.',
+        });
+        return;
+      }
+
+      // 3. Decrypt and return
+      const rawKey = decrypt(encryptedKey);
+      if (!rawKey) {
+        res
+          .status(500)
+          .json({ error: 'Failed to decrypt key. Check ENCRYPTION_KEY configuration.' });
+        return;
+      }
+
+      res.json({ rawKey });
+    } catch (error) {
+      console.error('Error revealing API key:', error);
+      res.status(500).json({ error: 'Internal server error' });
     }
-
-    const { role } = accessCheck.rows[0];
-    if (role.toLowerCase() !== 'admin' && role.toLowerCase() !== 'owner') {
-      res.status(403).json({ error: 'Unauthorized: Requires admin or owner role' });
-      return;
-    }
-
-    // 2. Fetch the encrypted key
-    const keyResult = await pool.query(
-      `SELECT encrypted_key, revoked_at FROM api_keys WHERE id = $1 AND api_id = $2`,
-      [keyId, id]
-    );
-    if (keyResult.rows.length === 0) {
-      res.status(404).json({ error: 'API key not found' });
-      return;
-    }
-
-    if (keyResult.rows[0].revoked_at) {
-      res.status(410).json({ error: 'This key has been revoked' });
-      return;
-    }
-
-    const encryptedKey = keyResult.rows[0].encrypted_key;
-    if (!encryptedKey) {
-      res.status(404).json({ error: 'Key was created before copy-key feature was enabled. Generate a new key.' });
-      return;
-    }
-
-    // 3. Decrypt and return
-    const rawKey = decrypt(encryptedKey);
-    if (!rawKey) {
-      res.status(500).json({ error: 'Failed to decrypt key. Check ENCRYPTION_KEY configuration.' });
-      return;
-    }
-
-    res.json({ rawKey });
-  } catch (error) {
-    console.error('Error revealing API key:', error);
-    res.status(500).json({ error: 'Internal server error' });
   }
-});
+);
 
 // GET /apis/:id/logs
 router.get('/:id/logs', async (req: AuthRequest, res: Response) => {

@@ -105,9 +105,7 @@ export default function UserMenu({ email, avatarUrl }: { email: string; avatarUr
               opacity: isLoggingOut ? 0.6 : 1,
             }}
           >
-            <span className="cd-option-label">
-              {isLoggingOut ? 'Logging out...' : 'Log out'}
-            </span>
+            <span className="cd-option-label">{isLoggingOut ? 'Logging out...' : 'Log out'}</span>
           </div>
         </div>
       )}
